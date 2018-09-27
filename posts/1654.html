@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="linux,NAS," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="img{     width: 85%; }   简介群晖科技股份有限公司（品牌名称：Synology，简称群晖或群晖科技）为台湾一家网络附加储存（NAS）服务商，总部位于台北市。截至2017年，群晖以Synology品牌行销全球，在中小企业及家用NAS市场占有率居世界首位。网络连接存储设备（Network Attached Storage，NAS），是一种专门的数据存储技术的名称，它可以直接">
+<meta name="keywords" content="linux,NAS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="黑群晖NAS安装">
+<meta property="og:url" content="https://home.onlycloud.xin/posts/1654.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="img{     width: 85%; }   简介群晖科技股份有限公司（品牌名称：Synology，简称群晖或群晖科技）为台湾一家网络附加储存（NAS）服务商，总部位于台北市。截至2017年，群晖以Synology品牌行销全球，在中小企业及家用NAS市场占有率居世界首位。网络连接存储设备（Network Attached Storage，NAS），是一种专门的数据存储技术的名称，它可以直接">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://home.onlycloud.xin/images/qunhui_install_00.png">
+<meta property="og:image" content="https://home.onlycloud.xin/images/qunhui_install_01.png">
+<meta property="og:image" content="https://home.onlycloud.xin/images/qunhui_install_02.png">
+<meta property="og:image" content="https://home.onlycloud.xin/images/qunhui_install_03.png">
+<meta property="og:image" content="https://home.onlycloud.xin/images/qunhui_install_04.png">
+<meta property="og:image" content="https://home.onlycloud.xin/images/qunhui_install_05.png">
+<meta property="og:image" content="https://home.onlycloud.xin/images/qunhui_install_06.png">
+<meta property="og:image" content="https://home.onlycloud.xin/images/qunhui_install_07.png">
+<meta property="og:image" content="https://home.onlycloud.xin/images/qunhui_install_08.png">
+<meta property="og:image" content="https://home.onlycloud.xin/images/qunhui_install_09.png">
+<meta property="og:image" content="https://home.onlycloud.xin/images/qunhui_install_10.png">
+<meta property="og:image" content="https://home.onlycloud.xin/images/qunhui_install_11.png">
+<meta property="og:image" content="https://home.onlycloud.xin/images/qunhui_install_12.png">
+<meta property="og:image" content="https://home.onlycloud.xin/images/qunhui_install_13.png">
+<meta property="og:image" content="https://home.onlycloud.xin/images/qunhui_install_14.png">
+<meta property="og:image" content="https://home.onlycloud.xin/images/qunhui_install_15.png">
+<meta property="og:image" content="https://home.onlycloud.xin/images/qunhui_install_16.png">
+<meta property="og:image" content="https://home.onlycloud.xin/images/qunhui_install_17.png">
+<meta property="og:image" content="https://home.onlycloud.xin/images/qunhui_install_18.png">
+<meta property="og:image" content="https://home.onlycloud.xin/images/qunhui_install_19.png">
+<meta property="og:image" content="https://home.onlycloud.xin/images/qunhui_install_20.png">
+<meta property="og:image" content="https://home.onlycloud.xin/images/qunhui_install_03.png">
+<meta property="og:image" content="https://home.onlycloud.xin/images/qunhui_install_04.png">
+<meta property="og:image" content="https://home.onlycloud.xin/images/qunhui_install_05.png">
+<meta property="og:image" content="https://home.onlycloud.xin/images/qunhui_install_06.png">
+<meta property="og:image" content="https://home.onlycloud.xin/images/qunhui_install_07.png">
+<meta property="og:image" content="https://home.onlycloud.xin/images/qunhui_install_08.png">
+<meta property="og:updated_time" content="2018-09-27T12:11:53.199Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="黑群晖NAS安装">
+<meta name="twitter:description" content="img{     width: 85%; }   简介群晖科技股份有限公司（品牌名称：Synology，简称群晖或群晖科技）为台湾一家网络附加储存（NAS）服务商，总部位于台北市。截至2017年，群晖以Synology品牌行销全球，在中小企业及家用NAS市场占有率居世界首位。网络连接存储设备（Network Attached Storage，NAS），是一种专门的数据存储技术的名称，它可以直接">
+<meta name="twitter:image" content="https://home.onlycloud.xin/images/qunhui_install_00.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://home.onlycloud.xin/posts/1654.html"/>
+
+
+
+
+
+  <title>黑群晖NAS安装 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-python">
+          <a href="/python/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            python
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-logs">
+          <a href="/posts/log.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Logs
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://home.onlycloud.xin/posts/1654.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="亦 漩">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">黑群晖NAS安装</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-12T23:25:33+08:00">
+                2018-03-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NAS/" itemprop="url" rel="index">
+                    <span itemprop="name">NAS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/1654.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/posts/1654.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,361
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  9
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        
+<style>
+img{
+    width: 85%;
+}
+</style>
+
+<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p><a href="https://www.synology.cn" target="_blank" rel="noopener">群晖科技</a>股份有限公司（品牌名称：Synology，简称群晖或群晖科技）为台湾一家网络附加储存（NAS）服务商，总部位于台北市。截至2017年，群晖以Synology品牌行销全球，在中小企业及家用NAS市场占有率居世界首位。网络连接存储设备（Network Attached Storage，NAS），是一种专门的数据存储技术的名称，它可以直接连接在电脑网络上面，对异质网络用户提供了集中式数据访问服务</p>
+<h3 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h3><p>支持的文件服务: SMB, AFR, NFS, FTP, TFTP, Rsync, ISCSI<br>支持登陆认证方式: 域, LDAP, OSS, 本地账户<br>数据备份: Win/linu环境下数据备份,支持增量备份, NAS之间数据备份, 客户端同步NAS软件….<br>服务器: Active Dirertory Server(AD域), Dirertory Server(LDAP), DSN Server, Proxy Server, RADIUS Server ….<br>支持大量第三方软件: Apache, PHP, MariaDB, Python, Ruby, Node.js, Java, Perl, Docker, 创建/管理虚拟机….</p>
+<h3 id="为什么用黑群"><a href="#为什么用黑群" class="headerlink" title="为什么用黑群"></a>为什么用黑群</h3><blockquote>
+<p>[白群:官方硬件+官方软件]   [黑群:组装硬件+破解官方软件]</p>
+</blockquote>
+<p>白群: 硬件配置低,价格高,可以正常升级不会导致系统无法引导,可以使用群晖自带QC功能实现远程管理(速度慢)<br>黑群: 自定义硬件(普通PC电脑),升级系统之前做好数据备份,需要使用第三方软件实现远程管理功能</p>
+<h3 id="下载资源"><a href="#下载资源" class="headerlink" title="下载资源"></a>下载资源</h3><p>下载所需软件<a href="https://pan.baidu.com/s/1rIt_JQay2mAKewjcxb5VLg" target="_blank" rel="noopener">百度网盘</a>[密码: t140] </p>
+<blockquote>
+<p>目前黑群晖用的较多的有两个版本DS3615xs,DSM3617xs(本文基于DS3615xs做测试)</p>
+</blockquote>
+<pre><code>文件说明:
+  黑群晖3615xs_v613_15152   必须使用使用15152版本安装,文件内的镜像为grub方式引导,安装后不能更新版本
+  黑群晖3615xs_v6通用EFI方式    可以使用当前最新版本系统安装,可更新补丁大版本更新貌似不行
+  黑群晖 For VMware WorkStation5.1.zip  5.1版本安装教程,包含虚拟机(版本5不带docker等功能)
+  Win10_WebUI   一个模仿win10系统的webUI页面可用来做NAS网站首页(通过Web Station创建站点)
+  Plex  WEB视频管理软件,功能强大
+</code></pre><h3 id="虚拟机安装测试"><a href="#虚拟机安装测试" class="headerlink" title="虚拟机安装测试"></a>虚拟机安装测试</h3><blockquote>
+<p>使用<code>VMware Workstation Pro</code>创建虚拟机,虚拟机启动镜像来自<code>黑群晖3615xs_v613_15152</code>目录</p>
+</blockquote>
+<h4 id="配置拟机"><a href="#配置拟机" class="headerlink" title="配置拟机"></a>配置拟机</h4><pre><code>客户机操作系统：Linux
+版本：其他 Linux 3.x 内核 64 位
+内存：2-4G
+网络连接：使用桥接(能通内网)
+磁盘大小：50G左右
+添加CD/DVD驱动器：使用镜像boot_ds3615xs_v613_15152.iso文件(勾选启动时连接)
+</code></pre><p><img src="/images/qunhui_install_00.png" alt=""></p>
+<h4 id="设置从光盘启动"><a href="#设置从光盘启动" class="headerlink" title="设置从光盘启动"></a>设置从光盘启动</h4><blockquote>
+<p>为什么要BLIOS设置为光盘启动：系统安装完毕后引导还在光盘中,虚拟机默认第一启动项为硬盘,所以需要BIOS中强制设置光盘为第一启动</p>
+</blockquote>
+<p>1.虚拟机名称右键<code>电源</code>→<code>打开电源时进入固件</code></p>
+<p><img src="/images/qunhui_install_01.png" alt=""></p>
+<p>2.使用键盘方向键选择<code>boot</code>→<code>CD-ROM Drive</code>,然后按<code>Shift</code>＋<code>=</code>组合键将<code>CD-ROM Drive</code>调整到第一启动,按下<code>F10</code>→<code>Enter</code>.</p>
+<p><img src="/images/qunhui_install_02.png" alt=""></p>
+<p><hr><br><img src="/images/qunhui_install_03.png" alt=""></p>
+<h4 id="安装NAS系统"><a href="#安装NAS系统" class="headerlink" title="安装NAS系统"></a>安装NAS系统</h4><p>1.下载NSA下安装文件<a href="https://archive.synology.com/download/DSM/release/6.1.3/15152/" target="_blank" rel="noopener">下载地址</a> 此处用到的是<code>DSM_DS3615xs_15152.pat</code></p>
+<p><hr><br>2.在物理电脑上安装群<code>晖助手软件</code>(SynologyAssistantSetup),运行后在软件内右键<code>搜索</code>,这时可以看到发现一台设备,点击发现的设备右键选择<code>安装</code>.</p>
+<p><img src="/images/qunhui_install_04.png" alt=""></p>
+<p>3.点击<code>浏览</code>选择下载好的安装文件<code>DSM_DS3615xs_15152.pat</code>.</p>
+<p><img src="/images/qunhui_install_05.png" alt=""></p>
+<p>4.点击下一步,输入管理账号:<code>admin</code>的密码,点击下一步(此账号密码为web管理员)</p>
+<p><img src="/images/qunhui_install_06.png" alt=""></p>
+<p>5.配置网络参数,与当前网络同一个网络能相互访问,点击完成</p>
+<p><img src="/images/qunhui_install_07.png" alt=""></p>
+<p>6.等待安装完毕点击<code>(登陆 DiskStation)</code>通过浏览器初始化NAS</p>
+<p><img src="/images/qunhui_install_08.png" alt=""></p>
+<h4 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h4><p>1.输入管理员账号密码</p>
+<pre><code>user: admin
+passwd: 安装NAS系统[4]中设置的密码
+</code></pre><p><img src="/images/qunhui_install_09.png" alt=""></p>
+<p>2.点击下一步,然后勾选下载DSM更新并进行手动安装(自动安装有可能导致无法引导);设置QC跳过(黑群晖无法验证账号)初始化完成</p>
+<p><img src="/images/qunhui_install_10.png" alt=""></p>
+<h4 id="其他设置"><a href="#其他设置" class="headerlink" title="其他设置"></a>其他设置</h4><p>1.配置邮箱</p>
+<blockquote>
+<p>打开<code>控制面板</code>→<code>通知设置</code>进行邮箱的配置</p>
+</blockquote>
+<p><img src="/images/qunhui_install_11.png" alt=""></p>
+<p>2.开启ssh</p>
+<blockquote>
+<p>打开<code>控制面板</code>→<code>终端和 SNMP</code>勾选开启ssh</p>
+</blockquote>
+<p><img src="/images/qunhui_install_12.png" alt=""></p>
+<p>3.将引导写入硬盘</p>
+<blockquote>
+<p>使用admin连接到服务器,打开终端输入<code>ssh admin@192.168.0.200</code>然后输入密码,（必须开启ssh）</p>
+</blockquote>
+<p><img src="/images/qunhui_install_13.png" alt=""></p>
+<blockquote>
+<p>输入<code>sudo -i</code>切换到root</p>
+</blockquote>
+<p><img src="/images/qunhui_install_14.png" alt=""></p>
+<blockquote>
+<p>打开<code>Everything</code>点击<code>工具</code>勾选<code>HTTP服务器</code>开启http服务</p>
+</blockquote>
+<p><img src="/images/qunhui_install_15.png" alt=""></p>
+<blockquote>
+<p>将 <code>boot_ds3615xs_v613_15152.img</code>,<code>disk_setboot.sh</code> 下载到当前目录(在浏览器输入本机IP定位到软件目录复制需要下载的文件链接)</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wget http://192.168.0.51/E:/黑群晖3615xs_v613_15152/boot_ds3615xs_v613_15152.img</span><br><span class="line">wget http://192.168.0.51/E:/黑群晖3615xs_v613_15152/disk_setboot.sh</span><br><span class="line">chown root:root boot_ds3615xs_v613_15152.img disk_setboot.sh</span><br><span class="line">chmod 777 disk_setboot.sh</span><br><span class="line">chmod 666 boot_ds3615xs_v613_15152.img</span><br></pre></td></tr></table></figure>
+<p><img src="/images/qunhui_install_16.png" alt=""></p>
+<blockquote>
+<p>创建硬盘启动(创建完毕后即可以硬盘启动)</p>
+</blockquote>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在硬盘/dev/sda 创建一个新主分区将img镜像写入分区</span></span><br><span class="line"><span class="string">./disk_setboot.sh</span> <span class="string">/dev/sda</span> boot_ds3615xs_v613_15152.img</span><br></pre></td></tr></table></figure>
+<p><img src="/images/qunhui_install_17.png" alt=""></p>
+<h3 id="使用U盘安装-UEFI"><a href="#使用U盘安装-UEFI" class="headerlink" title="使用U盘安装(UEFI)"></a>使用U盘安装(UEFI)</h3><blockquote>
+<p>此处文件来源于<code>黑群晖3615xs_v6通用EFI方式</code>目录</p>
+</blockquote>
+<h4 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h4><p>1.准备一个U盘;</p>
+<p><hr><br>2.百度网盘软件说明: </p>
+<pre><code>Win32_Disk_Imager:  镜像写入U盘工具
+DS3615xs-6.1:   引导镜像文件本实验选择的是ds3615xs(注意选择的引导镜像,安装的系统与之对应)
+SynologyAssistantSetup: 局域网搜索群晖NAS设备软件
+ChipGenius: 查看USB设备ID工具
+</code></pre><p>3.群晖系统<a href="https://archive.synology.com/download/DSM/release/6.1.5/15254/" target="_blank" rel="noopener">下载</a> 此处用到的是<code>DSM_DS3615xs_15254.pat</code>下载到本地</p>
+<h4 id="制作U盘启动"><a href="#制作U盘启动" class="headerlink" title="制作U盘启动"></a>制作U盘启动</h4><p>1.插入U盘,运行Win32DiskImager,ImageFile:选择群晖U盘引导镜像<code>黑群晖3615xs_v6通用EFI方式\DS3615xs-6.1\synoboot.img</code>目录下的,Device:设备选择到用作启动盘U盘,点击<code>Write</code>.</p>
+<p><img src="/images/qunhui_install_18.png" alt=""></p>
+<p>2.运行ChipGenius, 记录下U盘中设备ID中VID及PID的值 <code>VID=0930,PID=6544</code></p>
+<p><img src="/images/qunhui_install_19.png" alt=""></p>
+<p>3.修改U盘EFI分区中grub目录下的grub.cfg文件中VID,PID替换为上一步记录的值,保存并退出,U盘启动制作完成(分区大小为14.9M的分区,注意: VID,PID的值前面加 0x 表示16进制值)</p>
+<p><img src="/images/qunhui_install_20.png" alt=""></p>
+<h4 id="安装系统-UEFI"><a href="#安装系统-UEFI" class="headerlink" title="安装系统(UEFI)"></a>安装系统(UEFI)</h4><p>1.准备一套键鼠,显示器接入NAS,连接上路由器，路由器打开DHCP,另外一台操作的电脑在同一局域网下.</p>
+<p><hr><br>2.将制作好的引导U盘插入到准备做NAS的设备上并以U盘启动,看到类似下面画面就可以用另外一台电脑操作了.(此处未做截图,引用上面实验图)<br><img src="/images/qunhui_install_03.png" alt=""></p>
+<p>3.在同一网段内的电脑上安装群晖助手软件(SynologyAssistantSetup),运行后在软件内右键搜索,这时可以看到发现一台设备,点击发现的设备右键选择安装.<br><img src="/images/qunhui_install_04.png" alt=""></p>
+<p>4.点击<code>浏览</code>选择下载好的安装文件<code>DSM_DS3615xs_15254.pat</code>.(此处未做截图,引用上面实验图)<br><img src="/images/qunhui_install_05.png" alt=""></p>
+<p>5.点击下一步,输入管理账号:<code>admin</code>的密码,点击下一步<br><img src="/images/qunhui_install_06.png" alt=""></p>
+<p>6.配置网络参数,与当前网络同一个网络能相互访问,点击完成<br><img src="/images/qunhui_install_07.png" alt=""></p>
+<p>7.等待安装完毕点击<code>(登陆 DiskStation)</code>通过浏览器初始化NAS</p>
+<p><img src="/images/qunhui_install_08.png" alt=""></p>
+<h3 id="软件推荐"><a href="#软件推荐" class="headerlink" title="软件推荐"></a>软件推荐</h3><blockquote>
+<p>套件中心搜索</p>
+</blockquote>
+<pre><code>Active Backup for Server：
+    1.实现了 Windows 和 Linux 服务器的集中保护，较大限度降低了部署以及管理成本
+    2.能够按天备份文件，而不必在源服务器上安装复杂又昂贵的代理，也不用担心会对客户端性能和代理兼容性造成影响
+    3.可使用柱状图工具从时间和任务角度监控所有备份任务
+    4.提供多版本、镜像及增量三种模式，可满足大多数常见的备份需求
+
+Virtual Machine Manager：
+    1.在Synology NAS 上创建和运行多个虚拟机
+    2.借助Virtual Machine Manager，您可以更灵活地分配硬件资源、构建虚拟化环境
+    3.在主机之间迁移Virtual DSM 而不发生中断。
+
+Directory Server：
+    1.Directory Server 提供的LDAP 服务包含集中化的权限控制、认证及帐号管理机制(LDAP Server)
+    2.NAS支持LDAP客户端验证
+
+Active Directory Server：
+    1.Active Directory Server 提供了由 Samba 驱动的 Active Directory（AD）域服务
+    2.支持常用的 Active Directory 功能，如用户帐户、群组成员、加入域的 Windows、Linux 和 Synology DSM、Kerberos 验证及群组策略等
+    3.NAS 支持加入域
+
+Cloud Station Server：
+    类似网盘,可多个客户端之间跨平台同步数据(速度有点慢)
+
+Docker：
+    Docker 是一个轻量级虚拟化应用程序，它可让您运行世界各地的开发人员在 DSM 上创建的数以千计的容器。Docker Hub 是使用广泛的内置映像存储库，可让您从其他优秀开发人员那里找到共享的应用程序
+</code></pre><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>使用<code>grub</code>方式安装好后可以将引导写入硬盘,不可以更新软件版本只能安装15152<br>使用<code>EFI</code> 方式安装需依赖U盘才能启动,可以更新补丁,可以直接安装最新版系统</p>
+<p><hr><br>参考资料</p>
+<pre><code>[ DSM系统下载](https://archive.synology.com/download/DSM/release/)  [使用官网最新镜像地址替换路径可以达到更快下载速度]
+[教程参考1](http://www.nasyun.com/thread-31655-1-1.html)
+[教程参考2](http://www.nasyun.com/thread-28943-1-1.html)
+[硬件参考2](https://post.smzdm.com/p/120480/p5/)
+</code></pre>
+      
+    </div>
+    
+    
+    
+    <div>
+      
+        
+
+      
+    </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag "><i class="fa fa-tag"></i> linux</a>
+          
+            <a href="/tags/NAS/" rel="tag "><i class="fa fa-tag"></i> NAS</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div id="needsharebutton-postbottom">
+            <span class="btn">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </span>
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/3221.html" rel="next" title="Windows+Subversion+ReviewBoard实现SVN项目管理与代码审核">
+                <i class="fa fa-chevron-left"></i> Windows+Subversion+ReviewBoard实现SVN项目管理与代码审核
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/6b1f.html" rel="prev" title="Frp内网穿透">
+                Frp内网穿透 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="亦 漩" />
+            
+              <p class="site-author-name" itemprop="name">亦 漩</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">110</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/bookgh" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://coding.net/u/yx571304" target="_blank" title="Coding">
+                      
+                        <i class="fa fa-fw fa-git"></i>Coding</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://skyisfuck.github.io" title="Peng" target="_blank">Peng</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#功能"><span class="nav-number">2.</span> <span class="nav-text">功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么用黑群"><span class="nav-number">3.</span> <span class="nav-text">为什么用黑群</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下载资源"><span class="nav-number">4.</span> <span class="nav-text">下载资源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#虚拟机安装测试"><span class="nav-number">5.</span> <span class="nav-text">虚拟机安装测试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置拟机"><span class="nav-number">5.1.</span> <span class="nav-text">配置拟机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置从光盘启动"><span class="nav-number">5.2.</span> <span class="nav-text">设置从光盘启动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装NAS系统"><span class="nav-number">5.3.</span> <span class="nav-text">安装NAS系统</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#初始化"><span class="nav-number">5.4.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其他设置"><span class="nav-number">5.5.</span> <span class="nav-text">其他设置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用U盘安装-UEFI"><span class="nav-number">6.</span> <span class="nav-text">使用U盘安装(UEFI)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作"><span class="nav-number">6.1.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#制作U盘启动"><span class="nav-number">6.2.</span> <span class="nav-text">制作U盘启动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装系统-UEFI"><span class="nav-number">6.3.</span> <span class="nav-text">安装系统(UEFI)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#软件推荐"><span class="nav-number">7.</span> <span class="nav-text">软件推荐</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">8.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">亦 漩</span>
+
+  
+  <br/><span><i class="fa fa-bomb"></i></span><span id="showDays"></span>
+</div>
+
+
+
+
+
+
+
+
+
+<script>
+  var seconds = 1000;
+  var minutes = seconds * 60;
+  var hours = minutes * 60;
+  var days = hours * 24;
+  var years = days * 365;
+  var birthDay = Date.UTC(2017,12,07,10,00,00); // 这里设置建站时间
+  setInterval(function() {
+    var today = new Date();
+    var todayYear = today.getFullYear();
+    var todayMonth = today.getMonth()+1;
+    var todayDate = today.getDate();
+    var todayHour = today.getHours();
+    var todayMinute = today.getMinutes();
+    var todaySecond = today.getSeconds();
+    var now = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+    var diff = now - birthDay;
+    var diffYears = Math.floor(diff/years);
+    var diffDays = Math.floor((diff/days)-diffYears*365);
+    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById('showDays').innerHTML="本站已运行 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+  }, 1000);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+      <div id="needsharebutton-float">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'DWwnpdDBrLDMI8CKf8OXopJu-gzGzoHsz',
+        appKey: '7sfOhetJ1Wftp4W7MF0xdPOw',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "default";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+      flOptions = {};
+      
+          flOptions.iconStyle = "default";
+      
+          flOptions.boxForm = "horizontal";
+      
+          flOptions.position = "middleRight";
+      
+          flOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-float', flOptions);
+    
+  </script>
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+
+</body>
+</html>

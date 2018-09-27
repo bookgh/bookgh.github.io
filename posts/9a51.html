@@ -1,0 +1,1918 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="linux,ipxe," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="配置环境变量 TFTP，DHCP，NGINX IP：192.168.2.44  SERVER_IP=192.168.2.44 DHCP_NET=192.168.0.0 DHCP_GWT=192.168.0.1 DHCP_MASK=255.255.0.0 DHCP_POOL=&amp;apos;192.168.2.50 192.168.2.80&amp;apos; LOAD_SOURCE=&amp;apos;192.168">
+<meta name="keywords" content="linux,ipxe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IPXE 网络安装系统">
+<meta property="og:url" content="https://home.onlycloud.xin/posts/9a51.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="配置环境变量 TFTP，DHCP，NGINX IP：192.168.2.44  SERVER_IP=192.168.2.44 DHCP_NET=192.168.0.0 DHCP_GWT=192.168.0.1 DHCP_MASK=255.255.0.0 DHCP_POOL=&amp;apos;192.168.2.50 192.168.2.80&amp;apos; LOAD_SOURCE=&amp;apos;192.168">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-27T12:11:45.333Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="IPXE 网络安装系统">
+<meta name="twitter:description" content="配置环境变量 TFTP，DHCP，NGINX IP：192.168.2.44  SERVER_IP=192.168.2.44 DHCP_NET=192.168.0.0 DHCP_GWT=192.168.0.1 DHCP_MASK=255.255.0.0 DHCP_POOL=&amp;apos;192.168.2.50 192.168.2.80&amp;apos; LOAD_SOURCE=&amp;apos;192.168">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://home.onlycloud.xin/posts/9a51.html"/>
+
+
+
+
+
+  <title>IPXE 网络安装系统 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-python">
+          <a href="/python/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            python
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-logs">
+          <a href="/posts/log.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Logs
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://home.onlycloud.xin/posts/9a51.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="亦 漩">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">IPXE 网络安装系统</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-20T16:29:00+08:00">
+                2018-06-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ipxe/" itemprop="url" rel="index">
+                    <span itemprop="name">ipxe</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/9a51.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/posts/9a51.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,521
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  15
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h3><blockquote>
+<p>TFTP，DHCP，NGINX IP：192.168.2.44</p>
+</blockquote>
+<pre><code>SERVER_IP=192.168.2.44
+DHCP_NET=192.168.0.0
+DHCP_GWT=192.168.0.1
+DHCP_MASK=255.255.0.0
+DHCP_POOL=&apos;192.168.2.50 192.168.2.80&apos;
+LOAD_SOURCE=&apos;192.168.2.3:8000&apos;
+DHCP_DNS=&apos;192.168.0.9, 192.168.0.5&apos;
+DHCP_DNS2=&apos;223.5.5.5, 223.6.6.6&apos;
+</code></pre><h3 id="安装配置DHCP"><a href="#安装配置DHCP" class="headerlink" title="安装配置DHCP"></a>安装配置DHCP</h3><pre><code>yum -y install dhcp
+</code></pre><h3 id="配置DHCP参数"><a href="#配置DHCP参数" class="headerlink" title="配置DHCP参数"></a>配置DHCP参数</h3><pre><code>cat &lt;&lt;EOF &gt;/etc/dhcp/dhcpd.conf
+allow booting;
+allow bootp;
+ddns-update-style interim;
+ignore client-updates;
+subnet $DHCP_NET netmask $DHCP_MASK {
+    option subnet-mask $DHCP_MASK;
+    option routers $DHCP_GWT;
+    option domain-name &quot;onewtech.com&quot;;
+    option domain-name-servers $DHCP_DNS;
+    range dynamic-bootp $DHCP_POOL;
+    default-lease-time      21600;
+    max-lease-time          43200;
+    next-server             $SERVER_IP;
+    filename                &quot;pxelinux.0&quot;;
+}
+EOF
+</code></pre><h3 id="启动服务-添加到开机启"><a href="#启动服务-添加到开机启" class="headerlink" title="启动服务,添加到开机启"></a>启动服务,添加到开机启</h3><pre><code>systemctl start dhcpd
+systemctl enable dhcpd
+</code></pre><h3 id="TFTP安装"><a href="#TFTP安装" class="headerlink" title="TFTP安装"></a>TFTP安装</h3><pre><code>yum -y install tftp tftp-server xinetd
+sed -i &apos;/disable/s/yes/no/&apos;  /etc/xinetd.d/tftp
+</code></pre><h3 id="启动服务-添加到开机启-1"><a href="#启动服务-添加到开机启-1" class="headerlink" title="启动服务,添加到开机启"></a>启动服务,添加到开机启</h3><pre><code>systemctl start tftp
+systemctl enable tftp
+systemctl start xinetd
+systemctl enable xinetd
+</code></pre><h3 id="下载启动文件"><a href="#下载启动文件" class="headerlink" title="下载启动文件"></a>下载启动文件</h3><pre><code>yum -y install wget
+wget -c -O /var/lib/tftpboot/pxelinux.0 http://202.38.93.94/boot/tftp/pxelinux.0
+</code></pre><h3 id="配置启动菜单"><a href="#配置启动菜单" class="headerlink" title="配置启动菜单"></a>配置启动菜单</h3><pre><code>mkdir /var/lib/tftpboot/pxelinux.cfg
+cat &lt;&lt;EOF &gt;/var/lib/tftpboot/pxelinux.cfg/default
+default lpxe 
+prompt 0
+
+LABEL lpxe
+KERNEL menu.c32
+APPEND http://$SERVER_IP/boot/menu.cgi
+
+#APPEND http://202.38.93.94/boot/menu.cgi
+
+#LABEL lpxe
+#KERNEL pxechn.c32
+#APPEND lpxelinux.0 -c http://pxe.ustc.edu.cn/boot/menu.cgi -p http://pxe.ustc.edu.cn/boot/bin/
+EOF
+</code></pre><h3 id="安装-nginx"><a href="#安装-nginx" class="headerlink" title="安装 nginx"></a>安装 nginx</h3><pre><code>yum install -y epel-release
+yum install -y nginx
+</code></pre><h3 id="nginx开启列出目录"><a href="#nginx开启列出目录" class="headerlink" title="nginx开启列出目录"></a>nginx开启列出目录</h3><pre><code>sed -i &apos;44a\        autoindex on;&apos; /etc/nginx/nginx.conf
+sed -i &apos;45a\        autoindex_exact_size off;&apos; /etc/nginx/nginx.conf
+sed -i &apos;46a\        autoindex_localtime on;&apos; /etc/nginx/nginx.conf
+rm -rf /usr/share/nginx/html/*
+</code></pre><h3 id="启动服务添加到开机启动"><a href="#启动服务添加到开机启动" class="headerlink" title="启动服务添加到开机启动"></a>启动服务添加到开机启动</h3><pre><code>systemctl start nginx
+systemctl enable nginx
+</code></pre><h3 id="配置nginx启动菜单"><a href="#配置nginx启动菜单" class="headerlink" title="配置nginx启动菜单"></a>配置nginx启动菜单</h3><pre><code>mkdir /usr/share/nginx/html/boot
+cat &lt;&lt;EOF &gt;/usr/share/nginx/html/boot/menu.cgi
+default menu.c32
+
+MENU TITLE NETWORK SYSTEM Boot Service
+
+#MENU ROWS     15
+#MENU WIDTH     80
+#MENU HELPMSGROW 22
+#MENU TABMSGROW    23
+#MENU CMDLINEROW    23
+#MENU ALLOWOPTIONS 0
+#MENU VSHIFT    0
+#MENU HSHIFT    0
+
+MENU MARGIN 0
+MENU ROWS -9
+MENU TABMSG
+MENU TABMSGROW -3
+MENU CMDLINEROW -3
+MENU HELPMSGROW -4
+MENU HELPMSGENDROW -1
+
+MENU COLOR SCREEN 37;40
+MENU COLOR BORDER 34;40
+MENU COLOR TITLE 1;33;40
+MENU COLOR SCROLLBAR 34;46
+MENU COLOR SEL 30;47
+MENU COLOR UNSEL 36;40
+MENU COLOR CMDMARK 37;40
+MENU COLOR CMDLINE 37;40
+MENU COLOR TABMSG 37;40
+MENU COLOR DISABLED 37;40
+MENU COLOR HELP 32;40
+MENU COLOR HOTKEY 1;36;40
+
+# Windows PE
+MENU BEGIN ^Windows PE
+MENU LABEL ^Windows PE
+LABEL -
+  MENU LABEL ..
+  TEXT HELP
+  &lt;-- Back
+  ENDTEXT
+  MENU EXIT
+MENU SEPARATOR
+
+LABEL winpe31
+  MENU LABEL Windows PE 3.1 x64
+  TEXT HELP
+  Based on Windows 7 SP1
+  With GUI and base Windows components.
+  ENDTEXT
+  KERNEL http://$SERVER_IP/WinPE/pe31/memdisk iso raw
+  INITRD http://$SERVER_IP/WinPE/pe31/pe31.iso 
+
+LABEL winpe51
+  MENU LABEL Windows PE 5.1 x64
+  TEXT HELP
+  Based on Windows 8.1
+  No GUI. Almost nothing...
+  ENDTEXT
+  KERNEL /ipxe/ipxe.lkrn
+  INITRD /ipxe/pe51.ipxe
+
+LABEL winpe10
+  MENU LABEL Windows EasyU
+  TEXT HELP
+  Based on Windows 10
+  With GUI and base Windows components...
+  ENDTEXT
+  KERNEL http://$SERVER_IP/WinPE/pe31/memdisk iso raw
+  INITRD http://$SERVER_IP/WinPE/pe31/EasyU_v3.3.iso
+
+  MENU END
+  MENU END
+
+# Linux Install
+MENU BEGIN ^Linux Install
+MENU LABEL ^Linux Install
+LABEL -
+  MENU LABEL ..
+  TEXT HELP
+  &lt;-- Back
+  ENDTEXT
+  MENU EXIT
+MENU SEPARATOR
+
+# CentOS
+MENU BEGIN ^CentOS Installers
+MENU LABEL ^CentOS Installers
+  LABEL -
+  MENU LABEL ..
+  TEXT HELP
+  &lt;-- Back
+  ENDTEXT
+  MENU EXIT
+MENU SEPARATOR
+
+LABEL install-centos-7-x86_64-load
+  MENU LABEL Install CentOS 7 x86_64-load
+  TEXT HELP
+  No help for this item
+  ENDTEXT
+  KERNEL http://192.168.2.3:8000/centos/7/os/x86_64/images/pxeboot/vmlinuz net.ifnames=0 biosdevname=0
+  INITRD http://192.168.2.3:8000/centos/7/os/x86_64/images/pxeboot/initrd.img ks=http://$SERVER_IP/boot/default.cfg
+  APPEND method=http://192.168.2.3:8000/centos/7/os/x86_64
+
+LABEL install-centos-7-x86_64
+  MENU LABEL Install CentOS 7 x86_64
+  TEXT HELP
+  No help for this item
+  ENDTEXT
+  KERNEL http://mirrors.ustc.edu.cn/centos/7/os/x86_64/images/pxeboot/vmlinuz
+  INITRD http://mirrors.ustc.edu.cn/centos/7/os/x86_64/images/pxeboot/initrd.img
+  APPEND method=http://mirrors.ustc.edu.cn/centos/7/os/x86_64
+
+LABEL install-centos-6-x86_64
+  MENU LABEL Install CentOS 6 x86_64
+  TEXT HELP
+  No help for this item
+  ENDTEXT
+  KERNEL http://mirrors.ustc.edu.cn/centos/6/os/x86_64/images/pxeboot/vmlinuz
+  INITRD http://mirrors.ustc.edu.cn/centos/6/os/x86_64/images/pxeboot/initrd.img
+  APPEND method=http://mirrors.ustc.edu.cn/centos/6/os/x86_64
+
+  MENU END
+
+MENU BEGIN ^Fedora Installers
+MENU LABEL ^Fedora Installers
+LABEL -
+  MENU LABEL ..
+  TEXT HELP
+  &lt;-- Back
+  ENDTEXT
+  MENU EXIT
+MENU SEPARATOR
+
+LABEL install-fedora-28-x86_64
+  MENU LABEL Install Fedora 28 x86_64
+  TEXT HELP
+  No help for this item
+  ENDTEXT
+  KERNEL http://mirrors.ustc.edu.cn/fedora/releases/28/Everything/x86_64/os/images/pxeboot/vmlinuz
+  INITRD http://mirrors.ustc.edu.cn/fedora/releases/28/Everything/x86_64/os/images/pxeboot/initrd.img
+  APPEND method=http://mirrors.ustc.edu.cn/fedora/releases/28/Everything/x86_64/os/
+
+LABEL install-fedora-27-x86_64
+  MENU LABEL Install Fedora 27 x86_64
+  TEXT HELP
+  No help for this item
+  ENDTEXT
+  KERNEL http://mirrors.ustc.edu.cn/fedora/releases/27/Everything/x86_64/os/images/pxeboot/vmlinuz
+  INITRD http://mirrors.ustc.edu.cn/fedora/releases/27/Everything/x86_64/os/images/pxeboot/initrd.img
+  APPEND method=http://mirrors.ustc.edu.cn/fedora/releases/27/Everything/x86_64/os/
+
+LABEL install-fedora-26-x86_64
+  MENU LABEL Install Fedora 26 x86_64
+  TEXT HELP
+  No help for this item
+  ENDTEXT
+  KERNEL http://mirrors.ustc.edu.cn/fedora/releases/26/Everything/x86_64/os/images/pxeboot/vmlinuz
+  INITRD http://mirrors.ustc.edu.cn/fedora/releases/26/Everything/x86_64/os/images/pxeboot/initrd.img
+  APPEND method=http://mirrors.ustc.edu.cn/fedora/releases/26/Everything/x86_64/os/
+
+LABEL install-fedora-25-x86_64
+  MENU LABEL Install Fedora 25 x86_64
+  TEXT HELP
+  No help for this item
+  ENDTEXT
+  KERNEL http://mirrors.ustc.edu.cn/fedora/releases/25/Everything/x86_64/os/images/pxeboot/vmlinuz
+  INITRD http://mirrors.ustc.edu.cn/fedora/releases/25/Everything/x86_64/os/images/pxeboot/initrd.img
+  APPEND method=http://mirrors.ustc.edu.cn/fedora/releases/25/Everything/x86_64/os/
+
+  MENU END
+
+# Arch Linux
+MENU BEGIN ^Arch Linux Installers
+MENU LABEL ^Arch Linux Installers
+LABEL -
+  MENU LABEL ..
+  TEXT HELP
+  &lt;-- Back
+  ENDTEXT
+  MENU EXIT
+MENU SEPARATOR
+LABEL install-arch-i686
+  MENU LABEL Install Arch Linux i686
+  TEXT HELP
+  No help for this item
+  ENDTEXT
+  KERNEL http://mirrors.ustc.edu.cn/archlinux/iso/archboot/latest/boot/vmlinuz_i686
+  INITRD http://mirrors.ustc.edu.cn/archlinux/iso/archboot/latest/boot/initramfs_i686.img
+
+LABEL install-arch-x86_64
+  MENU LABEL Install Arch Linux x86_64
+  TEXT HELP
+  No help for this item
+  ENDTEXT
+  KERNEL http://mirrors.ustc.edu.cn/archlinux/iso/archboot/latest/boot/vmlinuz_x86_64
+  INITRD http://mirrors.ustc.edu.cn/archlinux/iso/archboot/latest/boot/initramfs_x86_64.img
+
+  MENU END
+  MENU END
+EOF
+</code></pre><h3 id="下载启动文件-1"><a href="#下载启动文件-1" class="headerlink" title="下载启动文件"></a>下载启动文件</h3><pre><code>wget -r -c -p -np -nd -k -P /var/lib/tftpboot/ipxe http://202.38.93.94/boot/tftp/ipxe/
+wget -r -c -p -np -nd -k -P /var/lib/tftpboot http://202.38.93.94/boot/tftp/bin/
+rm -rf /var/lib/tftpboot/ipxe/index.html*
+rm -rf /var/lib/tftpboot/index.html*
+</code></pre><h3 id="下载WinPE启动文件"><a href="#下载WinPE启动文件" class="headerlink" title="下载WinPE启动文件"></a>下载WinPE启动文件</h3><pre><code>mkdir -p /usr/share/nginx/html/WinPE/{pe31,pe51}
+cd /usr/share/nginx/html/WinPE/pe51
+wget -c http://202.38.93.94/boot/tftp/ipxe/wimboot
+wget -c http://202.38.93.94/boot/bin/live/Windows/pe51/BCD
+wget -c http://202.38.93.94/boot/bin/live/Windows/pe51/boot.sdi
+wget -c http://202.38.93.94/boot/bin/live/Windows/pe51/boot.wim 
+
+cd /usr/share/nginx/html/WinPE/pe31
+wget -c http://202.38.93.94/boot/bin/live/Windows/pe31.iso
+wget -c http://202.38.93.94/boot/tftp/bin/memdisk
+</code></pre><h3 id="配置WinPE镜像路径"><a href="#配置WinPE镜像路径" class="headerlink" title="配置WinPE镜像路径"></a>配置WinPE镜像路径</h3><pre><code>cat &lt;&lt;EOF &gt;/var/lib/tftpboot/ipxe/pe51.ipxe
+#!ipxe
+
+:retry
+ifconf -c dhcp || goto retry
+kernel http://$SERVER_IP/WinPE/pe51/wimboot
+initrd http://$SERVER_IP/WinPE/pe51/BCD        BCD
+initrd http://$SERVER_IP/WinPE/pe51/boot.sdi   boot.sdi
+initrd http://$SERVER_IP/WinPE/pe51/boot.wim   boot.wim
+boot
+EOF
+
+cat &lt;&lt;EOF &gt;/var/lib/tftpboot/ipxe/pe31.ipxe
+#!ipxe
+
+:retry
+ifconf -c dhcp || goto retry
+
+initrd http://$SERVER_IP/WinPE/pe31/pe31.iso
+kernel http://$SERVER_IP/WinPE/pe31/memdisk iso raw
+boot
+EOF
+</code></pre><h3 id="配置Centos自应答文件"><a href="#配置Centos自应答文件" class="headerlink" title="配置Centos自应答文件"></a>配置Centos自应答文件</h3><blockquote>
+<p>全自动默认分区</p>
+</blockquote>
+<pre><code>cat &lt;&lt;&apos;EOF&apos; &gt;/usr/share/nginx/html/boot/default.cfg
+#version=DEVEL
+# System authorization information
+auth --enableshadow --passalgo=sha512
+# Use network installation
+#url --url=&quot;http://192.168.2.3:8000/centos/7/os/x86_64&quot;
+# Use graphical install
+graphical
+# Run the Setup Agent on first boot
+firstboot --enable
+ignoredisk --only-use=sda
+# Keyboard layouts
+keyboard --vckeymap=cn --xlayouts=&apos;cn&apos;
+# System language
+lang zh_CN.UTF-8
+#lang en_US.UTF-8
+# firewalld
+firewall --disabled
+# selinux
+selinux --disabled
+
+# Network information
+network  --bootproto=static --device=enp3s0 --gateway=192.168.2.254 --ip=192.168.2.18 --nameserver=202.103.24.68,192.168.0.9 --netmask=255.255.0.0 --ipv6=auto --activate
+network  --hostname=localhost.localdomain
+
+# Root password
+rootpw --iscrypted $6$NQNbZ6I7HZgr4Kk9$IWQb3QN355rDVnL1emQhgxRlF9DSnvjlU5ezbEhzehfwRjAOvmbWxKDtkum6tbUZr5tWvz61ZR8U7lirUapwK/
+# System services
+services --enabled=&quot;chronyd&quot;
+# System timezone
+timezone Asia/Shanghai --isUtc
+# reboot
+reboot
+
+bootloader --append=&quot; crashkernel=auto&quot; --location=mbr --boot-drive=sda --append=&quot;net.ifnames=0 biosdevname=0&quot;
+autopart --type=lvm
+
+clearpart --all --initlabel --drives=sda
+
+
+##########################################################################
+# System bootloader configuration
+#bootloader --append=&quot; crashkernel=auto&quot; --location=mbr --boot-drive=sda
+
+#clearpart --all --initlabel --drives=sda
+
+#part pv.1888 --fstype=&quot;lvmpv&quot; --ondisk=sda --size=304220
+#part /boot --fstype=&quot;xfs&quot; --ondisk=sda --size=1024
+#volgroup centos --pesize=4096 pv.1888
+#logvol /  --fstype=&quot;xfs&quot; --size=296024 --name=root --vgname=centos
+#logvol swap  --fstype=&quot;swap&quot; --size=8192 --name=swap --vgname=centos
+############################################################################
+%packages
+@^minimal
+@core
+chrony
+kexec-tools
+
+%end
+
+%post
+
+# init
+#curl http://192.168.2.3:8000/init.sh | sh
+#curl http://192.168.2.3:8000/eth.sh | sh
+
+%end
+
+%addon com_redhat_kdump --enable --reserve-mb=&apos;auto&apos;
+
+%end
+
+%anaconda
+pwpolicy root --minlen=6 --minquality=1 --notstrict --nochanges --notempty
+pwpolicy user --minlen=6 --minquality=1 --notstrict --nochanges --emptyok
+pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
+%end
+EOF
+</code></pre><blockquote>
+<p>指定分区大小</p>
+</blockquote>
+<pre><code>cat &lt;&lt;&apos;EOF&apos; &gt;/usr/share/nginx/html/boot/ks.cfg
+#version=DEVEL
+# System authorization information
+auth --enableshadow --passalgo=sha512
+# Use network installation
+#url --url=&quot;http://192.168.2.3:8000/centos/7/os/x86_64&quot;
+# Use graphical install
+graphical
+# Run the Setup Agent on first boot
+firstboot --enable
+ignoredisk --only-use=sda
+# Keyboard layouts
+keyboard --vckeymap=cn --xlayouts=&apos;cn&apos;
+# System language
+lang zh_CN.UTF-8
+#lang en_US.UTF-8
+# firewalld
+firewall --disabled
+# selinux
+selinux --disabled
+
+# Network information
+network  --bootproto=static --device=enp3s0 --gateway=192.168.2.254 --ip=192.168.2.18 --nameserver=202.103.24.68,192.168.0.9 --netmask=255.255.0.0 --ipv6=auto --activate
+network  --hostname=localhost.localdomain
+
+# Root password
+rootpw --iscrypted $6$NQNbZ6I7HZgr4Kk9$IWQb3QN355rDVnL1emQhgxRlF9DSnvjlU5ezbEhzehfwRjAOvmbWxKDtkum6tbUZr5tWvz61ZR8U7lirUapwK/
+# System services
+services --enabled=&quot;chronyd&quot;
+# System timezone
+timezone Asia/Shanghai --isUtc
+# reboot
+reboot
+
+#bootloader --append=&quot; crashkernel=auto&quot; --location=mbr --boot-drive=sda
+#autopart --type=lvm
+
+#clearpart --all --initlabel --drives=sda
+
+##########################################################################
+# System bootloader configuration
+bootloader --append=&quot; crashkernel=auto&quot; --location=mbr --boot-drive=sda
+
+clearpart --all --initlabel --drives=sda
+
+part pv.1888 --fstype=&quot;lvmpv&quot; --ondisk=sda --size=304220
+part /boot --fstype=&quot;xfs&quot; --ondisk=sda --size=1024
+volgroup centos --pesize=4096 pv.1888
+logvol /  --fstype=&quot;xfs&quot; --size=296024 --name=root --vgname=centos
+logvol swap  --fstype=&quot;swap&quot; --size=8192 --name=swap --vgname=centos
+############################################################################
+%packages
+@^minimal
+@core
+chrony
+kexec-tools
+
+%end
+
+%post
+
+# init
+#curl http://192.168.2.3:8000/init.sh | sh
+#curl http://192.168.2.3:8000/eth.sh | sh
+
+%end
+
+%addon com_redhat_kdump --enable --reserve-mb=&apos;auto&apos;
+
+%end
+
+%anaconda
+pwpolicy root --minlen=6 --minquality=1 --notstrict --nochanges --notempty
+pwpolicy user --minlen=6 --minquality=1 --notstrict --nochanges --emptyok
+pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
+%end
+EOF
+</code></pre><h3 id="重启服务-添加到开机启动"><a href="#重启服务-添加到开机启动" class="headerlink" title="重启服务,添加到开机启动"></a>重启服务,添加到开机启动</h3><pre><code>systemctl restart {dhcpd,tftp,xinetd,nginx}
+systemctl enable {dhcpd,tftp,xinetd,nginx}
+</code></pre><hr>
+<h3 id="从网络启动LiveCD"><a href="#从网络启动LiveCD" class="headerlink" title="从网络启动LiveCD"></a>从网络启动LiveCD</h3><blockquote>
+<p>配置NFS环境系统启动时自动加载NFS存储中的文件来初始化系统 NFS Server IP: 192.168.2.18</p>
+</blockquote>
+<h4 id="下载启动文件-2"><a href="#下载启动文件-2" class="headerlink" title="下载启动文件"></a>下载启动文件</h4><blockquote>
+<p>此操作在 192.168.2.44 服务器执行</p>
+</blockquote>
+<pre><code># Ubuntu64
+mkdir /usr/share/nginx/html/ubuntu64
+cd /usr/share/nginx/html/ubuntu64
+wget -c http://pxe.ustc.edu.cn/boot/bin/live/ubuntu64/casper/initrd.lz
+wget -c http://pxe.ustc.edu.cn/boot/bin/live/ubuntu64/casper/vmlinuz.efi
+wget -c http://pxe.ustc.edu.cn/boot/conf/preseed.ubuntu.ustc.cfg
+
+# Ubuntu32
+mkdir /usr/share/nginx/html/ubuntu32
+cd /usr/share/nginx/html/ubuntu32
+wget -c http://pxe.ustc.edu.cn/boot/bin/live/ubuntu32/casper/vmlinuz
+wget -c http://pxe.ustc.edu.cn/boot/bin/live/ubuntu32/casper/initrd.lz
+wget -c http://pxe.ustc.edu.cn/boot/conf/preseed.ubuntu.ustc.cfg
+</code></pre><h4 id="安装配置NFS"><a href="#安装配置NFS" class="headerlink" title="安装配置NFS"></a>安装配置NFS</h4><pre><code># 配置变量
+NFS_SERVER=192.168.2.18
+INIT_BOOT=192.168.2.44
+
+# 安装
+yum -y install nfs-utils
+
+# 创建数据目录,设置权限
+mkdir /SSD
+chmod -Rf 777 /SSD
+
+# 配置NFS 权限
+echo &apos;/SSD 192.168.2.*(rw,sync,root_squash)&apos; &gt;/etc/exports
+
+# 启用服务,开机自启动
+systemctl restart rpcbind
+systemctl enable rpcbind
+systemctl start nfs-server
+systemctl enable nfs-server
+</code></pre><h4 id="IPXE启动菜单添加条目"><a href="#IPXE启动菜单添加条目" class="headerlink" title="IPXE启动菜单添加条目"></a>IPXE启动菜单添加条目</h4><blockquote>
+<p>此操作在 192.168.2.44 服务器执行</p>
+</blockquote>
+<pre><code>cat &lt;&lt;EOF &gt;&gt;/usr/share/nginx/html/boot/menu.cgi
+MENU BEGIN ^Live Systems
+MENU LABEL ^Live Systems
+LABEL -
+  MENU LABEL ..
+  TEXT HELP
+  &lt;-- Back
+  ENDTEXT
+  MENU EXIT
+MENU SEPARATOR
+
+LABEL -
+  MENU LABEL Ubuntu 16.04 amd64
+  TEXT HELP
+  NFS Server Ubuntu 16.04 amd64
+  ENDTEXT
+  KERNEL http://$INIT_BOOT/ubuntu64/vmlinuz.efi
+  INITRD http://$INIT_BOOT/ubuntu64/initrd.lz
+  APPEND boot=casper netboot=nfs nfsroot=$NFS_SERVER:/SSD/ubuntu64/ url=http://$INIT_BOOT/ubuntu64/preseed.ubuntu.ustc.cfg quiet splash locale=zh_CN
+
+LABEL -
+  MENU LABEL Ubuntu 16.04 i386
+  TEXT HELP
+  NFS Server Ubuntu 16.04 i386
+  ENDTEXT
+  KERNEL http://$INIT_BOOT/ubuntu32/vmlinuz
+  INITRD http://$INIT_BOOT/ubuntu32/initrd.lz
+  APPEND boot=casper netboot=nfs nfsroot=$NFS_SERVER:/SSD/ubuntu32/ url=http://$INIT_BOOT/ubuntu32/preseed.ubuntu.ustc.cfg quiet splash locale=zh_CN
+
+  MENU END
+  MENU END
+EOF
+</code></pre><h3 id="下载NFS启动数据"><a href="#下载NFS启动数据" class="headerlink" title="下载NFS启动数据"></a>下载NFS启动数据</h3><blockquote>
+<p>NFS Server 操作</p>
+</blockquote>
+<pre><code>mount 202.38.93.94:/nfsroot /mnt/
+cp -a /mnt/ubuntu64/ /SSD/ubuntu64/
+cp -a /mnt/ubuntu32/ /SSD/ubuntu32/
+</code></pre>
+      
+    </div>
+    
+    
+    
+    <div>
+      
+        
+
+      
+    </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag "><i class="fa fa-tag"></i> linux</a>
+          
+            <a href="/tags/ipxe/" rel="tag "><i class="fa fa-tag"></i> ipxe</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div id="needsharebutton-postbottom">
+            <span class="btn">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </span>
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/2eed.html" rel="next" title="Vsftpd 安装配置">
+                <i class="fa fa-chevron-left"></i> Vsftpd 安装配置
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/8d77.html" rel="prev" title="apache 日志分析">
+                apache 日志分析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="亦 漩" />
+            
+              <p class="site-author-name" itemprop="name">亦 漩</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">110</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/bookgh" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://coding.net/u/yx571304" target="_blank" title="Coding">
+                      
+                        <i class="fa fa-fw fa-git"></i>Coding</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://skyisfuck.github.io" title="Peng" target="_blank">Peng</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置环境变量"><span class="nav-number">1.</span> <span class="nav-text">配置环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装配置DHCP"><span class="nav-number">2.</span> <span class="nav-text">安装配置DHCP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置DHCP参数"><span class="nav-number">3.</span> <span class="nav-text">配置DHCP参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动服务-添加到开机启"><span class="nav-number">4.</span> <span class="nav-text">启动服务,添加到开机启</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TFTP安装"><span class="nav-number">5.</span> <span class="nav-text">TFTP安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动服务-添加到开机启-1"><span class="nav-number">6.</span> <span class="nav-text">启动服务,添加到开机启</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下载启动文件"><span class="nav-number">7.</span> <span class="nav-text">下载启动文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置启动菜单"><span class="nav-number">8.</span> <span class="nav-text">配置启动菜单</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-nginx"><span class="nav-number">9.</span> <span class="nav-text">安装 nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nginx开启列出目录"><span class="nav-number">10.</span> <span class="nav-text">nginx开启列出目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动服务添加到开机启动"><span class="nav-number">11.</span> <span class="nav-text">启动服务添加到开机启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置nginx启动菜单"><span class="nav-number">12.</span> <span class="nav-text">配置nginx启动菜单</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下载启动文件-1"><span class="nav-number">13.</span> <span class="nav-text">下载启动文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下载WinPE启动文件"><span class="nav-number">14.</span> <span class="nav-text">下载WinPE启动文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置WinPE镜像路径"><span class="nav-number">15.</span> <span class="nav-text">配置WinPE镜像路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置Centos自应答文件"><span class="nav-number">16.</span> <span class="nav-text">配置Centos自应答文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重启服务-添加到开机启动"><span class="nav-number">17.</span> <span class="nav-text">重启服务,添加到开机启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#从网络启动LiveCD"><span class="nav-number">18.</span> <span class="nav-text">从网络启动LiveCD</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#下载启动文件-2"><span class="nav-number">18.1.</span> <span class="nav-text">下载启动文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装配置NFS"><span class="nav-number">18.2.</span> <span class="nav-text">安装配置NFS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IPXE启动菜单添加条目"><span class="nav-number">18.3.</span> <span class="nav-text">IPXE启动菜单添加条目</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下载NFS启动数据"><span class="nav-number">19.</span> <span class="nav-text">下载NFS启动数据</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">亦 漩</span>
+
+  
+  <br/><span><i class="fa fa-bomb"></i></span><span id="showDays"></span>
+</div>
+
+
+
+
+
+
+
+
+
+<script>
+  var seconds = 1000;
+  var minutes = seconds * 60;
+  var hours = minutes * 60;
+  var days = hours * 24;
+  var years = days * 365;
+  var birthDay = Date.UTC(2017,12,07,10,00,00); // 这里设置建站时间
+  setInterval(function() {
+    var today = new Date();
+    var todayYear = today.getFullYear();
+    var todayMonth = today.getMonth()+1;
+    var todayDate = today.getDate();
+    var todayHour = today.getHours();
+    var todayMinute = today.getMinutes();
+    var todaySecond = today.getSeconds();
+    var now = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+    var diff = now - birthDay;
+    var diffYears = Math.floor(diff/years);
+    var diffDays = Math.floor((diff/days)-diffYears*365);
+    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById('showDays').innerHTML="本站已运行 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+  }, 1000);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+      <div id="needsharebutton-float">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'DWwnpdDBrLDMI8CKf8OXopJu-gzGzoHsz',
+        appKey: '7sfOhetJ1Wftp4W7MF0xdPOw',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "default";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+      flOptions = {};
+      
+          flOptions.iconStyle = "default";
+      
+          flOptions.boxForm = "horizontal";
+      
+          flOptions.position = "middleRight";
+      
+          flOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-float', flOptions);
+    
+  </script>
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+
+</body>
+</html>

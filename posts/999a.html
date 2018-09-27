@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="mysql-master-master,mysql," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="[TOC] 环境准备系统：centos7 软件版本：mysql-5.7.23-linux-glibc2.12-x86_64 安装目录：/usr/local/mysql 数据库目录：/data/mysql 数据库root密码: hc123456 A数据库：10.0.0.11 B数据库：10.0.0.12 VIP：10.0.0.100   1.两个数据库版本最好一致 2.两个数据库内数据保持一致，若不">
+<meta name="keywords" content="mysql-master-master,mysql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql双主配置">
+<meta property="og:url" content="https://home.onlycloud.xin/posts/999a.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="[TOC] 环境准备系统：centos7 软件版本：mysql-5.7.23-linux-glibc2.12-x86_64 安装目录：/usr/local/mysql 数据库目录：/data/mysql 数据库root密码: hc123456 A数据库：10.0.0.11 B数据库：10.0.0.12 VIP：10.0.0.100   1.两个数据库版本最好一致 2.两个数据库内数据保持一致，若不">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-27T12:11:47.726Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mysql双主配置">
+<meta name="twitter:description" content="[TOC] 环境准备系统：centos7 软件版本：mysql-5.7.23-linux-glibc2.12-x86_64 安装目录：/usr/local/mysql 数据库目录：/data/mysql 数据库root密码: hc123456 A数据库：10.0.0.11 B数据库：10.0.0.12 VIP：10.0.0.100   1.两个数据库版本最好一致 2.两个数据库内数据保持一致，若不">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://home.onlycloud.xin/posts/999a.html"/>
+
+
+
+
+
+  <title>mysql双主配置 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-python">
+          <a href="/python/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            python
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-logs">
+          <a href="/posts/log.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Logs
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://home.onlycloud.xin/posts/999a.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="亦 漩">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">mysql双主配置</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-14T19:39:27+08:00">
+                2018-09-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/mysql/" itemprop="url" rel="index">
+                    <span itemprop="name">mysql</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/999a.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/posts/999a.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3,446
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  17
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>[TOC]</p>
+<h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><pre><code>系统：centos7
+软件版本：mysql-5.7.23-linux-glibc2.12-x86_64
+安装目录：/usr/local/mysql
+数据库目录：/data/mysql
+数据库root密码: hc123456
+A数据库：10.0.0.11
+B数据库：10.0.0.12
+VIP：10.0.0.100 
+
+1.两个数据库版本最好一致
+2.两个数据库内数据保持一致，若不一致，可手动调整，比如A比B多一个库，那将这个库导入到B库，达到一致。
+
+数据库同步账号: sync
+数据库sync密码: pcpaeyphmp
+
+说明：数据库通过配置相互做对端的slave实现双主,使用heartbeat提供VIP,haproxy(负载均衡)将两台主机的端口转发给VIP
+如VIP所在主机故障,VIP漂移到另一台主机继续提供服务
+</code></pre><h3 id="数据库安装"><a href="#数据库安装" class="headerlink" title="数据库安装"></a>数据库安装</h3><blockquote>
+<p>两端都执行<a href="http://192.168.2.8/docs/sql/sql-1aksisn4dlmdf" target="_blank" rel="noopener">查看安装文档</a></p>
+</blockquote>
+<pre><code>curl http://home.onlycloud.xin/code/mysql-bin-install.sh -o mysql-install.sh
+sh mysql-install.sh
+source /etc/profile
+</code></pre><h3 id="hosts解析"><a href="#hosts解析" class="headerlink" title="hosts解析"></a>hosts解析</h3><pre><code>cat &lt;&lt;EOF  &gt;&gt;/etc/hosts
+10.0.0.11   nfs-01
+10.0.0.12   nfs-02
+EOF
+</code></pre><h3 id="修改主机名"><a href="#修改主机名" class="headerlink" title="修改主机名"></a>修改主机名</h3><blockquote>
+<p>A数据库</p>
+</blockquote>
+<pre><code>hostnamectl set-hostname nfs-01
+</code></pre><hr>
+<blockquote>
+<p>B数据库</p>
+</blockquote>
+<pre><code>hostnamectl set-hostname nfs-02
+</code></pre><hr>
+<h3 id="A数据库操作"><a href="#A数据库操作" class="headerlink" title="A数据库操作"></a>A数据库操作</h3><blockquote>
+<p>1.开启binlog(数据库二进制日志),设置server-id,重启mysql服务</p>
+</blockquote>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cp</span> /etc/my.<span class="keyword">cnf</span>&#123;,.`date +%F`&#125;</span><br><span class="line">systemctl <span class="keyword">stop</span> mysqld</span><br><span class="line">sed -i <span class="string">'s/server-id.*/server-id = 1/g'</span> /etc/my.<span class="keyword">cnf</span></span><br><span class="line">sed -i <span class="string">'24a log-bin = mysql-bin'</span> /etc/my.<span class="keyword">cnf</span></span><br><span class="line">sed -i <span class="string">'25a binlog_format = mixed'</span> /etc/my.<span class="keyword">cnf</span></span><br><span class="line">sed -i <span class="string">'26a log-bin-index = master-bin.index'</span> /etc/my.<span class="keyword">cnf</span></span><br><span class="line">sed -i <span class="string">'27a relay-log = relay-bin'</span> /etc/my.<span class="keyword">cnf</span></span><br><span class="line">sed -i <span class="string">'28a relay-log-index = slave-relay-bin.index'</span> /etc/my.<span class="keyword">cnf</span></span><br><span class="line">sed -i <span class="string">'29a auto-increment-offset = 1'</span> /etc/my.<span class="keyword">cnf</span></span><br><span class="line">sed -i <span class="string">"30a auto-increment-increment = 2\n"</span> /etc/my.<span class="keyword">cnf</span></span><br><span class="line">systemctl start mysqld</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>2.创建同步数据的用户,授权允许10.0.0.0/24网络使用sync用户登录</p>
+</blockquote>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">source /etc/profile</span><br><span class="line">mysql -uroot -phc123456 </span><br><span class="line">create user sync;</span><br><span class="line">grant replication slave on <span class="strong">*.*</span> to <span class="emphasis">'sync'</span>@<span class="emphasis">'10.0.0.%'</span> identified by <span class="emphasis">'pcpaeyphmp'</span>;</span><br><span class="line">flush privileges;</span><br><span class="line">show master status;</span><br><span class="line">exit</span><br><span class="line"></span><br><span class="line"># MySQL [(none)]&gt; show master status;</span><br><span class="line"># 记下 binlog文件的position（偏移）和File（日志文件）的值)</span><br><span class="line"><span class="code">+------------------+</span>----------<span class="code">+--------------+</span>------------------<span class="code">+-------------------+</span></span><br><span class="line">| File             | Position | Binlog<span class="emphasis">_Do_</span>DB | Binlog<span class="emphasis">_Ignore_</span>DB | Executed<span class="emphasis">_Gtid_</span>Set |</span><br><span class="line"><span class="code">+------------------+</span>----------<span class="code">+--------------+</span>------------------<span class="code">+-------------------+</span></span><br><span class="line">| mysql-bin.000003 |      794 |              |                  |                   |</span><br><span class="line"><span class="code">+------------------+</span>----------<span class="code">+--------------+</span>------------------<span class="code">+-------------------+</span></span><br></pre></td></tr></table></figure>
+<h3 id="B数据库操作"><a href="#B数据库操作" class="headerlink" title="B数据库操作"></a>B数据库操作</h3><blockquote>
+<p>1.配置从库只允许来自服务器线程或具有SUPER权限的数据库用户进行更新(root,sync),开启binlog(数据库二进制日志),设置server-id,重启mysql服务</p>
+</blockquote>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cp</span> /etc/my.<span class="keyword">cnf</span>&#123;,.`date +%F`&#125;</span><br><span class="line">systemctl <span class="keyword">stop</span> mysqld</span><br><span class="line">sed -i <span class="string">'s/server-id.*/server-id = 2/g'</span> /etc/my.<span class="keyword">cnf</span></span><br><span class="line">sed -i <span class="string">'24a log-bin = mysql-bin'</span> /etc/my.<span class="keyword">cnf</span></span><br><span class="line">sed -i <span class="string">'25a binlog_format = mixed'</span> /etc/my.<span class="keyword">cnf</span></span><br><span class="line">sed -i <span class="string">'26a log-bin-index = master-bin.index'</span> /etc/my.<span class="keyword">cnf</span></span><br><span class="line">sed -i <span class="string">'27a relay-log = relay-bin'</span> /etc/my.<span class="keyword">cnf</span></span><br><span class="line">sed -i <span class="string">'28a relay-log-index = slave-relay-bin.index'</span> /etc/my.<span class="keyword">cnf</span></span><br><span class="line">sed -i <span class="string">'29a auto-increment-offset = 2'</span> /etc/my.<span class="keyword">cnf</span></span><br><span class="line">sed -i <span class="string">"30a auto-increment-increment = 2\n"</span> /etc/my.<span class="keyword">cnf</span></span><br><span class="line">systemctl start mysqld</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>2.连接数据库A,需要A数据库主机名，登陆凭据，二进制文件的名称和位置</p>
+</blockquote>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">source /etc/profile</span><br><span class="line">mysql -uroot -phc123456</span><br><span class="line">change master <span class="keyword">to</span> <span class="attribute">master_host</span>=<span class="string">'10.0.0.11'</span>,  # A数据库 IP或主机名(需解析通)</span><br><span class="line"><span class="attribute">master_port</span>=3306,                          # A数据库 端口号</span><br><span class="line"><span class="attribute">master_user</span>=<span class="string">'sync'</span>,                        # 同步账号</span><br><span class="line"><span class="attribute">master_password</span>=<span class="string">'pcpaeyphmp'</span>,              # 同步账号的密码</span><br><span class="line"><span class="attribute">master_log_file</span>=<span class="string">'mysql-bin.000003'</span>,        # A数据库执行 show master status; 获取的 File 值</span><br><span class="line"><span class="attribute">master_log_pos</span>=794;                        # A数据库执行 show master status; 获取的 Position 值</span><br><span class="line">start slave;                               # 启动slave</span><br><span class="line">show slave status\G;                       # 查看同步状态</span><br><span class="line">exit</span><br><span class="line"></span><br><span class="line"><span class="comment"># MySQL [(none)]&gt; show slave status\G;</span></span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">               Slave_IO_State: Waiting <span class="keyword">for</span> master <span class="keyword">to</span> send event</span><br><span class="line">                  Master_Host: 10.0.0.11</span><br><span class="line">                  Master_User: sync</span><br><span class="line">                  Master_Port: 3306</span><br><span class="line">                Connect_Retry: 60</span><br><span class="line">              Master_Log_File: mysql-bin.000003</span><br><span class="line">          Read_Master_Log_Pos: 794</span><br><span class="line">               Relay_Log_File: nfs-02-relay-bin.000002</span><br><span class="line">                Relay_Log_Pos: 320</span><br><span class="line">        Relay_Master_Log_File: mysql-bin.000003</span><br><span class="line">             Slave_IO_Running: <span class="literal">Yes</span></span><br><span class="line">            Slave_SQL_Running: <span class="literal">Yes</span></span><br><span class="line">           <span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 保证以下两项状态为 Yes 则同步成功</span></span><br><span class="line">Slave_IO_Running: <span class="literal">Yes</span></span><br><span class="line">Slave_SQL_Running: <span class="literal">Yes</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>3.创建同步数据的用户,授权允许10.0.0.0/24网络使用sync用户登录</p>
+</blockquote>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -phc123456</span><br><span class="line">create user sync;</span><br><span class="line">grant replication slave on <span class="strong">*.*</span> to <span class="emphasis">'sync'</span>@<span class="emphasis">'10.0.0.%'</span> identified by <span class="emphasis">'pcpaeyphmp'</span>;</span><br><span class="line">flush privileges;</span><br><span class="line">show master status;</span><br><span class="line">exit</span><br><span class="line"></span><br><span class="line"># MySQL [(none)]&gt; show master status;</span><br><span class="line"># 记下 binlog文件的position（偏移）和File（日志文件）的值)</span><br><span class="line"><span class="code">+------------------+</span>----------<span class="code">+--------------+</span>------------------<span class="code">+-------------------+</span></span><br><span class="line">| File             | Position | Binlog<span class="emphasis">_Do_</span>DB | Binlog<span class="emphasis">_Ignore_</span>DB | Executed<span class="emphasis">_Gtid_</span>Set |</span><br><span class="line"><span class="code">+------------------+</span>----------<span class="code">+--------------+</span>------------------<span class="code">+-------------------+</span></span><br><span class="line">| mysql-bin.000003 |      794 |              |                  |                   |</span><br><span class="line"><span class="code">+------------------+</span>----------<span class="code">+--------------+</span>------------------<span class="code">+-------------------+</span></span><br></pre></td></tr></table></figure>
+<h3 id="A数据库操作-1"><a href="#A数据库操作-1" class="headerlink" title="A数据库操作"></a>A数据库操作</h3><blockquote>
+<p>连接数据库B,需要B服务器主机名，登陆凭据，二进制文件的名称和位置</p>
+</blockquote>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">source /etc/profile</span><br><span class="line">mysql -uroot -phc123456</span><br><span class="line">change master <span class="keyword">to</span> <span class="attribute">master_host</span>=<span class="string">'10.0.0.12'</span>,  # B数据库 IP或主机名(需解析通)</span><br><span class="line"><span class="attribute">master_port</span>=3306,                          # B数据库 端口号</span><br><span class="line"><span class="attribute">master_user</span>=<span class="string">'sync'</span>,                        # B同步账号</span><br><span class="line"><span class="attribute">master_password</span>=<span class="string">'pcpaeyphmp'</span>,              # 同步账号的密码</span><br><span class="line"><span class="attribute">master_log_file</span>=<span class="string">'mysql-bin.000003'</span>,        # B数据库执行 show master status; 获取的 File 值</span><br><span class="line"><span class="attribute">master_log_pos</span>=794;                        # B数据库执行 show master status; 获取的 Position 值</span><br><span class="line">start slave;                               # 启动slave</span><br><span class="line">show slave status\G;                       # 查看同步状态</span><br><span class="line">exit</span><br><span class="line"></span><br><span class="line"><span class="comment"># MySQL [(none)]&gt; show slave status\G;</span></span><br><span class="line">************************** 1. row ***************************</span><br><span class="line">               Slave_IO_State: Waiting <span class="keyword">for</span> master <span class="keyword">to</span> send event</span><br><span class="line">                  Master_Host: 10.0.0.12</span><br><span class="line">                  Master_User: sync</span><br><span class="line">                  Master_Port: 3306</span><br><span class="line">                Connect_Retry: 60</span><br><span class="line">              Master_Log_File: mysql-bin.000003</span><br><span class="line">          Read_Master_Log_Pos: 794</span><br><span class="line">               Relay_Log_File: localhost-relay-bin.000002</span><br><span class="line">                Relay_Log_Pos: 320</span><br><span class="line">        Relay_Master_Log_File: mysql-bin.000003</span><br><span class="line">             Slave_IO_Running: <span class="literal">Yes</span></span><br><span class="line">            Slave_SQL_Running: <span class="literal">Yes</span></span><br><span class="line">           <span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 保证以下两项状态为 Yes 则同步成功</span></span><br><span class="line">Slave_IO_Running: <span class="literal">Yes</span></span><br><span class="line">Slave_SQL_Running: <span class="literal">Yes</span></span><br></pre></td></tr></table></figure>
+<h3 id="验证mysql"><a href="#验证mysql" class="headerlink" title="验证mysql"></a>验证mysql</h3><blockquote>
+<p>A创建数据库</p>
+</blockquote>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">create database test<span class="emphasis">_01;</span></span><br><span class="line"><span class="emphasis">show databases;</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis"># MySQL [(none)]&gt; show databases;</span></span><br><span class="line"><span class="emphasis">+--------------------+</span></span><br><span class="line"><span class="emphasis">| Database           |</span></span><br><span class="line"><span class="emphasis">+--------------------+</span></span><br><span class="line"><span class="emphasis">| information_</span>schema |</span><br><span class="line">| mysql              |</span><br><span class="line">| performance<span class="emphasis">_schema |</span></span><br><span class="line"><span class="emphasis">| sys                |</span></span><br><span class="line"><span class="emphasis">| test_</span>01            |</span><br><span class="line"><span class="code">+--------------------+</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>B查看数据库</p>
+</blockquote>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">show databases;</span><br><span class="line"></span><br><span class="line"># MySQL [(none)]&gt; show databases;</span><br><span class="line"><span class="code">+--------------------+</span></span><br><span class="line">| Database           |</span><br><span class="line"><span class="code">+--------------------+</span></span><br><span class="line">| information<span class="emphasis">_schema |</span></span><br><span class="line"><span class="emphasis">| mysql              |</span></span><br><span class="line"><span class="emphasis">| performance_</span>schema |</span><br><span class="line">| sys                |</span><br><span class="line">| test<span class="emphasis">_01            |</span></span><br><span class="line"><span class="emphasis">+--------------------+</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>B创建数据库</p>
+</blockquote>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">create database test_02;</span><br><span class="line">show databases;</span><br><span class="line"></span><br><span class="line"><span class="comment"># MySQL [(none)]&gt; show databases;</span></span><br><span class="line">+--------------------+</span><br><span class="line">|<span class="string"> Database           </span>|</span><br><span class="line">+--------------------+</span><br><span class="line">|<span class="string"> information_schema </span>|</span><br><span class="line">|<span class="string"> mysql              </span>|</span><br><span class="line">|<span class="string"> performance_schema </span>|</span><br><span class="line">|<span class="string"> sys                </span>|</span><br><span class="line">|<span class="string"> test_01            </span>|</span><br><span class="line">|<span class="string"> test_02            </span>|</span><br><span class="line">+--------------------+</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>A查看数据库</p>
+</blockquote>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">show databases;</span><br><span class="line"></span><br><span class="line"><span class="comment"># MySQL [(none)]&gt; show databases;</span></span><br><span class="line">+--------------------+</span><br><span class="line">|<span class="string"> Database           </span>|</span><br><span class="line">+--------------------+</span><br><span class="line">|<span class="string"> information_schema </span>|</span><br><span class="line">|<span class="string"> mysql              </span>|</span><br><span class="line">|<span class="string"> performance_schema </span>|</span><br><span class="line">|<span class="string"> sys                </span>|</span><br><span class="line">|<span class="string"> test_01            </span>|</span><br><span class="line">|<span class="string"> test_02            </span>|</span><br><span class="line">+--------------------+</span><br></pre></td></tr></table></figure>
+<h3 id="mysql排错"><a href="#mysql排错" class="headerlink" title="mysql排错"></a>mysql排错</h3><pre><code>Slave_IO_Running:     # 状态不为Yes
+
+1.数据库A与数据库B之间网络是否通畅
+2.同步账号的用户权限,及是否允许数据库B登录
+3.查看两端server-id(不能相同) 使用mysql命令查看 show variables like &apos;server_id&apos;; 此配置项在my.cnf
+</code></pre><h3 id="安装haproxy"><a href="#安装haproxy" class="headerlink" title="安装haproxy"></a>安装haproxy</h3><blockquote>
+<p>两端都安装配置相同</p>
+</blockquote>
+<pre><code>yum -y install haproxy
+</code></pre><h3 id="配置haproxy"><a href="#配置haproxy" class="headerlink" title="配置haproxy"></a>配置haproxy</h3><figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">cp /etc/haproxy/haproxy.cfg&#123;,.bak&#125;</span><br><span class="line">cat &lt;&lt;! &gt;/etc/haproxy/haproxy.cfg</span><br><span class="line">############ 全局配置 ############</span><br><span class="line">global</span><br><span class="line">log <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span> local0</span><br><span class="line">log <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span> local1 notice</span><br><span class="line">daemon</span><br><span class="line">nbproc <span class="number">1</span>       # 进程数量</span><br><span class="line">maxconn <span class="number">4096</span>   # 最大连接数</span><br><span class="line">user haproxy   # 运行用户</span><br><span class="line">group haproxy  # 运行组</span><br><span class="line">chroot /var/lib/haproxy</span><br><span class="line">pidfile /var/run/haproxy.pid</span><br><span class="line"></span><br><span class="line">############ 默认配置 ############</span><br><span class="line">defaults</span><br><span class="line">log global</span><br><span class="line">mode http            # 默认模式&#123; tcp|http|health &#125;</span><br><span class="line">option httplog       # 日志类别,采用httplog</span><br><span class="line">option dontlognull   # 不记录健康检查日志信息</span><br><span class="line">retries <span class="number">2</span>            # <span class="number">2</span>次连接失败不可用</span><br><span class="line">option forwardfor    # 后端服务获得真实ip</span><br><span class="line">option httpclose     # 请求完毕后主动关闭http通道</span><br><span class="line">option abortonclose  # 服务器负载很高，自动结束比较久的链接</span><br><span class="line">maxconn <span class="number">4096</span>         # 最大连接数</span><br><span class="line">timeout connect <span class="number">5</span>m   # 连接超时</span><br><span class="line">timeout client <span class="number">1</span>m    # 客户端超时</span><br><span class="line">timeout server <span class="number">31</span>m   # 服务器超时</span><br><span class="line">timeout check <span class="number">10</span>s    # 心跳检测超时</span><br><span class="line">balance roundrobin   # 负载均衡方式，轮询</span><br><span class="line"></span><br><span class="line">########## 统计页面配置 ##########</span><br><span class="line">listen stats</span><br><span class="line">  bind <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>:<span class="number">1080</span></span><br><span class="line">  mode http</span><br><span class="line">  option httplog</span><br><span class="line">  log <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span> local0 err</span><br><span class="line">  maxconn <span class="number">10</span>               # 最大连接数</span><br><span class="line">  stats refresh <span class="number">30</span>s</span><br><span class="line">  stats uri /admin         #状态页面 http<span class="comment">//ip:1080/admin 访问</span></span><br><span class="line">  stats realm Haproxy\ Statistics</span><br><span class="line">  stats auth admin:admin   # 用户和密码:admin</span><br><span class="line">  stats hide-version       # 隐藏版本信息</span><br><span class="line">  stats admin <span class="keyword">if</span> TRUE      # 设置手工启动/禁用</span><br><span class="line"></span><br><span class="line">listen HAPROXY-STATUS</span><br><span class="line">  bind <span class="number">10.0</span><span class="number">.0</span><span class="number">.100</span>:<span class="number">88</span></span><br><span class="line">  mode tcp</span><br><span class="line">  option  tcplog</span><br><span class="line">  balance leastconn        # 根据服务器当前的请求数</span><br><span class="line">  server nfs<span class="number">-01</span> nfs<span class="number">-01</span>:<span class="number">1080</span> check port <span class="number">1080</span> inter <span class="number">2000</span> rise <span class="number">2</span> fall <span class="number">5</span></span><br><span class="line">  server nfs<span class="number">-02</span> nfs<span class="number">-02</span>:<span class="number">1080</span> check port <span class="number">1080</span> inter <span class="number">2000</span> rise <span class="number">2</span> fall <span class="number">5</span></span><br><span class="line"></span><br><span class="line">listen MYSQL-HA</span><br><span class="line">  mode tcp</span><br><span class="line">  option  tcplog</span><br><span class="line">  bind <span class="number">10.0</span><span class="number">.0</span><span class="number">.100</span>:<span class="number">3308</span></span><br><span class="line">  balance leastconn</span><br><span class="line">  option mysql-check user haproxy</span><br><span class="line">  server nfs<span class="number">-01</span> nfs<span class="number">-01</span>:<span class="number">3306</span> weight <span class="number">1</span> check inter <span class="number">2000</span> rise <span class="number">2</span> fall <span class="number">5</span></span><br><span class="line">  server nfs<span class="number">-02</span> nfs<span class="number">-02</span>:<span class="number">3306</span> weight <span class="number">1</span> check inter <span class="number">2000</span> rise <span class="number">2</span> fall <span class="number">5</span></span><br><span class="line"></span><br><span class="line">listen HTTP-HA</span><br><span class="line">  bind <span class="number">10.0</span><span class="number">.0</span><span class="number">.100</span>:<span class="number">80</span></span><br><span class="line">  balance  roundrobin</span><br><span class="line">  option  tcpka</span><br><span class="line">  option  httpchk</span><br><span class="line">  option  tcplog</span><br><span class="line">  server nfs<span class="number">-01</span> nfs<span class="number">-01</span>:<span class="number">8080</span> check port <span class="number">8080</span> inter <span class="number">2000</span> rise <span class="number">2</span> fall <span class="number">5</span></span><br><span class="line">  server nfs<span class="number">-02</span> nfs<span class="number">-02</span>:<span class="number">8080</span> check port <span class="number">8080</span> inter <span class="number">2000</span> rise <span class="number">2</span> fall <span class="number">5</span></span><br><span class="line">!</span><br></pre></td></tr></table></figure>
+<h4 id="创建监控用户"><a href="#创建监控用户" class="headerlink" title="创建监控用户"></a>创建监控用户</h4><blockquote>
+<p>监控<code>mysql</code>运行状态此用户无需配置密码及权限</p>
+</blockquote>
+<pre><code>mysql -u root -phc123456 -e &quot;create user &apos;haproxy&apos;@&apos;%&apos;;flush privileges;&quot;
+</code></pre><hr>
+<h4 id="配置日志"><a href="#配置日志" class="headerlink" title="配置日志"></a>配置日志</h4><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cat</span> &lt;&lt;'!'  &gt;/etc/rsyslog.<span class="keyword">d</span>/haproxy.<span class="keyword">conf</span></span><br><span class="line"><span class="variable">$ModLoad</span> imudp</span><br><span class="line"><span class="variable">$UDPServerRun</span> 514</span><br><span class="line"><span class="variable">$template</span> Haproxy,<span class="string">"%rawmsg% \n"</span></span><br><span class="line">local0.=info -/<span class="keyword">var</span>/<span class="keyword">log</span>/haproxy.<span class="keyword">log</span>;Haproxy</span><br><span class="line">local0.notice -/<span class="keyword">var</span>/<span class="keyword">log</span>/haproxy-status.<span class="keyword">log</span>;Haproxy</span><br><span class="line">!</span><br><span class="line"></span><br><span class="line"># 重启日志服务</span><br><span class="line">systemctl restart rsyslog</span><br></pre></td></tr></table></figure>
+<h4 id="设置启动方式"><a href="#设置启动方式" class="headerlink" title="设置启动方式"></a>设置启动方式</h4><pre><code># 允许没VIP时启动(如果没有配置此项且应用会导致 haproxy 服务无法启动)
+echo &quot;net.ipv4.ip_nonlocal_bind = 1&quot; &gt;&gt;/etc/sysctl.conf
+sysctl -p
+</code></pre><blockquote>
+<p>服务管理</p>
+</blockquote>
+<pre><code>systemctl start haproxy     # 启动服务
+systemctl enable haproxy    # 随系统启动
+systemctl status haproxy    # 运行状态
+</code></pre><hr>
+<h3 id="安装heartbeat"><a href="#安装heartbeat" class="headerlink" title="安装heartbeat"></a>安装heartbeat</h3><blockquote>
+<p>配置依赖软件安装源</p>
+</blockquote>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;&lt;EOF   &gt;/etc/yum.repos.d/gf-epel-7.repo</span><br><span class="line">[epel-testing]</span><br><span class="line"><span class="attribute">name</span>=Extra Packages <span class="keyword">for</span> Enterprise Linux 7 - <span class="variable">$basearch</span> - Testing</span><br><span class="line"><span class="attribute">baseurl</span>=http://mirror.ghettoforge.org/distributions/gf/el/7/testing/x86_64</span><br><span class="line"><span class="attribute">enabled</span>=1</span><br><span class="line"><span class="attribute">gpgcheck</span>=0</span><br><span class="line">EOF</span><br><span class="line">yum makecache</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>下载软件包并安装 heartbeat</p>
+</blockquote>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">heartbeat=<span class="string">'heartbeat-3.0.6-1.el7.centos.x86_64.rpm'</span></span><br><span class="line">heartbeat_libs=<span class="string">'heartbeat-libs-3.0.6-1.el7.centos.x86_64.rpm'</span> </span><br><span class="line">curl -o <span class="variable">$heartbeat</span> <span class="symbol">http:</span>/<span class="regexp">/home.onlycloud.xin/soft</span><span class="regexp">/heartbeat/</span><span class="variable">$heartbeat</span> --progress</span><br><span class="line">curl -o <span class="variable">$heartbeat_libs</span> <span class="symbol">http:</span>/<span class="regexp">/home.onlycloud.xin/soft</span><span class="regexp">/heartbeat/</span><span class="variable">$heartbeat_libs</span> --progress</span><br><span class="line">yum localinstall -y heartbeat-*</span><br></pre></td></tr></table></figure>
+<h3 id="配置heartbeat"><a href="#配置heartbeat" class="headerlink" title="配置heartbeat"></a>配置heartbeat</h3><blockquote>
+<p>创建<code>ha.cf</code>配置文件</p>
+</blockquote>
+<figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;&lt;EOF   &gt;/etc/ha.d/ha.cf</span><br><span class="line"><span class="meta"># 调试日志</span></span><br><span class="line">debugfile /<span class="keyword">var</span>/log/ha-debug</span><br><span class="line"></span><br><span class="line"><span class="meta"># heartbeat 运行日志</span></span><br><span class="line">logfile /<span class="keyword">var</span>/log/ha-log</span><br><span class="line"></span><br><span class="line"><span class="meta"># 在 syslog 服务中配置通过 local1 设备接收日志</span></span><br><span class="line">logfacility local0</span><br><span class="line"></span><br><span class="line"><span class="meta"># 心跳间隔时间 default:2</span></span><br><span class="line">keepalive <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="meta"># 备用节点在 default:30 秒内没有收到主节点心跳信号则立即接管主节点服务资源</span></span><br><span class="line">deadtime <span class="number">5</span></span><br><span class="line"></span><br><span class="line"><span class="meta"># 心跳延迟时间为 default:10 秒,当 10 秒内备份节点未收到主节点心跳信号时,将写入警告日志,此时不会切换服务</span></span><br><span class="line">warntime <span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="meta"># heartbeat 服务首次启动,需要等待 default:60 秒后才启动服务器的资源,该值至少为 deadtime 两倍(单机启动时vip绑定比较慢)</span></span><br><span class="line">initdead <span class="number">10</span></span><br><span class="line"></span><br><span class="line"><span class="meta"># 指定心跳信号网卡(直连网卡)</span></span><br><span class="line"><span class="meta">#bcast ens33</span></span><br><span class="line"></span><br><span class="line"><span class="meta"># 配置多播通信路径(直连网卡)</span></span><br><span class="line">mcast ens33 <span class="number">239.0</span><span class="number">.0</span><span class="number">.1</span> <span class="number">694</span> <span class="number">1</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="meta"># 主节点恢复后,是否将服务自动切回</span></span><br><span class="line">auto_failback on</span><br><span class="line"></span><br><span class="line"><span class="meta"># 节点主机名(使用IP地址也可以)</span></span><br><span class="line">node nfs<span class="number">-01</span></span><br><span class="line">node nfs<span class="number">-02</span></span><br><span class="line"></span><br><span class="line"><span class="meta"># 是否开启 CRM 集群管理</span></span><br><span class="line">crm no</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>两端认证密码配置 authkeys</p>
+</blockquote>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;&lt;<span class="literal">EOF</span>  &gt;&gt;/etc/ha.d/authkeys</span><br><span class="line">auth <span class="number">1</span></span><br><span class="line"><span class="number">1</span> sha1 cxix9lkzq2aevnxv43yn68yoh2y7zp2cfwufgs7w</span><br><span class="line"><span class="literal">EOF</span></span><br><span class="line">chmod <span class="number">600</span> /etc/ha.d/authkeys</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>配置heartbeat资源</p>
+</blockquote>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cat <span class="params">&lt;&lt;EOF   &gt;</span><span class="meta-keyword">/etc/</span>ha.d/haresources</span><br><span class="line">nfs<span class="number">-01</span> <span class="symbol">IPaddr::</span><span class="number">10.0</span><span class="number">.0</span><span class="number">.100</span>/<span class="number">24</span>/ens33</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>启动服务,验证(两个节点各自执行 ip add 能看到两个 10.0.0网段ip)</p>
+</blockquote>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl start heartbeat</span><br><span class="line">netstat -ntaulp</span><br><span class="line">ip <span class="builtin-name">add</span> | grep 10.0.0</span><br></pre></td></tr></table></figure>
+<h3 id="验证heartbeat"><a href="#验证heartbeat" class="headerlink" title="验证heartbeat"></a>验证heartbeat</h3><blockquote>
+<p>浏览器打开以下链接查看资源状态(账号：admin/admin)</p>
+</blockquote>
+<pre><code>http://10.0.0.11:1080/admin
+http://10.0.0.12:1080/admin
+http://10.0.0.100:1080/admin
+</code></pre><hr>
+<blockquote>
+<p>关闭存在VIP主机的heartbeat服务,然后在另一端验证(在正常的一端已经接管了所有虚拟IP ip add 能看到三个 10.0.0网段ip)登录数据库验证</p>
+</blockquote>
+<pre><code>systemctl stop heartbeat
+ip add | grep 10.0.0
+mysql -h 10.0.0.100 -P 3308 -uroot -phc123456
+</code></pre><hr>
+<blockquote>
+<p>启动关闭的服务后验证 虚拟IP已经恢复</p>
+</blockquote>
+<pre><code>systemctl start heartbeat
+ip add | grep 10.0.0
+mysql -h 10.0.0.100 -P 3308 -uroot -phc123456
+</code></pre><hr>
+<blockquote>
+<p>查看同步状态</p>
+</blockquote>
+<pre><code># 可以看到Master_Host IP一直在切换负载均衡配置成功
+mysql -h 10.0.0.100 -P 3308 -uroot -phc123456 -e &apos;show slave status\G&apos;
+</code></pre><hr>
+<h3 id="同步故障恢复"><a href="#同步故障恢复" class="headerlink" title="同步故障恢复"></a>同步故障恢复</h3><h4 id="修复A主B从同步"><a href="#修复A主B从同步" class="headerlink" title="修复A主B从同步"></a>修复A主B从同步</h4><h5 id="A数据库操作-2"><a href="#A数据库操作-2" class="headerlink" title="A数据库操作"></a>A数据库操作</h5><blockquote>
+<p>A数据库锁表查看binlog文件的position（偏移）和File（日志文件）的值</p>
+</blockquote>
+<pre><code>mysql -uroot -phc123456
+flush tables with read lock;    # 锁住数据库表防止写入
+show master status;    # 记下 binlog文件的position（偏移）和File（日志文件）的值)
+
+# MySQL [(none)]&gt; show master status;
++------------------+----------+--------------+------------------+-------------------+
+| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
++------------------+----------+--------------+------------------+-------------------+
+| mysql-bin.000007 |      154 |              |                  |                   |
++------------------+----------+--------------+------------------+-------------------+
+</code></pre><hr>
+<h5 id="B数据库操作-1"><a href="#B数据库操作-1" class="headerlink" title="B数据库操作"></a>B数据库操作</h5><blockquote>
+<p>B数据库重新连接A</p>
+</blockquote>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -phc123456</span><br><span class="line">stop slave;</span><br><span class="line">reset slave;</span><br><span class="line">change master <span class="keyword">to</span> <span class="attribute">master_host</span>=<span class="string">'10.0.0.11'</span>,  # A数据库 IP或主机名(需解析通)</span><br><span class="line"><span class="attribute">master_port</span>=3306,                          # A数据库端口号</span><br><span class="line"><span class="attribute">master_user</span>=<span class="string">'sync'</span>,                        # 同步账号</span><br><span class="line"><span class="attribute">master_password</span>=<span class="string">'pcpaeyphmp'</span>,              # 同步账号的密码</span><br><span class="line"><span class="attribute">master_log_file</span>=<span class="string">'mysql-bin.000007'</span>,        # A数据库执行 show master status; 获取的 File 值</span><br><span class="line"><span class="attribute">master_log_pos</span>=154;                        # A数据库执行 show master status; 获取的 Position 值</span><br><span class="line">start slave;                               # 启动slave</span><br><span class="line">show slave status\G;                       # 查看同步状态</span><br><span class="line">show slave status\G;</span><br><span class="line"></span><br><span class="line"><span class="comment"># MySQL [(none)]&gt; show slave status\G;</span></span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">               Slave_IO_State: Waiting <span class="keyword">for</span> master <span class="keyword">to</span> send event</span><br><span class="line">                  Master_Host: 10.0.0.11</span><br><span class="line">                  Master_User: sync</span><br><span class="line">                  Master_Port: 3306</span><br><span class="line">                Connect_Retry: 60</span><br><span class="line">              Master_Log_File: mysql-bin.000007</span><br><span class="line">          Read_Master_Log_Pos: 154</span><br><span class="line">               Relay_Log_File: relay-bin.000007</span><br><span class="line">                Relay_Log_Pos: 367</span><br><span class="line">        Relay_Master_Log_File: mysql-bin.000007</span><br><span class="line">             Slave_IO_Running: <span class="literal">Yes</span></span><br><span class="line">            Slave_SQL_Running: <span class="literal">Yes</span></span><br><span class="line">            <span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span></span><br></pre></td></tr></table></figure>
+<h5 id="A数据库操作-3"><a href="#A数据库操作-3" class="headerlink" title="A数据库操作"></a>A数据库操作</h5><pre><code>unlock tables;    # 解锁数据库
+</code></pre><hr>
+<h4 id="修复B主A从同步"><a href="#修复B主A从同步" class="headerlink" title="修复B主A从同步"></a>修复B主A从同步</h4><h5 id="B数据库操作-2"><a href="#B数据库操作-2" class="headerlink" title="B数据库操作"></a>B数据库操作</h5><blockquote>
+<p>B数据库锁表查看binlog文件的position（偏移）和File（日志文件）的值</p>
+</blockquote>
+<pre><code>mysql -uroot -phc123456
+flush tables with read lock;    # 锁住数据库表防止写入
+show master status;    # 记下 binlog文件的position（偏移）和File（日志文件）的值)
+
+# MySQL [(none)]&gt; show master status;
++------------------+----------+--------------+------------------+-------------------+
+| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
++------------------+----------+--------------+------------------+-------------------+
+| mysql-bin.000007 |      154 |              |                  |                   |
++------------------+----------+--------------+------------------+-------------------+
+</code></pre><hr>
+<h5 id="A数据库操作-4"><a href="#A数据库操作-4" class="headerlink" title="A数据库操作"></a>A数据库操作</h5><blockquote>
+<p>A数据库重新连接B</p>
+</blockquote>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -phc123456</span><br><span class="line">stop slave;</span><br><span class="line">reset slave;</span><br><span class="line">change master <span class="keyword">to</span> <span class="attribute">master_host</span>=<span class="string">'10.0.0.12'</span>,  # BA数据库 IP或主机名(需解析通)</span><br><span class="line"><span class="attribute">master_port</span>=3306,                          # B数据库端口号</span><br><span class="line"><span class="attribute">master_user</span>=<span class="string">'sync'</span>,                        # 同步账号</span><br><span class="line"><span class="attribute">master_password</span>=<span class="string">'pcpaeyphmp'</span>,              # 同步账号的密码</span><br><span class="line"><span class="attribute">master_log_file</span>=<span class="string">'mysql-bin.000007'</span>,        # B数据库执行 show master status; 获取的 File 值</span><br><span class="line"><span class="attribute">master_log_pos</span>=154;                        # B数据库执行 show master status; 获取的 Position 值</span><br><span class="line">start slave;                               # 启动slave</span><br><span class="line">show slave status\G;                       # 查看同步状态</span><br><span class="line">show slave status\G;</span><br><span class="line"></span><br><span class="line"><span class="comment"># MySQL [(none)]&gt; show slave status\G;</span></span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">               Slave_IO_State: Waiting <span class="keyword">for</span> master <span class="keyword">to</span> send event</span><br><span class="line">                  Master_Host: 10.0.0.12</span><br><span class="line">                  Master_User: sync</span><br><span class="line">                  Master_Port: 3306</span><br><span class="line">                Connect_Retry: 60</span><br><span class="line">              Master_Log_File: mysql-bin.000007</span><br><span class="line">          Read_Master_Log_Pos: 154</span><br><span class="line">               Relay_Log_File: relay-bin.000007</span><br><span class="line">                Relay_Log_Pos: 367</span><br><span class="line">        Relay_Master_Log_File: mysql-bin.000007</span><br><span class="line">             Slave_IO_Running: <span class="literal">Yes</span></span><br><span class="line">            Slave_SQL_Running: <span class="literal">Yes</span></span><br><span class="line">          <span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span><span class="built_in">..</span></span><br></pre></td></tr></table></figure>
+<h5 id="B数据库操作-3"><a href="#B数据库操作-3" class="headerlink" title="B数据库操作"></a>B数据库操作</h5><pre><code>unlock tables;    # 解锁数据库
+</code></pre>
+      
+    </div>
+    
+    
+    
+    <div>
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/posts/999a.html">mysql双主配置</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 亦 漩 的个人博客">亦 漩</a></p>
+  <p><span>发布时间:</span>2018年09月14日 - 19:09</p>
+  <p><span>最后更新:</span>2018年09月27日 - 20:09</p>
+  <p><span>原始链接:</span><a href="/posts/999a.html" title="mysql双主配置">https://home.onlycloud.xin/posts/999a.html</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://home.onlycloud.xin/posts/999a.html"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by/4.0/" target="_blank" title="Attribution 4.0 International (CC BY 4.0)">署名4.0国际 （CC BY 4.0）</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+      $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+        });
+    });  
+</script>
+
+
+      
+    </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/mysql-master-master/" rel="tag "><i class="fa fa-tag"></i> mysql-master-master</a>
+          
+            <a href="/tags/mysql/" rel="tag "><i class="fa fa-tag"></i> mysql</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div id="needsharebutton-postbottom">
+            <span class="btn">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </span>
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/a3a4.html" rel="next" title="mysql主从配置">
+                <i class="fa fa-chevron-left"></i> mysql主从配置
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/mysql-mha.html" rel="prev" title="MySql-MHA">
+                MySql-MHA <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="亦 漩" />
+            
+              <p class="site-author-name" itemprop="name">亦 漩</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">110</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/bookgh" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://coding.net/u/yx571304" target="_blank" title="Coding">
+                      
+                        <i class="fa fa-fw fa-git"></i>Coding</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://skyisfuck.github.io" title="Peng" target="_blank">Peng</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#环境准备"><span class="nav-number">1.</span> <span class="nav-text">环境准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库安装"><span class="nav-number">2.</span> <span class="nav-text">数据库安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hosts解析"><span class="nav-number">3.</span> <span class="nav-text">hosts解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改主机名"><span class="nav-number">4.</span> <span class="nav-text">修改主机名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#A数据库操作"><span class="nav-number">5.</span> <span class="nav-text">A数据库操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#B数据库操作"><span class="nav-number">6.</span> <span class="nav-text">B数据库操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#A数据库操作-1"><span class="nav-number">7.</span> <span class="nav-text">A数据库操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#验证mysql"><span class="nav-number">8.</span> <span class="nav-text">验证mysql</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mysql排错"><span class="nav-number">9.</span> <span class="nav-text">mysql排错</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装haproxy"><span class="nav-number">10.</span> <span class="nav-text">安装haproxy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置haproxy"><span class="nav-number">11.</span> <span class="nav-text">配置haproxy</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建监控用户"><span class="nav-number">11.1.</span> <span class="nav-text">创建监控用户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置日志"><span class="nav-number">11.2.</span> <span class="nav-text">配置日志</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置启动方式"><span class="nav-number">11.3.</span> <span class="nav-text">设置启动方式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装heartbeat"><span class="nav-number">12.</span> <span class="nav-text">安装heartbeat</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置heartbeat"><span class="nav-number">13.</span> <span class="nav-text">配置heartbeat</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#验证heartbeat"><span class="nav-number">14.</span> <span class="nav-text">验证heartbeat</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#同步故障恢复"><span class="nav-number">15.</span> <span class="nav-text">同步故障恢复</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#修复A主B从同步"><span class="nav-number">15.1.</span> <span class="nav-text">修复A主B从同步</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#A数据库操作-2"><span class="nav-number">15.1.1.</span> <span class="nav-text">A数据库操作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#B数据库操作-1"><span class="nav-number">15.1.2.</span> <span class="nav-text">B数据库操作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#A数据库操作-3"><span class="nav-number">15.1.3.</span> <span class="nav-text">A数据库操作</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#修复B主A从同步"><span class="nav-number">15.2.</span> <span class="nav-text">修复B主A从同步</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#B数据库操作-2"><span class="nav-number">15.2.1.</span> <span class="nav-text">B数据库操作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#A数据库操作-4"><span class="nav-number">15.2.2.</span> <span class="nav-text">A数据库操作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#B数据库操作-3"><span class="nav-number">15.2.3.</span> <span class="nav-text">B数据库操作</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">亦 漩</span>
+
+  
+  <br/><span><i class="fa fa-bomb"></i></span><span id="showDays"></span>
+</div>
+
+
+
+
+
+
+
+
+
+<script>
+  var seconds = 1000;
+  var minutes = seconds * 60;
+  var hours = minutes * 60;
+  var days = hours * 24;
+  var years = days * 365;
+  var birthDay = Date.UTC(2017,12,07,10,00,00); // 这里设置建站时间
+  setInterval(function() {
+    var today = new Date();
+    var todayYear = today.getFullYear();
+    var todayMonth = today.getMonth()+1;
+    var todayDate = today.getDate();
+    var todayHour = today.getHours();
+    var todayMinute = today.getMinutes();
+    var todaySecond = today.getSeconds();
+    var now = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+    var diff = now - birthDay;
+    var diffYears = Math.floor(diff/years);
+    var diffDays = Math.floor((diff/days)-diffYears*365);
+    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById('showDays').innerHTML="本站已运行 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+  }, 1000);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+      <div id="needsharebutton-float">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'DWwnpdDBrLDMI8CKf8OXopJu-gzGzoHsz',
+        appKey: '7sfOhetJ1Wftp4W7MF0xdPOw',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "default";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+      flOptions = {};
+      
+          flOptions.iconStyle = "default";
+      
+          flOptions.boxForm = "horizontal";
+      
+          flOptions.position = "middleRight";
+      
+          flOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-float', flOptions);
+    
+  </script>
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+
+</body>
+</html>

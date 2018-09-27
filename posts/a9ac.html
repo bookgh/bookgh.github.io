@@ -1,0 +1,1626 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="docker,docker web,docker nginx,docker php," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="安装Docker环境coding source dockr环境快速安装curl https://coding.net/u/yx571304/p/Docker/git/raw/master/install.sh | sh 安装Docker ce卸载旧版yum -y remove docker docker-client docker-client-latest \   docker-common d">
+<meta name="keywords" content="docker,docker web,docker nginx,docker php">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker php环境">
+<meta property="og:url" content="https://home.onlycloud.xin/posts/a9ac.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="安装Docker环境coding source dockr环境快速安装curl https://coding.net/u/yx571304/p/Docker/git/raw/master/install.sh | sh 安装Docker ce卸载旧版yum -y remove docker docker-client docker-client-latest \   docker-common d">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-27T12:11:42.691Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Docker php环境">
+<meta name="twitter:description" content="安装Docker环境coding source dockr环境快速安装curl https://coding.net/u/yx571304/p/Docker/git/raw/master/install.sh | sh 安装Docker ce卸载旧版yum -y remove docker docker-client docker-client-latest \   docker-common d">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://home.onlycloud.xin/posts/a9ac.html"/>
+
+
+
+
+
+  <title>Docker php环境 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-python">
+          <a href="/python/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            python
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-logs">
+          <a href="/posts/log.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Logs
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://home.onlycloud.xin/posts/a9ac.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="亦 漩">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Docker php环境</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-11T10:53:00+08:00">
+                2018-06-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/docker/" itemprop="url" rel="index">
+                    <span itemprop="name">docker</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/a9ac.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/posts/a9ac.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,300
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  8
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="安装Docker环境"><a href="#安装Docker环境" class="headerlink" title="安装Docker环境"></a>安装Docker环境</h3><p><a href="https://coding.net/u/yx571304/p/Docker/git/tree/master/docker-lnmp" target="_blank" rel="noopener">coding source</a></p>
+<h4 id="dockr环境快速安装"><a href="#dockr环境快速安装" class="headerlink" title="dockr环境快速安装"></a>dockr环境快速安装</h4><pre><code>curl https://coding.net/u/yx571304/p/Docker/git/raw/master/install.sh | sh
+</code></pre><h4 id="安装Docker-ce"><a href="#安装Docker-ce" class="headerlink" title="安装Docker ce"></a>安装Docker ce</h4><h5 id="卸载旧版"><a href="#卸载旧版" class="headerlink" title="卸载旧版"></a>卸载旧版</h5><pre><code>yum -y remove docker docker-client docker-client-latest \
+  docker-common docker-latest docker-latest-logrotate docker-engine
+</code></pre><h5 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h5><pre><code>yum -y install yum-utils device-mapper-persistent-data lvm2
+</code></pre><h5 id="添加安装源"><a href="#添加安装源" class="headerlink" title="添加安装源"></a>添加安装源</h5><pre><code>yum-config-manager --add-repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+</code></pre><h5 id="安装Docker-CE"><a href="#安装Docker-CE" class="headerlink" title="安装Docker CE"></a>安装Docker CE</h5><pre><code>yum makecache fast
+yum -y install docker-ce
+</code></pre><h5 id="配置-Docker镜像加速"><a href="#配置-Docker镜像加速" class="headerlink" title="配置 Docker镜像加速"></a>配置 Docker镜像加速</h5><pre><code>mkdir /etc/docker
+cat &lt;&lt;! &gt;/etc/docker/daemon.json
+{
+  &quot;registry-mirrors&quot;: [&quot;http://3272dd08.m.daocloud.io&quot;]
+}
+!
+</code></pre><h5 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h5><pre><code>systemctl start docker
+systemctl enable docker
+</code></pre><h5 id="验证安装"><a href="#验证安装" class="headerlink" title="验证安装"></a>验证安装</h5><pre><code>docker -v
+docker version
+</code></pre><hr>
+<h4 id="安装Docker-compose"><a href="#安装Docker-compose" class="headerlink" title="安装Docker compose"></a>安装Docker compose</h4><h5 id="获取最新版本号"><a href="#获取最新版本号" class="headerlink" title="获取最新版本号"></a>获取最新版本号</h5><pre><code>new_ver=$(curl -s https://api.github.com/repos/docker/compose/releases | grep -o &apos;&quot;tag_name&quot;: &quot;.*&quot;&apos; |head -n 1| sed &apos;s/&quot;//g;s/v//g&apos; | sed &apos;s/tag_name: //g&apos;)
+</code></pre><h5 id="安装-docker-compose"><a href="#安装-docker-compose" class="headerlink" title="安装 docker compose"></a>安装 docker compose</h5><pre><code>curl -L https://github.com/docker/compose/releases/download/$new_ver/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+</code></pre><h5 id="验证安装-1"><a href="#验证安装-1" class="headerlink" title="验证安装"></a>验证安装</h5><pre><code>docker-compose --version
+</code></pre><h3 id="安装Docker-PHP环境"><a href="#安装Docker-PHP环境" class="headerlink" title="安装Docker PHP环境"></a>安装Docker PHP环境</h3><h4 id="创建文件结构"><a href="#创建文件结构" class="headerlink" title="创建文件结构"></a>创建文件结构</h4><pre><code>mkdir -p /lnmp/{php,mysql,wwwroot,log,conf}
+mkdir /lnmp/log/{nginx,php,mysql}
+</code></pre><h4 id="获取nginx默认配置文件"><a href="#获取nginx默认配置文件" class="headerlink" title="获取nginx默认配置文件"></a>获取nginx默认配置文件</h4><pre><code>docker run --name nginx -p 80:80 -d nginx
+docker cp nginx:/usr/share/nginx/html/ /lnmp/wwwroot/default/
+docker cp nginx:/etc/nginx/nginx.conf /lnmp/conf/nginx.conf
+docker cp nginx:/etc/nginx/conf.d/ /lnmp/conf/conf.d/
+</code></pre><h4 id="修改nginx-路径"><a href="#修改nginx-路径" class="headerlink" title="修改nginx 路径"></a>修改nginx 路径</h4><pre><code>sed -i &apos;s#/usr/share/nginx/html#/var/www/html/default#&apos; /lnmp/conf/conf.d/default.conf
+sed -i &apos;s/#access_log/access_log/&apos; /lnmp/conf/conf.d/default.conf
+</code></pre><h4 id="删除容器"><a href="#删除容器" class="headerlink" title="删除容器"></a>删除容器</h4><pre><code>docker stop nginx
+docker rm nginx
+</code></pre><h4 id="Build-PHP-Docker"><a href="#Build-PHP-Docker" class="headerlink" title="Build PHP Docker"></a><a href="https://hub.docker.com/_/php/" target="_blank" rel="noopener">Build PHP Docker</a></h4><pre><code>mkdir /lnmp/php/php72
+
+cat &lt;&lt;&apos;EOF&apos; &gt;/lnmp/php/php72/Dockerfile
+FROM php:7.2-fpm
+
+COPY ./sources.list.stretch /etc/apt/sources.list
+
+RUN apt-get update \
+  &amp;&amp; apt-get install -y libfreetype6-dev libjpeg62-turbo-dev libpng-dev \
+  &amp;&amp; docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+  &amp;&amp; docker-php-ext-install gd \
+  &amp;&amp; :\
+  &amp;&amp; apt-get install -y libicu-dev \
+  &amp;&amp; docker-php-ext-install intl \
+  &amp;&amp; :\
+  &amp;&amp; apt-get install -y libxml2-dev \
+  &amp;&amp; apt-get install -y libxslt-dev \
+  &amp;&amp; docker-php-ext-install soap \
+  &amp;&amp; docker-php-ext-install xsl \
+  &amp;&amp; docker-php-ext-install xmlrpc \
+  &amp;&amp; docker-php-ext-install wddx \
+  &amp;&amp; :\
+  &amp;&amp; apt-get install -y libbz2-dev \
+  &amp;&amp; docker-php-ext-install bz2 \
+  &amp;&amp; :\
+  &amp;&amp; docker-php-ext-install zip \
+  &amp;&amp; docker-php-ext-install pcntl \
+  &amp;&amp; docker-php-ext-install pdo_mysql \
+  &amp;&amp; docker-php-ext-install mysqli \
+  &amp;&amp; docker-php-ext-install mbstring \
+  &amp;&amp; docker-php-ext-install exif \
+  &amp;&amp; docker-php-ext-install bcmath \
+  &amp;&amp; docker-php-ext-install calendar \
+  &amp;&amp; docker-php-ext-install sockets \
+  &amp;&amp; docker-php-ext-install gettext \
+  &amp;&amp; docker-php-ext-install shmop \
+  &amp;&amp; docker-php-ext-install sysvmsg \
+  &amp;&amp; docker-php-ext-install sysvsem \
+  &amp;&amp; docker-php-ext-install sysvshm \
+  &amp;&amp; docker-php-ext-install opcache \
+  &amp;&amp; :\
+  &amp;&amp; pecl install igbinary \
+  &amp;&amp; docker-php-ext-enable igbinary \
+  &amp;&amp; :\
+  &amp;&amp; pecl install redis \
+  &amp;&amp; docker-php-ext-enable redis
+  #&amp;&amp; docker-php-ext-install pdo_firebird \
+  #&amp;&amp; docker-php-ext-install pdo_dblib \
+  #&amp;&amp; docker-php-ext-install pdo_oci \
+  #&amp;&amp; docker-php-ext-install pdo_odbc \
+  #&amp;&amp; docker-php-ext-install pdo_pgsql \
+  #&amp;&amp; docker-php-ext-install pgsql \
+  #&amp;&amp; docker-php-ext-install oci8 \
+  #&amp;&amp; docker-php-ext-install odbc \
+  #&amp;&amp; docker-php-ext-install dba \
+  #&amp;&amp; docker-php-ext-install interbase \
+  #&amp;&amp; :\
+  #&amp;&amp; apt-get install -y libmcrypt-dev \
+  #&amp;&amp; docker-php-ext-install mcrypt \
+  #&amp;&amp; :\
+  #&amp;&amp; apt-get install -y curl \
+  #&amp;&amp; apt-get install -y libcurl3 \
+  #&amp;&amp; apt-get install -y libcurl4-openssl-dev \
+  #&amp;&amp; docker-php-ext-install curl \
+  #&amp;&amp; :\
+  #&amp;&amp; apt-get install -y libreadline-dev \
+  #&amp;&amp; docker-php-ext-install readline \
+  #&amp;&amp; :\
+  #&amp;&amp; apt-get install -y libsnmp-dev \
+  #&amp;&amp; apt-get install -y snmp \
+  #&amp;&amp; docker-php-ext-install snmp \
+  #&amp;&amp; :\
+  #&amp;&amp; apt-get install -y libpspell-dev \
+  #&amp;&amp; apt-get install -y aspell-en \
+  #&amp;&amp; docker-php-ext-install pspell \
+  #&amp;&amp; :\
+  #&amp;&amp; apt-get install -y librecode0 \
+  #&amp;&amp; apt-get install -y librecode-dev \
+  #&amp;&amp; docker-php-ext-install recode \
+  #&amp;&amp; :\
+  #&amp;&amp; apt-get install -y libtidy-dev \
+  #&amp;&amp; docker-php-ext-install tidy \
+  #&amp;&amp; :\
+  #&amp;&amp; apt-get install -y libgmp-dev \
+  #&amp;&amp; ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h \
+  #&amp;&amp; docker-php-ext-install gmp \
+  #&amp;&amp; :\
+  #&amp;&amp; apt-get install -y postgresql-client \
+  #&amp;&amp; apt-get install -y mysql-client \
+  #&amp;&amp; :\
+  #&amp;&amp; apt-get install -y libc-client-dev \
+  #&amp;&amp; docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
+  #&amp;&amp; docker-php-ext-install imap \
+  #&amp;&amp; :\
+  #&amp;&amp; apt-get install -y libldb-dev \
+  #&amp;&amp; apt-get install -y libldap2-dev \
+  #&amp;&amp; docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu \
+  #&amp;&amp; docker-php-ext-install ldap \
+
+  # Composer
+  #RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer \
+EOF
+
+# Docker 软件源
+cat &lt;&lt;&apos;EOF&apos; &gt;/lnmp/php/php72/sources.list.stretch
+deb http://mirrors.163.com/debian/ stretch main non-free contrib
+deb http://mirrors.163.com/debian/ stretch-updates main non-free contrib
+deb http://mirrors.163.com/debian/ stretch-backports main non-free contrib
+deb http://mirrors.163.com/debian-security/ stretch/updates main non-free contrib
+
+deb-src http://mirrors.163.com/debian/ stretch main non-free contrib
+deb-src http://mirrors.163.com/debian/ stretch-updates main non-free contrib
+deb-src http://mirrors.163.com/debian/ stretch-backports main non-free contrib
+deb-src http://mirrors.163.com/debian-security/ stretch/updates main non-free contrib
+EOF
+</code></pre><h4 id="Docker-php-配置文件"><a href="#Docker-php-配置文件" class="headerlink" title="Docker php 配置文件"></a>Docker php 配置文件</h4><pre><code>cd /lnmp/php/php72
+docker build -t php-fpm .
+docker run --name php-fpm -d php-fpm
+
+mkdir /lnmp/conf/php-fpm.d/
+docker cp php-fpm:/usr/local/etc/php-fpm.d/www.conf /lnmp/conf/php-fpm.d/www.conf
+
+sed -i &apos;s#;catch_workers_output#catch_workers_output#&apos; /lnmp/conf/php-fpm.d/www.conf
+sed -i &quot;s#;php_admin_value\[error_log\].*#php_admin_value\[error_log\] = /var/log/php/fpm-php.www.log#g&quot; /lnmp/conf/php-fpm.d/www.conf
+sed -i &quot;s#;php_admin_flag\[log_errors\]#php_admin_flag\[log_errors\]#g&quot; /lnmp/conf/php-fpm.d/www.conf
+</code></pre><h4 id="删除容器-1"><a href="#删除容器-1" class="headerlink" title="删除容器"></a>删除容器</h4><pre><code>docker stop php-fpm
+docker rm php-fpm
+</code></pre><h4 id="获取Mariadb配置文件"><a href="#获取Mariadb配置文件" class="headerlink" title="获取Mariadb配置文件"></a>获取Mariadb配置文件</h4><pre><code>docker run --name mariadb -e MYSQL_ROOT_PASSWORD=root -d mariadb
+docker cp mariadb:/etc/mysql/my.cnf /lnmp/conf/my.cnf
+docker stop mariadb
+docker rm mariadb
+</code></pre><h4 id="删除所有容器及镜像"><a href="#删除所有容器及镜像" class="headerlink" title="删除所有容器及镜像"></a>删除所有容器及镜像</h4><pre><code>docker stop `docker ps -q`
+docker rm `docker ps -qa`
+docker rmi `docker images -q`
+</code></pre><h3 id="docker-compose-yml"><a href="#docker-compose-yml" class="headerlink" title="docker-compose.yml"></a><a href="https://coding.net/u/yx571304/p/Docker/git/tree/master/docker-lnmp" target="_blank" rel="noopener">docker-compose.yml</a></h3><pre><code>cat &lt;&lt;&apos;EOF&apos; &gt;/lnmp/docker-compose.yml
+version: &apos;3.6&apos;
+services:
+
+  nginx:
+    image: nginx
+    container_name: nginx
+    ports:
+      - &quot;80:80&quot;
+      - &quot;443:443&quot;
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./wwwroot/:/var/www/html/:rw
+      - ./conf/conf.d:/etc/nginx/conf.d/:ro
+      - ./conf/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./log/nginx/:/var/log/nginx/:rw
+    networks:
+      - net-php
+    restart: always
+
+  php:
+    build: ./php/php72/
+    container_name: php-fpm
+    expose:
+      - &quot;9000&quot;
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./wwwroot/:/var/www/html/:rw
+      - ./conf/php.ini:/usr/local/etc/php/php.ini:ro
+      - ./conf/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
+      - ./log/php/:/var/log/php/:rw
+    networks:
+      - net-php
+      - net-mariadb
+      - net-redis
+    restart: always
+
+  mariadb:
+    image: mariadb
+    container_name: mariadb
+    ports:
+      - 3306:3306
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./conf/my.cnf:/etc/mysql/my.cnf:ro
+      - ./log/mysql/:/var/log/mysql/:rw
+      - ./mysql/:/var/lib/mysql/:rw
+    networks:
+      - net-mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - net-mariadb
+    restart: always
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - net-redis
+    restart: always
+
+networks:
+  net-php:
+  net-mariadb:
+  net-redis:
+</code></pre><h3 id="Build"><a href="#Build" class="headerlink" title="Build"></a>Build</h3><pre><code>docker-compose up --build
+docker-compose start
+docker-compose stop
+</code></pre>
+      
+    </div>
+    
+    
+    
+    <div>
+      
+        
+
+      
+    </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/docker/" rel="tag "><i class="fa fa-tag"></i> docker</a>
+          
+            <a href="/tags/docker-web/" rel="tag "><i class="fa fa-tag"></i> docker web</a>
+          
+            <a href="/tags/docker-nginx/" rel="tag "><i class="fa fa-tag"></i> docker nginx</a>
+          
+            <a href="/tags/docker-php/" rel="tag "><i class="fa fa-tag"></i> docker php</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div id="needsharebutton-postbottom">
+            <span class="btn">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </span>
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/5304.html" rel="next" title="Windows 网络安装系统">
+                <i class="fa fa-chevron-left"></i> Windows 网络安装系统
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/8d2e.html" rel="prev" title="LVM 分区调整">
+                LVM 分区调整 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="亦 漩" />
+            
+              <p class="site-author-name" itemprop="name">亦 漩</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">110</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/bookgh" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://coding.net/u/yx571304" target="_blank" title="Coding">
+                      
+                        <i class="fa fa-fw fa-git"></i>Coding</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://skyisfuck.github.io" title="Peng" target="_blank">Peng</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Docker环境"><span class="nav-number">1.</span> <span class="nav-text">安装Docker环境</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#dockr环境快速安装"><span class="nav-number">1.1.</span> <span class="nav-text">dockr环境快速安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装Docker-ce"><span class="nav-number">1.2.</span> <span class="nav-text">安装Docker ce</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#卸载旧版"><span class="nav-number">1.2.1.</span> <span class="nav-text">卸载旧版</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装依赖"><span class="nav-number">1.2.2.</span> <span class="nav-text">安装依赖</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#添加安装源"><span class="nav-number">1.2.3.</span> <span class="nav-text">添加安装源</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装Docker-CE"><span class="nav-number">1.2.4.</span> <span class="nav-text">安装Docker CE</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#配置-Docker镜像加速"><span class="nav-number">1.2.5.</span> <span class="nav-text">配置 Docker镜像加速</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#启动服务"><span class="nav-number">1.2.6.</span> <span class="nav-text">启动服务</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#验证安装"><span class="nav-number">1.2.7.</span> <span class="nav-text">验证安装</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装Docker-compose"><span class="nav-number">1.3.</span> <span class="nav-text">安装Docker compose</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#获取最新版本号"><span class="nav-number">1.3.1.</span> <span class="nav-text">获取最新版本号</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装-docker-compose"><span class="nav-number">1.3.2.</span> <span class="nav-text">安装 docker compose</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#验证安装-1"><span class="nav-number">1.3.3.</span> <span class="nav-text">验证安装</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Docker-PHP环境"><span class="nav-number">2.</span> <span class="nav-text">安装Docker PHP环境</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建文件结构"><span class="nav-number">2.1.</span> <span class="nav-text">创建文件结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取nginx默认配置文件"><span class="nav-number">2.2.</span> <span class="nav-text">获取nginx默认配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#修改nginx-路径"><span class="nav-number">2.3.</span> <span class="nav-text">修改nginx 路径</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除容器"><span class="nav-number">2.4.</span> <span class="nav-text">删除容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Build-PHP-Docker"><span class="nav-number">2.5.</span> <span class="nav-text">Build PHP Docker</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker-php-配置文件"><span class="nav-number">2.6.</span> <span class="nav-text">Docker php 配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除容器-1"><span class="nav-number">2.7.</span> <span class="nav-text">删除容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取Mariadb配置文件"><span class="nav-number">2.8.</span> <span class="nav-text">获取Mariadb配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除所有容器及镜像"><span class="nav-number">2.9.</span> <span class="nav-text">删除所有容器及镜像</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-compose-yml"><span class="nav-number">3.</span> <span class="nav-text">docker-compose.yml</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Build"><span class="nav-number">4.</span> <span class="nav-text">Build</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">亦 漩</span>
+
+  
+  <br/><span><i class="fa fa-bomb"></i></span><span id="showDays"></span>
+</div>
+
+
+
+
+
+
+
+
+
+<script>
+  var seconds = 1000;
+  var minutes = seconds * 60;
+  var hours = minutes * 60;
+  var days = hours * 24;
+  var years = days * 365;
+  var birthDay = Date.UTC(2017,12,07,10,00,00); // 这里设置建站时间
+  setInterval(function() {
+    var today = new Date();
+    var todayYear = today.getFullYear();
+    var todayMonth = today.getMonth()+1;
+    var todayDate = today.getDate();
+    var todayHour = today.getHours();
+    var todayMinute = today.getMinutes();
+    var todaySecond = today.getSeconds();
+    var now = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+    var diff = now - birthDay;
+    var diffYears = Math.floor(diff/years);
+    var diffDays = Math.floor((diff/days)-diffYears*365);
+    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById('showDays').innerHTML="本站已运行 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+  }, 1000);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+      <div id="needsharebutton-float">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'DWwnpdDBrLDMI8CKf8OXopJu-gzGzoHsz',
+        appKey: '7sfOhetJ1Wftp4W7MF0xdPOw',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "default";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+      flOptions = {};
+      
+          flOptions.iconStyle = "default";
+      
+          flOptions.boxForm = "horizontal";
+      
+          flOptions.position = "middleRight";
+      
+          flOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-float', flOptions);
+    
+  </script>
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+
+</body>
+</html>

@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="mysql安装,mysql二进制," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="[TOC] 环境准备系统：centos7 软件版本：mysql-5.7 安装目录：/usr/local/mysql 数据库目录：/data/mysql 数据库root密码：hc123456 创建用户,组 创建mysql组指定组id为1200，创建mysql用户指定用户id为1200默认组mysql  12groupadd -g 1200 mysqluseradd -r -g mysql -u 12">
+<meta name="keywords" content="mysql安装,mysql二进制">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql安装(二进制方式)">
+<meta property="og:url" content="https://home.onlycloud.xin/posts/2694.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="[TOC] 环境准备系统：centos7 软件版本：mysql-5.7 安装目录：/usr/local/mysql 数据库目录：/data/mysql 数据库root密码：hc123456 创建用户,组 创建mysql组指定组id为1200，创建mysql用户指定用户id为1200默认组mysql  12groupadd -g 1200 mysqluseradd -r -g mysql -u 12">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-27T12:11:47.426Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mysql安装(二进制方式)">
+<meta name="twitter:description" content="[TOC] 环境准备系统：centos7 软件版本：mysql-5.7 安装目录：/usr/local/mysql 数据库目录：/data/mysql 数据库root密码：hc123456 创建用户,组 创建mysql组指定组id为1200，创建mysql用户指定用户id为1200默认组mysql  12groupadd -g 1200 mysqluseradd -r -g mysql -u 12">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://home.onlycloud.xin/posts/2694.html"/>
+
+
+
+
+
+  <title>mysql安装(二进制方式) | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-python">
+          <a href="/python/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            python
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-logs">
+          <a href="/posts/log.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Logs
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://home.onlycloud.xin/posts/2694.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="亦 漩">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">mysql安装(二进制方式)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-13T20:35:16+08:00">
+                2018-09-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/mysql/" itemprop="url" rel="index">
+                    <span itemprop="name">mysql</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/2694.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/posts/2694.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,317
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  7
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>[TOC]</p>
+<h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><pre><code>系统：centos7
+软件版本：mysql-5.7
+安装目录：/usr/local/mysql
+数据库目录：/data/mysql
+数据库root密码：hc123456
+</code></pre><h3 id="创建用户-组"><a href="#创建用户-组" class="headerlink" title="创建用户,组"></a>创建用户,组</h3><blockquote>
+<p>创建<code>mysql</code>组指定组id为<code>1200</code>，创建<code>mysql</code>用户指定用户id为<code>1200</code>默认组<code>mysql</code></p>
+</blockquote>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">groupadd -g <span class="number">1200</span> mysql</span><br><span class="line">useradd -r -g mysql -u <span class="number">1200</span> -s /sbin/nologin mysql</span><br></pre></td></tr></table></figure>
+<h3 id="创建数据目录"><a href="#创建数据目录" class="headerlink" title="创建数据目录"></a>创建数据目录</h3><blockquote>
+<p><code>mysql</code>数据库数据存储目录</p>
+</blockquote>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">datadir=/data/mysql    <span class="comment"># 数据库数据存储目录</span></span><br><span class="line">mkdir -p $datadir</span><br><span class="line">basedir=/usr/local/mysql    <span class="comment"># 数据库安装目录</span></span><br></pre></td></tr></table></figure>
+<h3 id="安装-jemalloc"><a href="#安装-jemalloc" class="headerlink" title="安装 jemalloc"></a>安装 jemalloc</h3><blockquote>
+<p>配置软件安装源,<code>jemalloc</code>适合多线程下内存分配管理,减少内存碎片</p>
+</blockquote>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">rm -rf <span class="string">/etc/yum.repos.d/</span>*</span><br><span class="line">curl -o <span class="string">/etc/yum.repos.d/epel.repo</span> http:<span class="string">//mirrors.aliyun.com/repo/epel-7.repo</span></span><br><span class="line">curl -o <span class="string">/etc/yum.repos.d/CentOS.repo</span> http:<span class="string">//mirrors.aliyun.com/repo/Centos-7.repo</span></span><br><span class="line">sed -i '<span class="string">/aliyuncs.com/d</span>' <span class="string">/etc/yum.repos.d/CentOS.repo</span> <span class="string">/etc/yum.repos.d/epel.repo</span></span><br><span class="line">yum install -y jemalloc-devel</span><br></pre></td></tr></table></figure>
+<h3 id="下载软件-解压"><a href="#下载软件-解压" class="headerlink" title="下载软件,解压"></a><a href="http://mirrors.ustc.edu.cn/mysql-ftp/Downloads/" target="_blank" rel="noopener">下载软件</a>,解压</h3><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -OL http://mirrors.ustc.edu.cn/mysql-ftp/Downloads/MySQL-<span class="number">5.7</span>/mysql-<span class="number">5.7</span><span class="meta">.23</span>-linux-glibc2<span class="meta">.12</span>-x86_64.tar.gz --progress</span><br><span class="line">tar xvf mysql-<span class="number">5.7</span><span class="meta">.23</span>-linux-glibc2<span class="meta">.12</span>-x86_64.tar.gz</span><br><span class="line">mv mysql-<span class="number">5.7</span><span class="meta">.23</span>-linux-glibc2<span class="meta">.12</span>-x86_64/ $basedir</span><br></pre></td></tr></table></figure>
+<h3 id="配置服务"><a href="#配置服务" class="headerlink" title="配置服务"></a>配置服务</h3><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">cp</span> <span class="variable">$basedir</span>/support-files/mysql.server /etc/init.d/mysqld</span><br><span class="line">sed -i <span class="string">"s@^basedir=.*<span class="variable">@basedir</span>=<span class="variable">$basedir</span>@"</span> /etc/init.d/mysqld</span><br><span class="line">sed -i <span class="string">"s@^datadir=.*<span class="variable">@datadir</span>=<span class="variable">$datadir</span>@"</span> /etc/init.d/mysqld</span><br><span class="line">chmod +x /etc/init.d/mysqld</span><br><span class="line">chkconfig --add mysqld</span><br><span class="line">chkconfig mysqld <span class="literal">on</span></span><br></pre></td></tr></table></figure>
+<h3 id="mysql配置文件"><a href="#mysql配置文件" class="headerlink" title="mysql配置文件"></a>mysql配置文件</h3><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;&lt; EOF &gt;/etc/my.cnf</span><br><span class="line">[client]</span><br><span class="line">port = 3306</span><br><span class="line">socket = /tmp/mysql.sock</span><br><span class="line">default-character-set = utf8mb4</span><br><span class="line"></span><br><span class="line">[mysql]</span><br><span class="line">prompt=<span class="string">"MySQL [\\d]&gt; "</span></span><br><span class="line">no-auto-rehash</span><br><span class="line"></span><br><span class="line">[mysqld]</span><br><span class="line">skip-ssl</span><br><span class="line">port = 3306</span><br><span class="line">user = mysql</span><br><span class="line">server-id = 1</span><br><span class="line">bind-address = 0.0.0.0</span><br><span class="line">log_timestamps = SYSTEM</span><br><span class="line">socket = /tmp/mysql.sock</span><br><span class="line"></span><br><span class="line">basedir = $basedir</span><br><span class="line">datadir = $datadir</span><br><span class="line">character-set-server = utf8mb4</span><br><span class="line">pid-file = $datadir/mysql.pid</span><br><span class="line">init-connect = 'SET NAMES utf8mb4'</span><br><span class="line"></span><br><span class="line">back_log = 300</span><br><span class="line"><span class="comment">#skip-networking</span></span><br><span class="line">skip-name-resolve</span><br><span class="line"></span><br><span class="line">max_connections = 1000</span><br><span class="line">max_connect_errors = 6000</span><br><span class="line">open_files_limit = 65535</span><br><span class="line">table_open_cache = 128</span><br><span class="line">max_allowed_packet = 500M</span><br><span class="line">binlog_cache_size = 1M</span><br><span class="line">max_heap_table_size = 8M</span><br><span class="line">tmp_table_size = 16M</span><br><span class="line"></span><br><span class="line">read_buffer_size = 2M</span><br><span class="line">read_rnd_buffer_size = 8M</span><br><span class="line">sort_buffer_size = 8M</span><br><span class="line">join_buffer_size = 8M</span><br><span class="line">key_buffer_size = 4M</span><br><span class="line"></span><br><span class="line">thread_cache_size = 8</span><br><span class="line"></span><br><span class="line">query_cache_type = 1</span><br><span class="line">query_cache_size = 8M</span><br><span class="line">query_cache_limit = 2M</span><br><span class="line"></span><br><span class="line">ft_min_word_len = 4</span><br><span class="line"></span><br><span class="line">log_bin = mysql-bin</span><br><span class="line">binlog_format = mixed</span><br><span class="line">expire_logs_days = 7</span><br><span class="line"></span><br><span class="line">slow_query_log = 1</span><br><span class="line">long_query_time = 1</span><br><span class="line">log_error = $datadir/mysql-error.log</span><br><span class="line">slow_query_log_file = $datadir/mysql-slow.log</span><br><span class="line"></span><br><span class="line">performance_schema = 0</span><br><span class="line">explicit_defaults_for_timestamp</span><br><span class="line"></span><br><span class="line"><span class="comment">#lower_case_table_names = 1</span></span><br><span class="line"></span><br><span class="line">skip-external-locking</span><br><span class="line"></span><br><span class="line">default_storage_engine = InnoDB</span><br><span class="line"><span class="comment">#default-storage-engine = MyISAM</span></span><br><span class="line">innodb_file_per_table = 1</span><br><span class="line">innodb_open_files = 500</span><br><span class="line">innodb_buffer_pool_size = 64M</span><br><span class="line">innodb_write_io_threads = 4</span><br><span class="line">innodb_read_io_threads = 4</span><br><span class="line">innodb_thread_concurrency = 0</span><br><span class="line">innodb_purge_threads = 1</span><br><span class="line">innodb_flush_log_at_trx_commit = 2</span><br><span class="line">innodb_log_buffer_size = 2M</span><br><span class="line">innodb_log_file_size = 32M</span><br><span class="line">innodb_log_files_in_group = 3</span><br><span class="line">innodb_max_dirty_pages_pct = 90</span><br><span class="line">innodb_lock_wait_timeout = 120</span><br><span class="line"></span><br><span class="line">bulk_insert_buffer_size = 8M</span><br><span class="line">myisam_sort_buffer_size = 8M</span><br><span class="line">myisam_max_sort_file_size = 10G</span><br><span class="line">myisam_repair_threads = 1</span><br><span class="line"></span><br><span class="line">interactive_timeout = 28800</span><br><span class="line">wait_timeout = 28800</span><br><span class="line"></span><br><span class="line">[mysqldump]</span><br><span class="line">quick</span><br><span class="line">max_allowed_packet = 500M</span><br><span class="line"></span><br><span class="line">[myisamchk]</span><br><span class="line">key_buffer_size = 8M</span><br><span class="line">sort_buffer_size = 8M</span><br><span class="line">read_buffer = 4M</span><br><span class="line">write_buffer = 4M</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<h3 id="数据库配置优化"><a href="#数据库配置优化" class="headerlink" title="数据库配置优化"></a>数据库配置优化</h3><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">cp <span class="regexp">/etc/my</span>.cnf&#123;,.bak&#125;</span><br><span class="line">Mem=`free -m | awk <span class="string">'/Mem:/&#123;print $2&#125;'</span>`</span><br><span class="line">sed -i <span class="string">"s@max_connections.*@max_connections = $(($&#123;Mem&#125;/3))@"</span> <span class="regexp">/etc/my</span>.cnf</span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$&#123;Mem&#125;</span> -gt <span class="number">1500</span> -a <span class="variable">$&#123;Mem&#125;</span> -le <span class="number">2500</span> ]; then</span><br><span class="line">    <span class="comment">#  1500MB &lt; 实际内存 &lt;= 2500MB</span></span><br><span class="line">    sed -i <span class="string">'s@^thread_cache_size.*@thread_cache_size = 16@'</span> <span class="regexp">/etc/my</span>.cnf</span><br><span class="line">    sed -i <span class="string">'s@^query_cache_size.*@query_cache_size = 16M@'</span> <span class="regexp">/etc/my</span>.cnf</span><br><span class="line">    sed -i <span class="string">'s@^myisam_sort_buffer_size.*@myisam_sort_buffer_size = 16M@'</span> <span class="regexp">/etc/my</span>.cnf</span><br><span class="line">    sed -i <span class="string">'s@^key_buffer_size.*@key_buffer_size = 16M@'</span> <span class="regexp">/etc/my</span>.cnf</span><br><span class="line">    sed -i <span class="string">'s@^innodb_buffer_pool_size.*@innodb_buffer_pool_size = 128M@'</span> <span class="regexp">/etc/my</span>.cnf</span><br><span class="line">    sed -i <span class="string">'s@^tmp_table_size.*@tmp_table_size = 32M@'</span> <span class="regexp">/etc/my</span>.cnf</span><br><span class="line">    sed -i <span class="string">'s@^table_open_cache.*@table_open_cache = 256@'</span> <span class="regexp">/etc/my</span>.cnf</span><br><span class="line">elif [ <span class="variable">$&#123;Mem&#125;</span> -gt <span class="number">2500</span> -a <span class="variable">$&#123;Mem&#125;</span> -le <span class="number">3500</span> ]; then</span><br><span class="line">    <span class="comment">#  2500MB &lt; 实际内存 &lt;= 3500MB</span></span><br><span class="line">    sed -i <span class="string">'s@^thread_cache_size.*@thread_cache_size = 32@'</span> <span class="regexp">/etc/my</span>.cnf</span><br><span class="line">    sed -i <span class="string">'s@^query_cache_size.*@query_cache_size = 32M@'</span> <span class="regexp">/etc/my</span>.cnf</span><br><span class="line">    sed -i <span class="string">'s@^myisam_sort_buffer_size.*@myisam_sort_buffer_size = 32M@'</span> <span class="regexp">/etc/my</span>.cnf</span><br><span class="line">    sed -i <span class="string">'s@^key_buffer_size.*@key_buffer_size = 64M@'</span> <span class="regexp">/etc/my</span>.cnf</span><br><span class="line">    sed -i <span class="string">'s@^innodb_buffer_pool_size.*@innodb_buffer_pool_size = 512M@'</span> <span class="regexp">/etc/my</span>.cnf</span><br><span class="line">    sed -i <span class="string">'s@^tmp_table_size.*@tmp_table_size = 64M@'</span> <span class="regexp">/etc/my</span>.cnf</span><br><span class="line">    sed -i <span class="string">'s@^table_open_cache.*@table_open_cache = 512@'</span> <span class="regexp">/etc/my</span>.cnf</span><br><span class="line">elif [ <span class="variable">$&#123;Mem&#125;</span> -gt <span class="number">3500</span> ]; then</span><br><span class="line">    <span class="comment">#  3500MB &lt; 实际内存</span></span><br><span class="line">    sed -i <span class="string">'s@^thread_cache_size.*@thread_cache_size = 64@'</span> <span class="regexp">/etc/my</span>.cnf</span><br><span class="line">    sed -i <span class="string">'s@^query_cache_size.*@query_cache_size = 64M@'</span> <span class="regexp">/etc/my</span>.cnf</span><br><span class="line">    sed -i <span class="string">'s@^myisam_sort_buffer_size.*@myisam_sort_buffer_size = 64M@'</span> <span class="regexp">/etc/my</span>.cnf</span><br><span class="line">    sed -i <span class="string">'s@^key_buffer_size.*@key_buffer_size = 256M@'</span> <span class="regexp">/etc/my</span>.cnf</span><br><span class="line">    sed -i <span class="string">'s@^innodb_buffer_pool_size.*@innodb_buffer_pool_size = 1024M@'</span> <span class="regexp">/etc/my</span>.cnf</span><br><span class="line">    sed -i <span class="string">'s@^tmp_table_size.*@tmp_table_size = 128M@'</span> <span class="regexp">/etc/my</span>.cnf</span><br><span class="line">    sed -i <span class="string">'s@^table_open_cache.*@table_open_cache = 1024@'</span> <span class="regexp">/etc/my</span>.cnf</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+<h3 id="初始化数据库"><a href="#初始化数据库" class="headerlink" title="初始化数据库"></a>初始化数据库</h3><blockquote>
+<p>添加<code>libjemalloc</code>模块,初始化数据库,启动<code>mysql</code>服务</p>
+</blockquote>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sed -<span class="selector-tag">i</span> <span class="string">'s@executing mysqld_safe@executing mysqld_safe\nexport LD_PRELOAD=/usr/lib64/libjemalloc.so@'</span> <span class="variable">$basedir</span>/bin/mysqld_safe</span><br><span class="line"><span class="variable">$basedir</span>/bin/mysqld --initialize-insecure --user=mysql --basedir=<span class="variable">$basedir</span> --datadir=<span class="variable">$datadir</span></span><br><span class="line">chmod <span class="number">600</span> /etc/my.cnf</span><br><span class="line">chown mysql<span class="selector-class">.mysql</span> -R <span class="variable">$datadir</span></span><br><span class="line">systemctl start mysqld</span><br></pre></td></tr></table></figure>
+<h3 id="添加环境变量"><a href="#添加环境变量" class="headerlink" title="添加环境变量"></a>添加环境变量</h3><pre><code>echo &quot;export PATH=$basedir/bin:\$PATH&quot; &gt;&gt; /etc/profile
+. /etc/profile
+</code></pre><h3 id="初始化root密码-权限"><a href="#初始化root密码-权限" class="headerlink" title="初始化root密码, 权限"></a>初始化root密码, 权限</h3><blockquote>
+<p><code>root</code>用户仅本地登录</p>
+</blockquote>
+<figure class="highlight nsis"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dbrootpwd=hc123456    <span class="comment"># 数据库root密码</span></span><br><span class="line">mysql -e <span class="string">"grant all privileges on *.* to root@'127.0.0.1' identified by \"</span><span class="variable">$&#123;dbrootpwd&#125;</span>\<span class="string">" with grant option;"</span></span><br><span class="line">mysql -e <span class="string">"grant all privileges on *.* to root@'localhost' identified by \"</span><span class="variable">$&#123;dbrootpwd&#125;</span>\<span class="string">" with grant option;"</span></span><br><span class="line">mysql -uroot -p<span class="variable">$&#123;dbrootpwd&#125;</span> -e <span class="string">"reset master;"</span></span><br></pre></td></tr></table></figure>
+<h3 id="配置mysql库文件"><a href="#配置mysql库文件" class="headerlink" title="配置mysql库文件"></a>配置mysql库文件</h3><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rm -rf /etc/ld<span class="selector-class">.so</span><span class="selector-class">.conf</span><span class="selector-class">.d</span>/mariadb-x86_64.conf</span><br><span class="line">echo <span class="string">"$basedir/lib"</span> &gt; /etc/ld<span class="selector-class">.so</span><span class="selector-class">.conf</span><span class="selector-class">.d</span>/mysql.conf</span><br><span class="line">ldconfig</span><br><span class="line">systemctl restart mysqld</span><br></pre></td></tr></table></figure>
+<h3 id="开启root远程登录权限"><a href="#开启root远程登录权限" class="headerlink" title="开启root远程登录权限"></a>开启root远程登录权限</h3><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">mysql</span> -uroot -p<span class="variable">$&#123;dbrootpwd&#125;</span> -e <span class="string">"grant all privileges on *.* to root@'%' identified by \"<span class="variable">$&#123;dbrootpwd&#125;</span>\" with grant option;"</span></span><br></pre></td></tr></table></figure>
+<h3 id="数据库所有用户的登录权限"><a href="#数据库所有用户的登录权限" class="headerlink" title="数据库所有用户的登录权限"></a>数据库所有用户的登录权限</h3><figure class="highlight scilab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -p$&#123;dbrootpwd&#125; -e <span class="string">"SELECT DISTINCT CONCAT('</span>User: <span class="string">''',user,'''</span>@<span class="string">''',host,'''</span>;<span class="string">') AS query FROM mysql.user;"</span></span><br></pre></td></tr></table></figure>
+<h3 id="配置防火墙"><a href="#配置防火墙" class="headerlink" title="配置防火墙"></a>配置防火墙</h3><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">firewall-<span class="keyword">cmd</span><span class="bash"> --zone=public --add-port=3306/tcp --permanent    <span class="comment"># 永久生效允许 3306 端口</span></span></span><br><span class="line"><span class="bash">firewall-cmd --reload    <span class="comment"># 重新载入防火墙配置</span></span></span><br><span class="line"><span class="bash">firewall-cmd --zone=public --query-port=3306/tcp    <span class="comment"># 查看 3306 端口是否允许</span></span></span><br><span class="line"><span class="bash">firewall-cmd --zone=public --list-ports    <span class="comment"># 查看所有允许端口</span></span></span><br></pre></td></tr></table></figure>
+<h3 id="关闭selinux"><a href="#关闭selinux" class="headerlink" title="关闭selinux"></a>关闭selinux</h3><pre><code>setenforce 0    # 临时生效，重启失效
+sed -i &apos;s/SELINUX=enforcing/SELINUX=disabled/&apos; /etc/selinux/config    # 重启后生效
+</code></pre><h3 id="使用脚本"><a href="#使用脚本" class="headerlink" title="使用脚本"></a>使用脚本</h3><blockquote>
+<p>可修改脚本中mysql安装路径及数据库路径实现自定义安装，安装完成后防火墙自动放行3306端口，关闭selinux</p>
+</blockquote>
+<pre><code>curl http://home.onlycloud.xin/code/mysql-bin-install.sh -o mysql-install.sh
+sh mysql-install.sh
+</code></pre>
+      
+    </div>
+    
+    
+    
+    <div>
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/posts/2694.html">mysql安装(二进制方式)</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 亦 漩 的个人博客">亦 漩</a></p>
+  <p><span>发布时间:</span>2018年09月13日 - 20:09</p>
+  <p><span>最后更新:</span>2018年09月27日 - 20:09</p>
+  <p><span>原始链接:</span><a href="/posts/2694.html" title="mysql安装(二进制方式)">https://home.onlycloud.xin/posts/2694.html</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://home.onlycloud.xin/posts/2694.html"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by/4.0/" target="_blank" title="Attribution 4.0 International (CC BY 4.0)">署名4.0国际 （CC BY 4.0）</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+      $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+        });
+    });  
+</script>
+
+
+      
+    </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/mysql安装/" rel="tag "><i class="fa fa-tag"></i> mysql安装</a>
+          
+            <a href="/tags/mysql二进制/" rel="tag "><i class="fa fa-tag"></i> mysql二进制</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div id="needsharebutton-postbottom">
+            <span class="btn">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </span>
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/6b7.html" rel="next" title="Heartbeat-DRBD-NFS-Cluster">
+                <i class="fa fa-chevron-left"></i> Heartbeat-DRBD-NFS-Cluster
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/a3a4.html" rel="prev" title="mysql主从配置">
+                mysql主从配置 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="亦 漩" />
+            
+              <p class="site-author-name" itemprop="name">亦 漩</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">110</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/bookgh" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://coding.net/u/yx571304" target="_blank" title="Coding">
+                      
+                        <i class="fa fa-fw fa-git"></i>Coding</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://skyisfuck.github.io" title="Peng" target="_blank">Peng</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#环境准备"><span class="nav-number">1.</span> <span class="nav-text">环境准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建用户-组"><span class="nav-number">2.</span> <span class="nav-text">创建用户,组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建数据目录"><span class="nav-number">3.</span> <span class="nav-text">创建数据目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-jemalloc"><span class="nav-number">4.</span> <span class="nav-text">安装 jemalloc</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下载软件-解压"><span class="nav-number">5.</span> <span class="nav-text">下载软件,解压</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置服务"><span class="nav-number">6.</span> <span class="nav-text">配置服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mysql配置文件"><span class="nav-number">7.</span> <span class="nav-text">mysql配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库配置优化"><span class="nav-number">8.</span> <span class="nav-text">数据库配置优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化数据库"><span class="nav-number">9.</span> <span class="nav-text">初始化数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加环境变量"><span class="nav-number">10.</span> <span class="nav-text">添加环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化root密码-权限"><span class="nav-number">11.</span> <span class="nav-text">初始化root密码, 权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置mysql库文件"><span class="nav-number">12.</span> <span class="nav-text">配置mysql库文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开启root远程登录权限"><span class="nav-number">13.</span> <span class="nav-text">开启root远程登录权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库所有用户的登录权限"><span class="nav-number">14.</span> <span class="nav-text">数据库所有用户的登录权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置防火墙"><span class="nav-number">15.</span> <span class="nav-text">配置防火墙</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关闭selinux"><span class="nav-number">16.</span> <span class="nav-text">关闭selinux</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用脚本"><span class="nav-number">17.</span> <span class="nav-text">使用脚本</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">亦 漩</span>
+
+  
+  <br/><span><i class="fa fa-bomb"></i></span><span id="showDays"></span>
+</div>
+
+
+
+
+
+
+
+
+
+<script>
+  var seconds = 1000;
+  var minutes = seconds * 60;
+  var hours = minutes * 60;
+  var days = hours * 24;
+  var years = days * 365;
+  var birthDay = Date.UTC(2017,12,07,10,00,00); // 这里设置建站时间
+  setInterval(function() {
+    var today = new Date();
+    var todayYear = today.getFullYear();
+    var todayMonth = today.getMonth()+1;
+    var todayDate = today.getDate();
+    var todayHour = today.getHours();
+    var todayMinute = today.getMinutes();
+    var todaySecond = today.getSeconds();
+    var now = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+    var diff = now - birthDay;
+    var diffYears = Math.floor(diff/years);
+    var diffDays = Math.floor((diff/days)-diffYears*365);
+    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById('showDays').innerHTML="本站已运行 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+  }, 1000);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+      <div id="needsharebutton-float">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'DWwnpdDBrLDMI8CKf8OXopJu-gzGzoHsz',
+        appKey: '7sfOhetJ1Wftp4W7MF0xdPOw',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "default";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+      flOptions = {};
+      
+          flOptions.iconStyle = "default";
+      
+          flOptions.boxForm = "horizontal";
+      
+          flOptions.position = "middleRight";
+      
+          flOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-float', flOptions);
+    
+  </script>
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+
+</body>
+</html>

@@ -1,0 +1,2141 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Kubernetes,Docker,keepalived,Kubernetes集群," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="/* 第一列表格宽度 */ table th:nth-of-type(1){ width: 10%;  } /* 第二列表格宽度 */ table th:nth-of-type(2){ width: 30%;  } /* 第三列表格宽度 */ table th:nth-of-type(3){ width: 60%; } /*  ... ...  */     Kubernetes V1.10 集">
+<meta name="keywords" content="Kubernetes,Docker,keepalived,Kubernetes集群">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kubernetes V1.10 集群搭建">
+<meta property="og:url" content="https://home.onlycloud.xin/posts/f82e.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="/* 第一列表格宽度 */ table th:nth-of-type(1){ width: 10%;  } /* 第二列表格宽度 */ table th:nth-of-type(2){ width: 30%;  } /* 第三列表格宽度 */ table th:nth-of-type(3){ width: 60%; } /*  ... ...  */     Kubernetes V1.10 集">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-27T12:11:45.834Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kubernetes V1.10 集群搭建">
+<meta name="twitter:description" content="/* 第一列表格宽度 */ table th:nth-of-type(1){ width: 10%;  } /* 第二列表格宽度 */ table th:nth-of-type(2){ width: 30%;  } /* 第三列表格宽度 */ table th:nth-of-type(3){ width: 60%; } /*  ... ...  */     Kubernetes V1.10 集">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://home.onlycloud.xin/posts/f82e.html"/>
+
+
+
+
+
+  <title>Kubernetes V1.10 集群搭建 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-python">
+          <a href="/python/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            python
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-logs">
+          <a href="/posts/log.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Logs
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://home.onlycloud.xin/posts/f82e.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="亦 漩">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Kubernetes V1.10 集群搭建</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-10T18:28:00+08:00">
+                2018-07-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kubernetes/" itemprop="url" rel="index">
+                    <span itemprop="name">Kubernetes</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/f82e.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/posts/f82e.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3,269
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  19
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <style>
+/* 第一列表格宽度 */
+table th:nth-of-type(1){
+width: 10%;
+
+}
+/* 第二列表格宽度 */
+table th:nth-of-type(2){
+width: 30%;
+
+}
+/* 第三列表格宽度 */
+table th:nth-of-type(3){
+width: 60%;
+}
+/*  ... ...  */ 
+</style>
+
+
+<h1 id="Kubernetes-V1-10-集群文档"><a href="#Kubernetes-V1-10-集群文档" class="headerlink" title="Kubernetes V1.10 集群文档"></a>Kubernetes V1.10 集群文档</h1><p>1.服务器信息： (CentOS-7-x86_64-Minimal-1804) (keepalived 浮动IP:192.168.0.10)<br>2.lab1, lab2, lab3 为控制节点 lab4, lab5 lab6 为计算节点</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">主机名</th>
+<th style="text-align:center">IP</th>
+<th style="text-align:left">备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">lab1</td>
+<td style="text-align:center">192.168.0.11</td>
+<td style="text-align:left">master, etcd, keepalived, kubeadm, kubectl, kubelet, docker-ce, cfssl</td>
+</tr>
+<tr>
+<td style="text-align:center">lab2</td>
+<td style="text-align:center">192.168.0.22</td>
+<td style="text-align:left">master, etcd, keepalived, kubeadm, kubectl, kubelet, docker-ce</td>
+</tr>
+<tr>
+<td style="text-align:center">lab3</td>
+<td style="text-align:center">192.168.0.33</td>
+<td style="text-align:left">master, etcd, keepalived, kubeadm, kubectl, kubelet, docker-ce</td>
+</tr>
+<tr>
+<td style="text-align:center">lab4</td>
+<td style="text-align:center">192.168.0.44</td>
+<td style="text-align:left">node, kubeadm, kubectl, kubelet, docker-ce</td>
+</tr>
+<tr>
+<td style="text-align:center">lab5</td>
+<td style="text-align:center">192.168.0.55</td>
+<td style="text-align:left">node, kubeadm, kubectl, kubelet, docker-ce</td>
+</tr>
+<tr>
+<td style="text-align:center">lab6</td>
+<td style="text-align:center">192.168.0.66</td>
+<td style="text-align:left">node, kubeadm, kubectl, kubelet, docker-ce</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>以下所有的命令均在 lab1 执行(注意：需要配置好lab1 ssh连接其他节点需免密钥登陆)</p>
+</blockquote>
+<h3 id="初始化配置变量"><a href="#初始化配置变量" class="headerlink" title="初始化配置变量"></a>初始化配置变量</h3><pre><code>cat &lt;&lt;&apos;EOF&apos; &gt;./list
+192.168.0.11  lab1
+192.168.0.22  lab2
+192.168.0.33  lab3
+192.168.0.44  lab4
+192.168.0.55  lab5
+192.168.0.66  lab6
+EOF
+
+# keepalived 浮动IP
+export vip=192.168.0.10
+
+while read LINE; do
+    IP=$(echo $LINE | awk &apos;{print $1}&apos;)
+    HOST=$(echo $LINE | awk &apos;{print $2}&apos;)
+    export $(echo $HOST=&quot;$IP&quot;)
+done &lt; ./list
+</code></pre><h3 id="配置ssh免密码登录"><a href="#配置ssh免密码登录" class="headerlink" title="配置ssh免密码登录"></a>配置ssh免密码登录</h3><pre><code># 远程root密码
+passwd=&apos;redhat&apos;
+
+# hosts
+if [ -z &quot;$(grep &apos;# kubernetes&apos; /etc/hosts)&quot; ];then
+    echo &apos;# kubernetes&apos; &gt;&gt;/etc/hosts
+    cat ./list &gt;&gt;/etc/hosts
+fi
+
+# 生成密钥
+[ -f ~/.ssh/id_dsa ] || { ssh-keygen -t dsa -P &apos;&apos; -f ~/.ssh/id_dsa; }
+
+# 安装 expect
+[ -f /usr/bin/expect ] || { yum -y install expect; }
+
+# 取出 list 中的每行
+while read -r LINE; do
+    HOST=$(echo $LINE | awk &apos;{print $2}&apos;)
+    # 添加公钥到远程主机
+    /usr/bin/expect &lt;&lt;EOF
+    set timeout 30
+    spawn ssh-copy-id -i /root/.ssh/id_dsa.pub root@$HOST
+    expect {
+        &quot;(yes/no)?&quot; { send &quot;yes\r&quot;; exp_continue }
+        &quot;password:&quot; { send &quot;$passwd\r&quot; }
+    }
+    expect eof
+EOF
+done &lt; ./list
+</code></pre><h3 id="初始化环境"><a href="#初始化环境" class="headerlink" title="初始化环境"></a>初始化环境</h3><pre><code>while read LINE; do
+    HOST=$(echo $LINE | awk &apos;{print $2}&apos;)
+    echo &quot;--------------- $HOST ---------------&quot;
+    scp /etc/hosts $HOST:/etc/hosts
+    ssh -T $HOST &lt;&lt;EOF
+        # 配置主机名
+        hostnamectl set-hostname $HOST
+
+        # 配置阿里yum源
+        if [ ! -f &quot;/etc/yum.repos.d/Centos-7.repo&quot; ];then
+            yum -y install epel-release &gt;/dev/null 2&gt;&amp;1
+            rm -f /etc/yum.repos.d/*
+            curl -o /etc/yum.repos.d/Centos-7.repo http://mirrors.aliyun.com/repo/Centos-7.repo
+            curl -o /etc/yum.repos.d/epel-7.repo http://mirrors.aliyun.com/repo/epel-7.repo
+            sed -i &apos;/aliyuncs.com/d&apos; /etc/yum.repos.d/*.repo
+            yum makecache &gt;/dev/null 2&gt;&amp;1
+        fi
+
+        # Selinux, Firewalld
+        systemctl stop firewalld
+        systemctl disable firewalld
+        firewall-cmd --state
+        setenforce 0
+        sed -i &apos;/^SELINUX=.*/c SELINUX=disabled&apos; /etc/selinux/config
+        grep --color=auto &apos;^SELINUX&apos; /etc/selinux/config
+
+        # 常用工具
+        yum -y install wget vim ntpdate net-tools tree lrzsz lsof &gt;/dev/null 2&gt;&amp;1 &amp;&amp; echo &quot;软件安装完成&quot;
+
+        # 时间同步
+        ntpdate ntp.aliyun.com &amp;&amp; hwclock -w &gt;/dev/null 2&gt;&amp;1 &amp;&amp; echo &quot;时间同步成功&quot;
+        echo &quot;*/20 * * * * /usr/sbin/ntpdate pool.ntp.org &gt;/dev/null 2&gt;&amp;1 &amp;&amp; /usr/sbin/hwclock -w&quot; &gt;/tmp/crontab
+        crontab /tmp/crontab
+
+        # 关闭 Swap
+        swapoff -a 
+        sed -i &apos;s/.*swap.*/#&amp;/&apos; /etc/fstab
+        sysctl -w vm.swappiness=0
+
+        # 内核参数优化
+        echo &apos;net.ipv4.ip_forward = 1&apos; &gt; /etc/sysctl.d/k8s.conf
+        echo &apos;net.bridge.bridge-nf-call-ip6tables = 1&apos; &gt;&gt; /etc/sysctl.d/k8s.conf
+        echo &apos;net.bridge.bridge-nf-call-iptables = 1&apos; &gt;&gt; /etc/sysctl.d/k8s.conf
+        echo &apos;vm.swappiness=0&apos; &gt;&gt; /etc/sysctl.d/k8s.conf
+        sysctl -p /etc/sysctl.d/k8s.conf &gt;/dev/null 2&gt;&amp;1
+
+        echo &apos;# myset&apos; &gt;&gt; /etc/security/limits.conf
+        echo &apos;* soft nofile 65536&apos; &gt;&gt; /etc/security/limits.conf
+        echo &apos;* hard nofile 65536&apos; &gt;&gt; /etc/security/limits.conf
+        echo &apos;* soft nproc 65536&apos; &gt;&gt; /etc/security/limits.conf
+        echo &apos;* hard nproc 65536&apos; &gt;&gt; /etc/security/limits.conf
+        echo &apos;* soft  memlock  unlimited&apos; &gt;&gt; /etc/security/limits.conf
+        echo &apos;* hard memlock  unlimited&apos; &gt;&gt; /etc/security/limits.conf
+EOF
+done &lt; ./list
+</code></pre><h3 id="安装-配置-keepalived"><a href="#安装-配置-keepalived" class="headerlink" title="安装/配置 keepalived"></a>安装/配置 keepalived</h3><blockquote>
+<p>浮动IP优先级依次为 lab1 &gt; lab2 &gt; lab3 修改配置文件 priority 值可调整优先级</p>
+</blockquote>
+<h4 id="lab1"><a href="#lab1" class="headerlink" title="lab1"></a>lab1</h4><pre><code>ssh lab1 &lt;&lt;EEOOFF
+# install keepalived
+yum install -y keepalived
+
+# lab1 keepalived.conf
+cat &lt;&lt;EOF &gt; /etc/keepalived/keepalived.conf
+global_defs {
+   router_id LVS_k8s
+}
+
+vrrp_script CheckK8sMaster {
+    script &quot;curl -k https://$vip:6443&quot;
+    interval 3
+    timeout 9
+    fall 2
+    rise 2
+}
+
+vrrp_instance VI_1 {
+    state MASTER
+    interface ens33
+    virtual_router_id 61
+    priority 100
+    advert_int 1
+    mcast_src_ip $lab1
+    nopreempt
+    authentication {
+        auth_type PASS
+        auth_pass sqP05dQgMSlzrxHj
+    }
+    unicast_peer {
+        $lab2
+        $lab3
+    }
+    virtual_ipaddress {
+        $vip/24
+    }
+    track_script {
+        CheckK8sMaster
+    }
+
+}
+EOF
+systemctl enable keepalived
+EEOOFF
+</code></pre><h4 id="lab2"><a href="#lab2" class="headerlink" title="lab2"></a>lab2</h4><pre><code>ssh lab2 &lt;&lt;EEOOFF
+# install keepalived
+yum install -y keepalived
+
+# lab2 keepalived.conf
+cat &lt;&lt;EOF &gt; /etc/keepalived/keepalived.conf
+global_defs {
+   router_id LVS_k8s
+}
+
+global_defs {
+   router_id LVS_k8s
+}
+
+vrrp_script CheckK8sMaster {
+    script &quot;curl -k https://$vip:6443&quot;
+    interval 3
+    timeout 9
+    fall 2
+    rise 2
+}
+
+vrrp_instance VI_1 {
+    state BACKUP
+    interface ens33
+    virtual_router_id 61
+    priority 90
+    advert_int 1
+    mcast_src_ip $lab2
+    nopreempt
+    authentication {
+        auth_type PASS
+        auth_pass sqP05dQgMSlzrxHj
+    }
+    unicast_peer {
+        $lab1
+        $lab3
+    }
+    virtual_ipaddress {
+        $vip/24
+    }
+    track_script {
+        CheckK8sMaster
+    }
+
+}
+EOF
+systemctl enable keepalived
+EEOOFF
+</code></pre><h4 id="lab3"><a href="#lab3" class="headerlink" title="lab3"></a>lab3</h4><pre><code>ssh lab3 &lt;&lt;EEOOFF
+# install keepalived
+yum install -y keepalived
+
+# lab1 keepalived.conf
+cat &lt;&lt;EOF &gt; /etc/keepalived/keepalived.conf
+global_defs {
+   router_id LVS_k8s
+}
+
+global_defs {
+   router_id LVS_k8s
+}
+
+vrrp_script CheckK8sMaster {
+    script &quot;curl -k https://$vip:6443&quot;
+    interval 3
+    timeout 9
+    fall 2
+    rise 2
+}
+
+vrrp_instance VI_1 {
+    state BACKUP
+    interface ens33
+    virtual_router_id 61
+    priority 80
+    advert_int 1
+    mcast_src_ip $lab3
+    nopreempt
+    authentication {
+        auth_type PASS
+        auth_pass sqP05dQgMSlzrxHj
+    }
+    unicast_peer {
+        $lab1
+        $lab2
+    }
+    virtual_ipaddress {
+        $vip/24
+    }
+    track_script {
+        CheckK8sMaster
+    }
+
+}
+EOF
+systemctl enable keepalived
+EEOOFF
+</code></pre><h4 id="查看状态"><a href="#查看状态" class="headerlink" title="查看状态"></a>查看状态</h4><pre><code>for NODE in lab1 lab2 lab3; do
+    echo &quot;---------- $NODE ----------&quot;
+    ssh $NODE &quot;systemctl restart keepalived; systemctl status keepalived&quot;
+done
+</code></pre><h3 id="生成证书文件"><a href="#生成证书文件" class="headerlink" title="生成证书文件"></a>生成证书文件</h3><h4 id="安装证书生成工具"><a href="#安装证书生成工具" class="headerlink" title="安装证书生成工具"></a>安装证书生成工具</h4><pre><code>wget -c https://pkg.cfssl.org/R1.2/cfssl_linux-amd64 -O /usr/local/bin/cfssl
+wget -c https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64 -O /usr/local/bin/cfssljson
+wget -c https://pkg.cfssl.org/R1.2/cfssl-certinfo_linux-amd64 -O /usr/local/bin/cfssl-certinfo
+chmod +x /usr/local/bin/cfssl /usr/local/bin/cfssljson /usr/local/bin/cfssl-certinfo
+</code></pre><h4 id="生成证书文件-1"><a href="#生成证书文件-1" class="headerlink" title="生成证书文件"></a>生成证书文件</h4><pre><code># 创建临时目录
+mkdir /root/ssl &amp;&amp; cd /root/ssl
+
+# 创建证书策略
+cat &lt;&lt;EOF &gt;ca-config.json 
+{
+&quot;signing&quot;: {
+&quot;default&quot;: {
+  &quot;expiry&quot;: &quot;8760h&quot;
+},
+&quot;profiles&quot;: {
+  &quot;kubernetes-Soulmate&quot;: {
+    &quot;usages&quot;: [
+        &quot;signing&quot;,
+        &quot;key encipherment&quot;,
+        &quot;server auth&quot;,
+        &quot;client auth&quot;
+    ],
+    &quot;expiry&quot;: &quot;8760h&quot;
+  }
+}
+}
+}
+EOF
+
+# 创建证书区域加密方式信息
+cat &lt;&lt;EOF &gt;ca-csr.json 
+{
+&quot;CN&quot;: &quot;kubernetes-Soulmate&quot;,
+&quot;key&quot;: {
+&quot;algo&quot;: &quot;rsa&quot;,
+&quot;size&quot;: 2048
+},
+&quot;names&quot;: [
+{
+  &quot;C&quot;: &quot;CN&quot;,
+  &quot;ST&quot;: &quot;shanghai&quot;,
+  &quot;L&quot;: &quot;shanghai&quot;,
+  &quot;O&quot;: &quot;k8s&quot;,
+  &quot;OU&quot;: &quot;System&quot;
+}
+]
+}
+EOF
+
+# 生成证书
+cfssl gencert -initca ca-csr.json | cfssljson -bare ca
+
+# 创建 Etcd 证书生成信息
+cat &lt;&lt;EOF &gt;etcd-csr.json 
+{
+  &quot;CN&quot;: &quot;etcd&quot;,
+  &quot;hosts&quot;: [
+    &quot;127.0.0.1&quot;,
+    &quot;$lab1&quot;,
+    &quot;$lab2&quot;,
+    &quot;$lab3&quot;,
+    &quot;$vip&quot;
+  ],
+  &quot;key&quot;: {
+    &quot;algo&quot;: &quot;rsa&quot;,
+    &quot;size&quot;: 2048
+  },
+  &quot;names&quot;: [
+    {
+      &quot;C&quot;: &quot;CN&quot;,
+      &quot;ST&quot;: &quot;shanghai&quot;,
+      &quot;L&quot;: &quot;shanghai&quot;,
+      &quot;O&quot;: &quot;k8s&quot;,
+      &quot;OU&quot;: &quot;System&quot;
+    }
+  ]
+}
+EOF
+
+# 生成etcd 证书
+cfssl gencert -ca=ca.pem \
+    -ca-key=ca-key.pem \
+    -config=ca-config.json \
+    -profile=kubernetes-Soulmate etcd-csr.json | cfssljson -bare etcd
+
+# 回到家目录
+cd
+</code></pre><h4 id="同步证书文件"><a href="#同步证书文件" class="headerlink" title="同步证书文件"></a>同步证书文件</h4><pre><code>for NODE in lab1 lab2 lab3; do
+    echo &quot;---------- SCP Etcd certificate -=&gt; $NODE ----------&quot;
+    ssh $NODE &quot;mkdir -p /etc/etcd/ssl/&quot;
+    scp /root/ssl/{etcd.pem,etcd-key.pem,ca.pem} $NODE:/etc/etcd/ssl/
+done
+</code></pre><h3 id="安装配置Etcd"><a href="#安装配置Etcd" class="headerlink" title="安装配置Etcd"></a>安装配置Etcd</h3><h4 id="lab1-1"><a href="#lab1-1" class="headerlink" title="lab1"></a>lab1</h4><pre><code>ssh lab1 &lt;&lt;EEOOFF
+yum -y install etcd
+mkdir -p /var/lib/etcd
+cat &lt;&lt;EOF &gt;/etc/systemd/system/etcd.service
+[Unit]
+Description=Etcd Server
+After=network.target
+After=network-online.target
+Wants=network-online.target
+Documentation=https://github.com/coreos
+
+[Service]
+Type=notify
+WorkingDirectory=/var/lib/etcd/
+ExecStart=/usr/bin/etcd \
+  --name lab1 \
+  --cert-file=/etc/etcd/ssl/etcd.pem \
+  --key-file=/etc/etcd/ssl/etcd-key.pem \
+  --peer-cert-file=/etc/etcd/ssl/etcd.pem \
+  --peer-key-file=/etc/etcd/ssl/etcd-key.pem \
+  --trusted-ca-file=/etc/etcd/ssl/ca.pem \
+  --peer-trusted-ca-file=/etc/etcd/ssl/ca.pem \
+  --initial-advertise-peer-urls https://$lab1:2380 \
+  --listen-peer-urls https://$lab1:2380 \
+  --listen-client-urls https://$lab1:2379,http://127.0.0.1:2379 \
+  --advertise-client-urls https://$lab1:2379 \
+  --initial-cluster-token etcd-cluster-0 \
+  --initial-cluster lab1=https://$lab1:2380,lab2=https://$lab2:2380,lab3=https://$lab3:2380 \
+  --initial-cluster-state new \
+  --data-dir=/var/lib/etcd
+Restart=on-failure
+RestartSec=5
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
+EOF
+    systemctl daemon-reload
+    systemctl enable etcd
+EEOOFF
+</code></pre><h4 id="lab2-1"><a href="#lab2-1" class="headerlink" title="lab2"></a>lab2</h4><pre><code>ssh lab2 &lt;&lt;EEOOFF
+yum -y install etcd
+mkdir -p /var/lib/etcd
+cat &lt;&lt;EOF &gt;/etc/systemd/system/etcd.service
+[Unit]
+Description=Etcd Server
+After=network.target
+After=network-online.target
+Wants=network-online.target
+Documentation=https://github.com/coreos
+
+[Service]
+Type=notify
+WorkingDirectory=/var/lib/etcd/
+ExecStart=/usr/bin/etcd \
+  --name lab2 \
+  --cert-file=/etc/etcd/ssl/etcd.pem \
+  --key-file=/etc/etcd/ssl/etcd-key.pem \
+  --peer-cert-file=/etc/etcd/ssl/etcd.pem \
+  --peer-key-file=/etc/etcd/ssl/etcd-key.pem \
+  --trusted-ca-file=/etc/etcd/ssl/ca.pem \
+  --peer-trusted-ca-file=/etc/etcd/ssl/ca.pem \
+  --initial-advertise-peer-urls https://$lab2:2380 \
+  --listen-peer-urls https://$lab2:2380 \
+  --listen-client-urls https://$lab2:2379,http://127.0.0.1:2379 \
+  --advertise-client-urls https://$lab2:2379 \
+  --initial-cluster-token etcd-cluster-0 \
+  --initial-cluster lab1=https://$lab1:2380,lab2=https://$lab2:2380,lab3=https://$lab3:2380 \
+  --initial-cluster-state new \
+  --data-dir=/var/lib/etcd
+Restart=on-failure
+RestartSec=5
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
+EOF
+    systemctl daemon-reload
+    systemctl enable etcd
+EEOOFF
+</code></pre><h4 id="lab3-1"><a href="#lab3-1" class="headerlink" title="lab3"></a>lab3</h4><pre><code>ssh lab3 &lt;&lt;EEOOFF
+yum -y install etcd
+mkdir -p /var/lib/etcd
+cat &lt;&lt;EOF &gt;/etc/systemd/system/etcd.service
+[Unit]
+Description=Etcd Server
+After=network.target
+After=network-online.target
+Wants=network-online.target
+Documentation=https://github.com/coreos
+
+[Service]
+Type=notify
+WorkingDirectory=/var/lib/etcd/
+ExecStart=/usr/bin/etcd \
+  --name lab3 \
+  --cert-file=/etc/etcd/ssl/etcd.pem \
+  --key-file=/etc/etcd/ssl/etcd-key.pem \
+  --peer-cert-file=/etc/etcd/ssl/etcd.pem \
+  --peer-key-file=/etc/etcd/ssl/etcd-key.pem \
+  --trusted-ca-file=/etc/etcd/ssl/ca.pem \
+  --peer-trusted-ca-file=/etc/etcd/ssl/ca.pem \
+  --initial-advertise-peer-urls https://$lab3:2380 \
+  --listen-peer-urls https://$lab3:2380 \
+  --listen-client-urls https://$lab3:2379,http://127.0.0.1:2379 \
+  --advertise-client-urls https://$lab3:2379 \
+  --initial-cluster-token etcd-cluster-0 \
+--initial-cluster lab1=https://$lab1:2380,lab2=https://$lab2:2380,lab3=https://$lab3:2380 \
+  --initial-cluster-state new \
+  --data-dir=/var/lib/etcd
+Restart=on-failure
+RestartSec=5
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
+EOF
+    systemctl daemon-reload
+    systemctl enable etcd
+EEOOFF
+</code></pre><h4 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h4><pre><code>for NODE in lab1 lab2 lab3; do
+    {
+    ssh $NODE &lt;&lt;EOF
+        systemctl start etcd
+EOF
+ } &amp;
+done
+
+# 查看状态
+etcdctl --endpoints=https://$lab1:2379,https://$lab2:2379,https://$lab3:2379 \
+    --ca-file=/etc/etcd/ssl/ca.pem \
+    --cert-file=/etc/etcd/ssl/etcd.pem \
+    --key-file=/etc/etcd/ssl/etcd-key.pem  cluster-health
+</code></pre><h3 id="安装-配置-Docker"><a href="#安装-配置-Docker" class="headerlink" title="安装/配置 Docker"></a>安装/配置 Docker</h3><pre><code>while read LINE; do
+    HOST=$(echo $LINE | awk &apos;{print $2}&apos;)
+    echo &quot;--------------- $HOST ---------------&quot;
+    ssh -T $HOST &lt;&lt;EOF
+    # Docker install
+    yum -y install yum-utils device-mapper-persistent-data lvm2
+    yum-config-manager --add-repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+    yum makecache fast
+    yum -y install docker-ce
+
+    # 配置Docker 加速
+    mkdir /etc/docker
+    if [ ! -f &quot;/etc/docker/daemon.json&quot; ];then
+        echo &apos;{&apos; &gt;/etc/docker/daemon.json
+        echo &apos;    &quot;registry-mirrors&quot;: [&quot;http://3272dd08.m.daocloud.io&quot;]&apos; &gt;&gt;/etc/docker/daemon.json
+        echo &apos;}&apos; &gt;&gt;/etc/docker/daemon.json
+    fi
+
+    # 启动服务
+    systemctl start docker
+    systemctl enable docker
+
+    # 验证
+    docker info
+    docker -v
+EOF
+done &lt; ./list
+</code></pre><h3 id="安装-配置-kubelet-kubeadm-kubectl"><a href="#安装-配置-kubelet-kubeadm-kubectl" class="headerlink" title="安装/配置 kubelet kubeadm kubectl"></a>安装/配置 kubelet kubeadm kubectl</h3><pre><code>while read LINE; do
+    IP=$(echo $LINE | awk &apos;{print $1}&apos;)
+    NODE=$(echo $LINE | awk &apos;{print $2}&apos;)
+    ssh $NODE &lt;&lt;EOF
+        # 配置 kubernetes 安装源
+        echo &apos;[kubernetes]&apos; &gt; /etc/yum.repos.d/kubernetes.repo
+        echo &apos;name=Kubernetes&apos; &gt;&gt; /etc/yum.repos.d/kubernetes.repo
+        echo &apos;baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64&apos; &gt;&gt; /etc/yum.repos.d/kubernetes.repo
+        echo &apos;enabled=1&apos; &gt;&gt; /etc/yum.repos.d/kubernetes.repo
+        echo &apos;gpgcheck=1&apos; &gt;&gt; /etc/yum.repos.d/kubernetes.repo
+        echo &apos;repo_gpgcheck=1&apos; &gt;&gt; /etc/yum.repos.d/kubernetes.repo
+        echo &apos;gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg&apos; &gt;&gt; /etc/yum.repos.d/kubernetes.repo
+
+        # 安装
+        # yum install -y kubelet kubeadm kubectl
+        yum -y install kubelet-1.10.1-0.x86_64 kubeadm-1.10.1-0.x86_64 kubectl-1.10.1-0.x86_64 ipvsadm
+        systemctl enable kubelet
+        # 配置启动kubelet
+        DOCKER_CGROUPS=$(docker info | grep &apos;Cgroup&apos; | cut -d&apos; &apos; -f3)
+        echo &apos;KUBELET_EXTRA_ARGS=&quot;--cgroup-driver=$DOCKER_CGROUPS --pod-infra-container-image=registry.cn-hangzhou.aliyuncs.com/google_containers/pause-amd64:3.1&quot;&apos; &gt; /etc/sysconfig/kubelet
+
+        # 更换 kubelet 驱动
+        sed -i &apos;s/driver=systemd/driver=cgroupfs/&apos; /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+
+        # 配置kubelet使用国内可用镜像
+        # 修改/etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+        # sed -i &apos;/ExecStart=$/i Environment=&quot;KUBELET_EXTRA_ARGS=--pod-infra-container-image=registry.cn-shanghai.aliyuncs.com/gcr-k8s/pause-amd64:3.0&quot;&apos;  /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+        sed -i &apos;/ExecStart=$/i Environment=&quot;KUBELET_EXTRA_ARGS=--v=2 --fail-swap-on=false --pod-infra-container-image=registry.cn-hangzhou.aliyuncs.com/k8sth/pause-amd64:3.0&quot;&apos;  /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+
+        # 重新载入配置 启动服务
+        systemctl daemon-reload
+
+        #  命令补全
+        yum install -y bash-completion
+        source /usr/share/bash-completion/bash_completion
+        source &lt;(kubectl completion bash)
+        echo &quot;source &lt;(kubectl completion bash)&quot; &gt;&gt; ~/.bashrc
+EOF
+done &lt; ./list
+</code></pre><h3 id="初始化集群"><a href="#初始化集群" class="headerlink" title="初始化集群"></a>初始化集群</h3><h4 id="生成配置文件"><a href="#生成配置文件" class="headerlink" title="生成配置文件"></a>生成配置文件</h4><pre><code>token=$(kubeadm token generate)
+
+cat &lt;&lt;EOF &gt; config.yaml 
+apiVersion: kubeadm.k8s.io/v1alpha1
+kind: MasterConfiguration
+etcd:
+  endpoints:
+  - https://$lab1:2379
+  - https://$lab2:2379
+  - https://$lab3:2379
+  caFile: /etc/etcd/ssl/ca.pem
+  certFile: /etc/etcd/ssl/etcd.pem
+  keyFile: /etc/etcd/ssl/etcd-key.pem
+  dataDir: /var/lib/etcd
+networking:
+  podSubnet: 10.244.0.0/16
+kubernetesVersion: 1.10.0
+api:
+  advertiseAddress: &quot;$vip&quot;
+token: &quot;$token&quot;
+tokenTTL: &quot;0&quot;
+apiServerCertSANs:
+  - lab1
+  - lab2
+  - lab3
+  - $lab1
+  - $lab2
+  - $lab3
+  - $lab4
+  - $vip
+featureGates:
+  CoreDNS: true
+imageRepository: &quot;registry.cn-hangzhou.aliyuncs.com/k8sth&quot;
+EOF
+</code></pre><h4 id="初始化-lab1"><a href="#初始化-lab1" class="headerlink" title="初始化 lab1"></a>初始化 lab1</h4><pre><code># kubeadm reset
+kubeadm init --config config.yaml | tee add.node.log
+
+# 配置访问权限
+mkdir -p $HOME/.kube
+/usr/bin/cp /etc/kubernetes/admin.conf $HOME/.kube/config
+chown $(id -u):$(id -g) $HOME/.kube/config
+
+# coredns 访问异常是因为 kube-flannel 镜像未启动
+kubectl get pods --all-namespaces
+</code></pre><h4 id="部署flannel-网络"><a href="#部署flannel-网络" class="headerlink" title="部署flannel 网络"></a>部署flannel 网络</h4><pre><code># 下载 kube-flannel.yml
+wget https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+
+# 修改镜像源
+# image: registry.cn-shanghai.aliyuncs.com/gcr-k8s/flannel:v0.10.0-amd64
+sed -i &apos;s#image:.*#image: registry.cn-shanghai.aliyuncs.com/gcr-k8s/flannel:v0.10.0-amd64#&apos; kube-flannel.yml
+
+# 创建 flannel
+kubectl create -f  kube-flannel.yml
+
+# 查看状态
+kubectl get pods --all-namespaces -o wide
+</code></pre><h4 id="部署-dashboard"><a href="#部署-dashboard" class="headerlink" title="部署 dashboard"></a>部署 dashboard</h4><pre><code># 下载 kubernetes-dashboard.yaml
+wget https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
+
+# 更换镜像源
+sed -i &apos;s#image:.*#image: registry.cn-hangzhou.aliyuncs.com/k8sth/kubernetes-dashboard-amd64:v1.8.3#&apos; kubernetes-dashboard.yaml
+
+# 添加暴露端口 30000
+sed -i &quot;162a\  type: NodePort&quot; kubernetes-dashboard.yaml
+sed -i &quot;166a\      nodePort: 30000&quot; kubernetes-dashboard.yaml
+
+# 创建 dashboard
+kubectl create -f kubernetes-dashboard.yaml
+
+# 查看状态
+kubectl get pods --all-namespaces -o wide
+kubectl -n kube-system get po,svc -l k8s-app=kubernetes-dashboard
+
+# 建立一个 service account 来绑定 cluster-admin role
+kubectl -n kube-system create sa dashboard
+kubectl create clusterrolebinding dashboard --clusterrole cluster-admin --serviceaccount=kube-system:dashboard
+
+# 获取浏览器登录令牌
+# kubectl -n kube-system describe secrets $(kubectl -n kube-system get sa dashboard -o yaml | awk &apos;/dashboard-token/ {print $3}&apos;)  | awk &apos;/token:/{print $2}&apos;
+SECRET=$(kubectl -n kube-system get sa dashboard -o yaml | awk &apos;/dashboard-token/ {print $3}&apos;)
+kubectl -n kube-system describe secrets ${SECRET} | awk &apos;/token:/{print $2}&apos; | tee browser-token.log
+
+# 浏览器登录  token
+echo https://$vip:30000/#&apos;!&apos;/login
+echo &apos;#######################################################################&apos;
+cat browser-token.log
+echo &apos;#######################################################################&apos;
+</code></pre><h4 id="初始化-lab2-lab3"><a href="#初始化-lab2-lab3" class="headerlink" title="初始化 lab2 lab3"></a>初始化 lab2 lab3</h4><pre><code># 证书密码配置文件分发到lab2 lab3
+scp -r /etc/kubernetes/pki  lab2:/etc/kubernetes/
+scp -r /etc/kubernetes/pki  lab3:/etc/kubernetes/
+scp /root/config.yaml lab2:/root
+scp /root/config.yaml lab3:/root
+
+# lab2 lab3 初始化
+for NODE in lab2 lab3; do
+    ssh $NODE &lt;&lt;EOF
+        kubeadm init --config config.yaml
+        mkdir -p $HOME/.kube
+        /usr/bin/cp /etc/kubernetes/admin.conf $HOME/.kube/config
+        chown $(id -u):$(id -g) $HOME/.kube/config
+EOF
+done
+
+# 查看状态
+kubectl get svc --namespace kube-system
+kubectl get pods --all-namespaces -o wide
+
+# 查看所有节点状态
+kubectl get nodes
+kubectl get nodes -o wide
+</code></pre><h3 id="测试安装-heapster"><a href="#测试安装-heapster" class="headerlink" title="测试安装 heapster"></a>测试安装 heapster</h3><pre><code># 下载部署文件
+wget -c https://github.com/kubernetes/heapster/archive/v1.5.3.tar.gz -O heapster-1.5.3.tar.gz
+tar xvf heapster-1.5.3.tar.gz -C /tmp
+mkdir kube-heapster
+/usr/bin/cp -r /tmp/heapster-1.5.3/deploy/kube-config/{influxdb,rbac} kube-heapster/
+
+# 替换镜像源
+sed -i &quot;s#image:.*#image: registry.cn-hangzhou.aliyuncs.com/k8sth/heapster-influxdb-amd64:v1.3.3#&quot; kube-heapster/influxdb/influxdb.yaml
+sed -i &quot;s#image:.*#image: registry.cn-hangzhou.aliyuncs.com/k8sth/heapster-grafana-amd64:v4.4.3#&quot; kube-heapster/influxdb/grafana.yaml
+sed -i &quot;s#image:.*#image: registry.cn-hangzhou.aliyuncs.com/k8sth/heapster-amd64:v1.4.2#&quot; kube-heapster/influxdb/heapster.yaml
+
+# 添加暴露端口 30001
+sed -i &quot;s/# type: NodePort/type: NodePort/&quot;  kube-heapster/influxdb/grafana.yaml
+sed -i &quot;70a\    nodePort: 30001&quot;   kube-heapster/influxdb/grafana.yaml
+
+# 部署 influxdb rbac grafana
+kubectl create -f kube-heapster/influxdb/
+kubectl create -f kube-heapster/rbac/
+
+# 查看容器状态
+kubectl get pods --all-namespaces -o wide
+
+# 查看所有节点状态
+kubectl get nodes -o wide
+
+# 删除
+# kubectl delete -f kube-heapster/influxdb/
+# kubectl delete -f kube-heapster/rbac/
+
+# 浏览器打开
+echo http://192.168.150.181:3001/#&apos;!&apos;/login
+echo &apos;USER: admin  PPASSWD: admin&apos;
+</code></pre><h4 id="添加计算节点到集群-lab4-lab5-lab6"><a href="#添加计算节点到集群-lab4-lab5-lab6" class="headerlink" title="添加计算节点到集群 lab4 lab5 lab6"></a>添加计算节点到集群 lab4 lab5 lab6</h4><pre><code>export sha=$(openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2&gt;/dev/null | openssl dgst -sha256 -hex | sed &apos;s/^.* //&apos;)
+export token=$(kubeadm token list | awk &apos;{print $1}&apos; | head -n2 | tail -n1)
+for NODE in lab4 lab5 lab6; do
+    ssh $NODE &quot;kubeadm join 192.168.0.10:6443 --token $token --discovery-token-ca-cert-hash sha256:$sha&quot;
+done
+</code></pre><h4 id="kubeadm-join-重新生成-过期"><a href="#kubeadm-join-重新生成-过期" class="headerlink" title="kubeadm join 重新生成(过期)"></a>kubeadm join 重新生成(过期)</h4><pre><code># 查看 token
+kubeadm token list
+
+# 创建 token
+token=$(kubeadm token create)
+
+# 获取证书 sha256值
+sha=$(openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2&gt;/dev/null | openssl dgst -sha256 -hex | sed &apos;s/^.* //&apos;)
+
+# New kubeadm join
+# token=$(kubeadm token list | awk &apos;{print $1}&apos; | head -n2 | tail -n1)
+echo kubeadm join 192.168.0.10:6443 --token $token --discovery-token-ca-cert-hash sha256:$sha
+</code></pre>
+      
+    </div>
+    
+    
+    
+    <div>
+      
+        
+
+      
+    </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Kubernetes/" rel="tag "><i class="fa fa-tag"></i> Kubernetes</a>
+          
+            <a href="/tags/Docker/" rel="tag "><i class="fa fa-tag"></i> Docker</a>
+          
+            <a href="/tags/keepalived/" rel="tag "><i class="fa fa-tag"></i> keepalived</a>
+          
+            <a href="/tags/Kubernetes集群/" rel="tag "><i class="fa fa-tag"></i> Kubernetes集群</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div id="needsharebutton-postbottom">
+            <span class="btn">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </span>
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/bd77.html" rel="next" title="软件收藏">
+                <i class="fa fa-chevron-left"></i> 软件收藏
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/32aa.html" rel="prev" title="CentOS7 更改网卡名称">
+                CentOS7 更改网卡名称 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="亦 漩" />
+            
+              <p class="site-author-name" itemprop="name">亦 漩</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">110</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/bookgh" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://coding.net/u/yx571304" target="_blank" title="Coding">
+                      
+                        <i class="fa fa-fw fa-git"></i>Coding</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://skyisfuck.github.io" title="Peng" target="_blank">Peng</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Kubernetes-V1-10-集群文档"><span class="nav-number">1.</span> <span class="nav-text">Kubernetes V1.10 集群文档</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化配置变量"><span class="nav-number">1.0.1.</span> <span class="nav-text">初始化配置变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置ssh免密码登录"><span class="nav-number">1.0.2.</span> <span class="nav-text">配置ssh免密码登录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化环境"><span class="nav-number">1.0.3.</span> <span class="nav-text">初始化环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-配置-keepalived"><span class="nav-number">1.0.4.</span> <span class="nav-text">安装/配置 keepalived</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#lab1"><span class="nav-number">1.0.4.1.</span> <span class="nav-text">lab1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lab2"><span class="nav-number">1.0.4.2.</span> <span class="nav-text">lab2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lab3"><span class="nav-number">1.0.4.3.</span> <span class="nav-text">lab3</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看状态"><span class="nav-number">1.0.4.4.</span> <span class="nav-text">查看状态</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成证书文件"><span class="nav-number">1.0.5.</span> <span class="nav-text">生成证书文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装证书生成工具"><span class="nav-number">1.0.5.1.</span> <span class="nav-text">安装证书生成工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#生成证书文件-1"><span class="nav-number">1.0.5.2.</span> <span class="nav-text">生成证书文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#同步证书文件"><span class="nav-number">1.0.5.3.</span> <span class="nav-text">同步证书文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装配置Etcd"><span class="nav-number">1.0.6.</span> <span class="nav-text">安装配置Etcd</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#lab1-1"><span class="nav-number">1.0.6.1.</span> <span class="nav-text">lab1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lab2-1"><span class="nav-number">1.0.6.2.</span> <span class="nav-text">lab2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lab3-1"><span class="nav-number">1.0.6.3.</span> <span class="nav-text">lab3</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动服务"><span class="nav-number">1.0.6.4.</span> <span class="nav-text">启动服务</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-配置-Docker"><span class="nav-number">1.0.7.</span> <span class="nav-text">安装/配置 Docker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-配置-kubelet-kubeadm-kubectl"><span class="nav-number">1.0.8.</span> <span class="nav-text">安装/配置 kubelet kubeadm kubectl</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化集群"><span class="nav-number">1.0.9.</span> <span class="nav-text">初始化集群</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#生成配置文件"><span class="nav-number">1.0.9.1.</span> <span class="nav-text">生成配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#初始化-lab1"><span class="nav-number">1.0.9.2.</span> <span class="nav-text">初始化 lab1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#部署flannel-网络"><span class="nav-number">1.0.9.3.</span> <span class="nav-text">部署flannel 网络</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#部署-dashboard"><span class="nav-number">1.0.9.4.</span> <span class="nav-text">部署 dashboard</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#初始化-lab2-lab3"><span class="nav-number">1.0.9.5.</span> <span class="nav-text">初始化 lab2 lab3</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试安装-heapster"><span class="nav-number">1.0.10.</span> <span class="nav-text">测试安装 heapster</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#添加计算节点到集群-lab4-lab5-lab6"><span class="nav-number">1.0.10.1.</span> <span class="nav-text">添加计算节点到集群 lab4 lab5 lab6</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#kubeadm-join-重新生成-过期"><span class="nav-number">1.0.10.2.</span> <span class="nav-text">kubeadm join 重新生成(过期)</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">亦 漩</span>
+
+  
+  <br/><span><i class="fa fa-bomb"></i></span><span id="showDays"></span>
+</div>
+
+
+
+
+
+
+
+
+
+<script>
+  var seconds = 1000;
+  var minutes = seconds * 60;
+  var hours = minutes * 60;
+  var days = hours * 24;
+  var years = days * 365;
+  var birthDay = Date.UTC(2017,12,07,10,00,00); // 这里设置建站时间
+  setInterval(function() {
+    var today = new Date();
+    var todayYear = today.getFullYear();
+    var todayMonth = today.getMonth()+1;
+    var todayDate = today.getDate();
+    var todayHour = today.getHours();
+    var todayMinute = today.getMinutes();
+    var todaySecond = today.getSeconds();
+    var now = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+    var diff = now - birthDay;
+    var diffYears = Math.floor(diff/years);
+    var diffDays = Math.floor((diff/days)-diffYears*365);
+    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById('showDays').innerHTML="本站已运行 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+  }, 1000);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+      <div id="needsharebutton-float">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'DWwnpdDBrLDMI8CKf8OXopJu-gzGzoHsz',
+        appKey: '7sfOhetJ1Wftp4W7MF0xdPOw',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "default";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+      flOptions = {};
+      
+          flOptions.iconStyle = "default";
+      
+          flOptions.boxForm = "horizontal";
+      
+          flOptions.position = "middleRight";
+      
+          flOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-float', flOptions);
+    
+  </script>
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+
+</body>
+</html>

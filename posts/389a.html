@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="windows,AD," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="活动目录（Active Directory）是面向Windows Standard Server、Windows Enterprise Server以及 Windows Datacenter Server的目录服务。活动目录服务是Windows Server 2000操作系统平台的中心组件之一。理解活动目录对于理解Windows Server 2000的整体价值是非常重要的。这篇关于活动目录服务">
+<meta name="keywords" content="windows,AD">
+<meta property="og:type" content="article">
+<meta property="og:title" content="主域控Down机不可恢复,辅助域控如何抢占角色">
+<meta property="og:url" content="https://home.onlycloud.xin/posts/389a.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="活动目录（Active Directory）是面向Windows Standard Server、Windows Enterprise Server以及 Windows Datacenter Server的目录服务。活动目录服务是Windows Server 2000操作系统平台的中心组件之一。理解活动目录对于理解Windows Server 2000的整体价值是非常重要的。这篇关于活动目录服务">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-27T12:11:37.643Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="主域控Down机不可恢复,辅助域控如何抢占角色">
+<meta name="twitter:description" content="活动目录（Active Directory）是面向Windows Standard Server、Windows Enterprise Server以及 Windows Datacenter Server的目录服务。活动目录服务是Windows Server 2000操作系统平台的中心组件之一。理解活动目录对于理解Windows Server 2000的整体价值是非常重要的。这篇关于活动目录服务">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://home.onlycloud.xin/posts/389a.html"/>
+
+
+
+
+
+  <title>主域控Down机不可恢复,辅助域控如何抢占角色 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-python">
+          <a href="/python/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            python
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-logs">
+          <a href="/posts/log.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Logs
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://home.onlycloud.xin/posts/389a.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="亦 漩">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">主域控Down机不可恢复,辅助域控如何抢占角色</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-17T19:01:04+08:00">
+                2018-01-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/windows/" itemprop="url" rel="index">
+                    <span itemprop="name">windows</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/389a.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/posts/389a.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,591
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  6
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>活动目录（Active Directory）是面向<code>Windows Standard Server</code>、<code>Windows Enterprise Server</code>以及 <code>Windows Datacenter Server</code>的目录服务。活动目录服务是<code>Windows Server 2000</code>操作系统平台的中心组件之一。理解活动目录对于理解<code>Windows Server 2000</code>的整体价值是非常重要的。这篇关于活动目录服务所涉及概念和技术的介绍文章描述了活动目录的用途，提供了对其工作原理的概述，并概括了该服务为不同组织和机构提供的关键性商务及技术便利</p>
+</blockquote>
+<h4 id="Active-Directory结构"><a href="#Active-Directory结构" class="headerlink" title="Active Directory结构"></a><code>Active Directory</code>结构</h4><blockquote>
+<p>Active Directory 定义了五种操作主机角色（又称ＦＳＭＯ）： </p>
+</blockquote>
+<pre><code>1.架构主机 schema master
+2..域命名主机 domain naming master
+3.相对标识号 (RID) 主机 RID master
+4.主域控制器模拟器 (PDCE) 
+5.基础结构主机 infrastructure master
+</code></pre><blockquote>
+<p>每种操作主机角色负担不同的工作，具有不同的功能：</p>
+</blockquote>
+<p>1.架构主机<br>具有架构主机角色的 DC 是可以更新目录架构的唯一 DC。这些架构更新会从架构主机复制到目录林中的所有其它域控制器中。 架构主机是基于目录林的，整个目录林中只有一个架构主机。</p>
+<p>2.域命名主机<br>具有域命名主机角色的 DC 是可以执行以下任务的唯一 DC：<br>向目录林中添加新域。<br>从目录林中删除现有的域。<br>添加或删除描述外部目录的交叉引用对象。 </p>
+<p>3.相对标识号 (RID) 主机<br>此操作主机负责向其它 DC 分配 RID 池。只有一个服务器执行此任务。在创建安全主体（例如用户、<br>组或计算机）时，需要将 RID 与域范围内的标识符相结合，以创建唯一的安全标识符 (SID)。 每一个 Windows 2000 DC 都会收到用于创建对象的 RID 池（默认为 512）。RID 主机通过分配不同的池来确保这些 ID 在每一个 DC 上都是唯一的。通过 RID 主机，还可以在同一目录林中的不同域之间移动所有对象。</p>
+<p>域命名主机是基于目录林的，整个目录林中只有一个域命名主机。相对标识号（RID）主机是基于域的，目录林中的每个域都有自己的相对标识号（RID）主机</p>
+<p>4.PDCE<br>主域控制器模拟器提供以下主要功能：<br>向后兼容低级客户端和服务器，允许 Windows NT4.0 备份域控制器 (BDC) 加入到新的 Windows 2000 环境。 本机 Windows 2000 环境将密码更改转发到 PDCE。每当 DC 验证密码失败后，它会与 PDCE 取得联系，以查看该密码是否可以在那里得到验证，也许其原因在于密码更改还没有被复制到验证 DC 中。<br>时间同步 — 目录林中各个域的 PDCE 都会与目录林的根域中的 PDCE 进行同步。<br>PDCE是基于域的，目录林中的每个域都有自己的PDCE。 </p>
+<p>5.基础结构主机<br>基础结构主机确保所有域间操作对象的一致性。当引用另一个域中的对象时，此引用包含该对象的<br>全局唯一标识符 (GUID)、安全标识符 (SID) 和可分辨的名称 (DN)。如果被引用的对象移动，则在域中担<br>当结构主机角色的 DC 会负责更新该域中跨域对象引用中的 SID 和 DN。<br>基础结构主机是基于域的，目录林中的每个域都有自己的基础结构主机<br>默认，这五种ＦＭＳＯ存在于目录林根域的第一台DC（主域控制器）上，而子域中的相对标识号 (RID) 主机、PDCE 、基础结构主机存在于子域中的第一台DC。</p>
+<h4 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h4><blockquote>
+<p>系统环境<code>windows Server 2008/2012</code></p>
+</blockquote>
+<pre><code>Master计算机全名: owone.test.com
+Slave计算机全名: owtwo.test.com
+</code></pre><h4 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h4><p>1.主从域DNS必须与AD集成<br>2.主从域DC类型必须都是全局编录</p>
+<h4 id="夺取角色"><a href="#夺取角色" class="headerlink" title="夺取角色"></a>夺取角色</h4><blockquote>
+<p><code>WIN+R</code>输入CMD然后点击确定</p>
+</blockquote>
+<h5 id="查看五大角色"><a href="#查看五大角色" class="headerlink" title="查看五大角色"></a>查看五大角色</h5><pre><code>netdom query fsmo
+</code></pre><h5 id="进入ntdsutil模式"><a href="#进入ntdsutil模式" class="headerlink" title="进入ntdsutil模式"></a>进入ntdsutil模式</h5><pre><code>ntdsutil
+</code></pre><h5 id="管理-NTDS-角色所有者令牌"><a href="#管理-NTDS-角色所有者令牌" class="headerlink" title="管理 NTDS 角色所有者令牌"></a>管理 NTDS 角色所有者令牌</h5><pre><code>roles
+</code></pre><h5 id="连接到一个特定-AD-DC-LDS-实例"><a href="#连接到一个特定-AD-DC-LDS-实例" class="headerlink" title="连接到一个特定 AD DC/LDS 实例"></a>连接到一个特定 AD DC/LDS 实例</h5><pre><code>connection
+</code></pre><h5 id="连接到服务器、DNS"><a href="#连接到服务器、DNS" class="headerlink" title="连接到服务器、DNS"></a>连接到服务器、DNS</h5><blockquote>
+<p>当前能正常运行的域控</p>
+</blockquote>
+<pre><code>connect to server owtwo.test.com
+</code></pre><h5 id="返回上一个菜单"><a href="#返回上一个菜单" class="headerlink" title="返回上一个菜单"></a>返回上一个菜单</h5><pre><code>quit
+</code></pre><h5 id="在已连接的服务器上覆盖-RID-角色"><a href="#在已连接的服务器上覆盖-RID-角色" class="headerlink" title="在已连接的服务器上覆盖 RID 角色"></a>在已连接的服务器上覆盖 RID 角色</h5><pre><code>seize rid master
+</code></pre><h5 id="在已连接的服务器上覆盖-PDC-角色"><a href="#在已连接的服务器上覆盖-PDC-角色" class="headerlink" title="在已连接的服务器上覆盖 PDC 角色"></a>在已连接的服务器上覆盖 PDC 角色</h5><pre><code>seize pdc
+</code></pre><h5 id="覆盖已连接的服务器上的命名主机角色"><a href="#覆盖已连接的服务器上的命名主机角色" class="headerlink" title="覆盖已连接的服务器上的命名主机角色"></a>覆盖已连接的服务器上的命名主机角色</h5><pre><code>seize naming master
+</code></pre><h5 id="在已连接的服务器上覆盖结构角色"><a href="#在已连接的服务器上覆盖结构角色" class="headerlink" title="在已连接的服务器上覆盖结构角色"></a>在已连接的服务器上覆盖结构角色</h5><pre><code>seize infrastructure master
+</code></pre><h5 id="在已连接的服务器上覆盖架构角色"><a href="#在已连接的服务器上覆盖架构角色" class="headerlink" title="在已连接的服务器上覆盖架构角色"></a>在已连接的服务器上覆盖架构角色</h5><pre><code>seize schema master
+</code></pre><h5 id="返回上一个菜单-退出"><a href="#返回上一个菜单-退出" class="headerlink" title="返回上一个菜单,退出"></a>返回上一个菜单,退出</h5><pre><code>quit
+quit
+</code></pre><h5 id="查看五大角色-1"><a href="#查看五大角色-1" class="headerlink" title="查看五大角色"></a>查看五大角色</h5><pre><code>netdom query fsmo
+</code></pre><h4 id="删除残余服务器信息"><a href="#删除残余服务器信息" class="headerlink" title="删除残余服务器信息"></a>删除残余服务器信息</h4><blockquote>
+<p><code>WIN+R</code>输入CMD然后点击确定</p>
+</blockquote>
+<h5 id="进入ntdsutil模式-1"><a href="#进入ntdsutil模式-1" class="headerlink" title="进入ntdsutil模式"></a>进入ntdsutil模式</h5><pre><code>ntdsutil
+</code></pre><h5 id="清理不使用的服务器的对象"><a href="#清理不使用的服务器的对象" class="headerlink" title="清理不使用的服务器的对象"></a>清理不使用的服务器的对象</h5><pre><code>metadata cleanup
+</code></pre><h5 id="选择的站点，服务器，域，角色和命名上下文"><a href="#选择的站点，服务器，域，角色和命名上下文" class="headerlink" title="选择的站点，服务器，域，角色和命名上下文"></a>选择的站点，服务器，域，角色和命名上下文</h5><pre><code>select operation target
+</code></pre><h5 id="连接到一个特定-AD-DC-LDS-实例-1"><a href="#连接到一个特定-AD-DC-LDS-实例-1" class="headerlink" title="连接到一个特定 AD DC/LDS 实例"></a>连接到一个特定 AD DC/LDS 实例</h5><pre><code>connections
+</code></pre><h5 id="连接到服务器、DNS-1"><a href="#连接到服务器、DNS-1" class="headerlink" title="连接到服务器、DNS"></a>连接到服务器、DNS</h5><blockquote>
+<p>当前能正常运行的域控</p>
+</blockquote>
+<pre><code>connect to server owtwo.test.com
+</code></pre><h5 id="返回上一个菜单-1"><a href="#返回上一个菜单-1" class="headerlink" title="返回上一个菜单"></a>返回上一个菜单</h5><pre><code>quit
+</code></pre><h5 id="在企业中列出站点"><a href="#在企业中列出站点" class="headerlink" title="在企业中列出站点"></a>在企业中列出站点</h5><pre><code>list sites
+</code></pre><h5 id="将编号-0-站点定为所选站点"><a href="#将编号-0-站点定为所选站点" class="headerlink" title="将编号 0 站点定为所选站点"></a>将编号 0 站点定为所选站点</h5><pre><code>select site 0
+</code></pre><h5 id="列出所选站点中的域"><a href="#列出所选站点中的域" class="headerlink" title="列出所选站点中的域"></a>列出所选站点中的域</h5><pre><code>List domains in site
+</code></pre><h5 id="将编号-0-域定为所选域"><a href="#将编号-0-域定为所选域" class="headerlink" title="将编号 0 域定为所选域"></a>将编号 0 域定为所选域</h5><pre><code>select domain 0
+</code></pre><h5 id="列出所选域和站点中的服务器"><a href="#列出所选域和站点中的服务器" class="headerlink" title="列出所选域和站点中的服务器"></a>列出所选域和站点中的服务器</h5><pre><code>List servers for domain in site
+</code></pre><h5 id="将编号-0-服务器定为所选服务器"><a href="#将编号-0-服务器定为所选服务器" class="headerlink" title="将编号 0 服务器定为所选服务器"></a>将编号 0 服务器定为所选服务器</h5><blockquote>
+<p>选择需要删除的服务器</p>
+</blockquote>
+<pre><code>select server 0
+</code></pre><h5 id="返回上一个菜单-2"><a href="#返回上一个菜单-2" class="headerlink" title="返回上一个菜单"></a>返回上一个菜单</h5><pre><code>quit
+</code></pre><h5 id="删除所选定的服务器"><a href="#删除所选定的服务器" class="headerlink" title="删除所选定的服务器"></a>删除所选定的服务器</h5><pre><code>Remove selected server
+</code></pre><h5 id="返回上一个菜单-退出-1"><a href="#返回上一个菜单-退出-1" class="headerlink" title="返回上一个菜单,退出"></a>返回上一个菜单,退出</h5><pre><code>quit
+quit
+</code></pre><h4 id="code"><a href="#code" class="headerlink" title="code"></a>code</h4><h5 id="夺取5大角色"><a href="#夺取5大角色" class="headerlink" title="夺取5大角色"></a>夺取5大角色</h5><figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">netdom query fsmo</span><br><span class="line">ntdsutil</span><br><span class="line">roles</span><br><span class="line">connection</span><br><span class="line">connect to server owone.test.com</span><br><span class="line">quit</span><br><span class="line">seize rid master</span><br><span class="line">seize pdc</span><br><span class="line">seize naming master</span><br><span class="line">seize infrastructure master</span><br><span class="line">seize schema master</span><br><span class="line">quit</span><br><span class="line">quit</span><br><span class="line">netdom query fsmo</span><br></pre></td></tr></table></figure>
+<h5 id="删除残余服务器信息-1"><a href="#删除残余服务器信息-1" class="headerlink" title="删除残余服务器信息"></a>删除残余服务器信息</h5><blockquote>
+<p>不可直接复制粘贴(注意选择的服务器)</p>
+</blockquote>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">ntdsutil</span><br><span class="line">metadata cleanup</span><br><span class="line">select operation target</span><br><span class="line">connections</span><br><span class="line">connect to server owtwo.test.com</span><br><span class="line">quit</span><br><span class="line">list sites</span><br><span class="line">select site <span class="number">0</span></span><br><span class="line">List domains <span class="keyword">in</span> site</span><br><span class="line">select domain <span class="number">0</span></span><br><span class="line">List servers <span class="keyword">for</span> domain <span class="keyword">in</span> site</span><br><span class="line">select server <span class="number">0</span></span><br><span class="line">quit</span><br><span class="line">Remove selected server</span><br><span class="line">quit</span><br><span class="line">quit</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+    <div>
+      
+        
+
+      
+    </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/windows/" rel="tag "><i class="fa fa-tag"></i> windows</a>
+          
+            <a href="/tags/AD/" rel="tag "><i class="fa fa-tag"></i> AD</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div id="needsharebutton-postbottom">
+            <span class="btn">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </span>
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/6e0e.html" rel="next" title="ssh,scp使用expect自动处理密码">
+                <i class="fa fa-chevron-left"></i> ssh,scp使用expect自动处理密码
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/1ab8.html" rel="prev" title="Cobbler自动化部署">
+                Cobbler自动化部署 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="亦 漩" />
+            
+              <p class="site-author-name" itemprop="name">亦 漩</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">110</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/bookgh" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://coding.net/u/yx571304" target="_blank" title="Coding">
+                      
+                        <i class="fa fa-fw fa-git"></i>Coding</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://skyisfuck.github.io" title="Peng" target="_blank">Peng</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Active-Directory结构"><span class="nav-number">1.</span> <span class="nav-text">Active Directory结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实验环境"><span class="nav-number">2.</span> <span class="nav-text">实验环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#前提条件"><span class="nav-number">3.</span> <span class="nav-text">前提条件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#夺取角色"><span class="nav-number">4.</span> <span class="nav-text">夺取角色</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#查看五大角色"><span class="nav-number">4.1.</span> <span class="nav-text">查看五大角色</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#进入ntdsutil模式"><span class="nav-number">4.2.</span> <span class="nav-text">进入ntdsutil模式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#管理-NTDS-角色所有者令牌"><span class="nav-number">4.3.</span> <span class="nav-text">管理 NTDS 角色所有者令牌</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#连接到一个特定-AD-DC-LDS-实例"><span class="nav-number">4.4.</span> <span class="nav-text">连接到一个特定 AD DC/LDS 实例</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#连接到服务器、DNS"><span class="nav-number">4.5.</span> <span class="nav-text">连接到服务器、DNS</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#返回上一个菜单"><span class="nav-number">4.6.</span> <span class="nav-text">返回上一个菜单</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#在已连接的服务器上覆盖-RID-角色"><span class="nav-number">4.7.</span> <span class="nav-text">在已连接的服务器上覆盖 RID 角色</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#在已连接的服务器上覆盖-PDC-角色"><span class="nav-number">4.8.</span> <span class="nav-text">在已连接的服务器上覆盖 PDC 角色</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#覆盖已连接的服务器上的命名主机角色"><span class="nav-number">4.9.</span> <span class="nav-text">覆盖已连接的服务器上的命名主机角色</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#在已连接的服务器上覆盖结构角色"><span class="nav-number">4.10.</span> <span class="nav-text">在已连接的服务器上覆盖结构角色</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#在已连接的服务器上覆盖架构角色"><span class="nav-number">4.11.</span> <span class="nav-text">在已连接的服务器上覆盖架构角色</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#返回上一个菜单-退出"><span class="nav-number">4.12.</span> <span class="nav-text">返回上一个菜单,退出</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查看五大角色-1"><span class="nav-number">4.13.</span> <span class="nav-text">查看五大角色</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除残余服务器信息"><span class="nav-number">5.</span> <span class="nav-text">删除残余服务器信息</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#进入ntdsutil模式-1"><span class="nav-number">5.1.</span> <span class="nav-text">进入ntdsutil模式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#清理不使用的服务器的对象"><span class="nav-number">5.2.</span> <span class="nav-text">清理不使用的服务器的对象</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#选择的站点，服务器，域，角色和命名上下文"><span class="nav-number">5.3.</span> <span class="nav-text">选择的站点，服务器，域，角色和命名上下文</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#连接到一个特定-AD-DC-LDS-实例-1"><span class="nav-number">5.4.</span> <span class="nav-text">连接到一个特定 AD DC/LDS 实例</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#连接到服务器、DNS-1"><span class="nav-number">5.5.</span> <span class="nav-text">连接到服务器、DNS</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#返回上一个菜单-1"><span class="nav-number">5.6.</span> <span class="nav-text">返回上一个菜单</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#在企业中列出站点"><span class="nav-number">5.7.</span> <span class="nav-text">在企业中列出站点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#将编号-0-站点定为所选站点"><span class="nav-number">5.8.</span> <span class="nav-text">将编号 0 站点定为所选站点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#列出所选站点中的域"><span class="nav-number">5.9.</span> <span class="nav-text">列出所选站点中的域</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#将编号-0-域定为所选域"><span class="nav-number">5.10.</span> <span class="nav-text">将编号 0 域定为所选域</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#列出所选域和站点中的服务器"><span class="nav-number">5.11.</span> <span class="nav-text">列出所选域和站点中的服务器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#将编号-0-服务器定为所选服务器"><span class="nav-number">5.12.</span> <span class="nav-text">将编号 0 服务器定为所选服务器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#返回上一个菜单-2"><span class="nav-number">5.13.</span> <span class="nav-text">返回上一个菜单</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#删除所选定的服务器"><span class="nav-number">5.14.</span> <span class="nav-text">删除所选定的服务器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#返回上一个菜单-退出-1"><span class="nav-number">5.15.</span> <span class="nav-text">返回上一个菜单,退出</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#code"><span class="nav-number">6.</span> <span class="nav-text">code</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#夺取5大角色"><span class="nav-number">6.1.</span> <span class="nav-text">夺取5大角色</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#删除残余服务器信息-1"><span class="nav-number">6.2.</span> <span class="nav-text">删除残余服务器信息</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">亦 漩</span>
+
+  
+  <br/><span><i class="fa fa-bomb"></i></span><span id="showDays"></span>
+</div>
+
+
+
+
+
+
+
+
+
+<script>
+  var seconds = 1000;
+  var minutes = seconds * 60;
+  var hours = minutes * 60;
+  var days = hours * 24;
+  var years = days * 365;
+  var birthDay = Date.UTC(2017,12,07,10,00,00); // 这里设置建站时间
+  setInterval(function() {
+    var today = new Date();
+    var todayYear = today.getFullYear();
+    var todayMonth = today.getMonth()+1;
+    var todayDate = today.getDate();
+    var todayHour = today.getHours();
+    var todayMinute = today.getMinutes();
+    var todaySecond = today.getSeconds();
+    var now = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+    var diff = now - birthDay;
+    var diffYears = Math.floor(diff/years);
+    var diffDays = Math.floor((diff/days)-diffYears*365);
+    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById('showDays').innerHTML="本站已运行 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+  }, 1000);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+      <div id="needsharebutton-float">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'DWwnpdDBrLDMI8CKf8OXopJu-gzGzoHsz',
+        appKey: '7sfOhetJ1Wftp4W7MF0xdPOw',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "default";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+      flOptions = {};
+      
+          flOptions.iconStyle = "default";
+      
+          flOptions.boxForm = "horizontal";
+      
+          flOptions.position = "middleRight";
+      
+          flOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-float', flOptions);
+    
+  </script>
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+
+</body>
+</html>

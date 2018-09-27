@@ -1,0 +1,1638 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="docker,build," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="Docker 指令 COPY 复制文件 COPY &amp;lt;源路径&amp;gt;… &amp;lt;目标路径&amp;gt; COPY [“&amp;lt;源路径1&amp;gt;”,… “&amp;lt;目标路径&amp;gt;”]  COPY package.json /usr/src/app/ COPY hom* /mydir/ COPY hom?.txt /mydir/  &amp;lt;目标路径&amp;gt; 可以是容器内的绝对路径，也可以是相对于工作目录">
+<meta name="keywords" content="docker,build">
+<meta property="og:type" content="article">
+<meta property="og:title" content="构建自己的 Docker镜像">
+<meta property="og:url" content="https://home.onlycloud.xin/posts/871a.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Docker 指令 COPY 复制文件 COPY &amp;lt;源路径&amp;gt;… &amp;lt;目标路径&amp;gt; COPY [“&amp;lt;源路径1&amp;gt;”,… “&amp;lt;目标路径&amp;gt;”]  COPY package.json /usr/src/app/ COPY hom* /mydir/ COPY hom?.txt /mydir/  &amp;lt;目标路径&amp;gt; 可以是容器内的绝对路径，也可以是相对于工作目录">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-27T12:11:42.119Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="构建自己的 Docker镜像">
+<meta name="twitter:description" content="Docker 指令 COPY 复制文件 COPY &amp;lt;源路径&amp;gt;… &amp;lt;目标路径&amp;gt; COPY [“&amp;lt;源路径1&amp;gt;”,… “&amp;lt;目标路径&amp;gt;”]  COPY package.json /usr/src/app/ COPY hom* /mydir/ COPY hom?.txt /mydir/  &amp;lt;目标路径&amp;gt; 可以是容器内的绝对路径，也可以是相对于工作目录">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://home.onlycloud.xin/posts/871a.html"/>
+
+
+
+
+
+  <title>构建自己的 Docker镜像 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-python">
+          <a href="/python/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            python
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-logs">
+          <a href="/posts/log.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Logs
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://home.onlycloud.xin/posts/871a.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="亦 漩">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">构建自己的 Docker镜像</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-17T18:02:44+08:00">
+                2018-05-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/docker/" itemprop="url" rel="index">
+                    <span itemprop="name">docker</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/871a.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/posts/871a.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3,726
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  15
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Docker-指令"><a href="#Docker-指令" class="headerlink" title="Docker 指令"></a>Docker 指令</h3><hr>
+<h4 id="COPY-复制文件"><a href="#COPY-复制文件" class="headerlink" title="COPY 复制文件"></a>COPY 复制文件</h4><ul>
+<li>COPY &lt;源路径&gt;… &lt;目标路径&gt;</li>
+<li>COPY [“&lt;源路径1&gt;”,… “&lt;目标路径&gt;”]</li>
+</ul>
+<pre><code>COPY package.json /usr/src/app/
+COPY hom* /mydir/
+COPY hom?.txt /mydir/
+</code></pre><blockquote>
+<p>&lt;目标路径&gt; 可以是容器内的绝对路径，也可以是相对于工作目录的相对路径（工作目录可以用 WORKDIR 指令来指定）。目标路径不需要事先创建，如果目录不存在会在复制文件前先行创建缺失目录。使用 COPY 指令，源文件的各种元数据都会保留。比如读、写、执行权限、文件变更时间等。   </p>
+</blockquote>
+<hr>
+<h4 id="ADD-更高级的复制"><a href="#ADD-更高级的复制" class="headerlink" title="ADD 更高级的复制"></a>ADD 更高级的复制</h4><ul>
+<li>ADD 指令和 COPY 的格式和性质基本一致。但是在 COPY 基础上增加了一些功能。如果&lt;源路径&gt;是 url Docker引擎将自动下载，并放到&lt;目标路径&gt;文件权限 600 如果 &lt;源路径&gt; 为一个 tar 压缩文件的话，压缩格式为 gzip, bzip2 以及 xz 的情况下，ADD 指令将会自动解压缩这个压缩文件到 &lt;目标路径&gt; 去</li>
+</ul>
+<pre><code>ADD ubuntu-xenial-core-cloudimg-amd64-root.tar.gz /
+</code></pre><hr>
+<h4 id="CMD-容器启动命令"><a href="#CMD-容器启动命令" class="headerlink" title="CMD 容器启动命令"></a>CMD 容器启动命令</h4><ul>
+<li>shell 格式：</li>
+</ul>
+<pre><code>CMD &lt;命令&gt;
+</code></pre><ul>
+<li>exec 格式：</li>
+</ul>
+<pre><code>CMD [&quot;可执行文件&quot;, &quot;参数1&quot;, &quot;参数2&quot;...]
+</code></pre><ul>
+<li><p>参数列表格式：CMD [“参数1”, “参数2”…]。在指定了 ENTRYPOINT 指令后，用 CMD 指定具体的参数。</p>
+</li>
+<li><p>Docker 不是虚拟机，容器中的应用都应该以前台执行，而不是像虚拟机、物理机里面那样，用 upstart/systemd 去启动后台服务，容器内没有后台服务的概念。例如容器启动后开启 nginx，直接执行 nginx 可执行文件，并且要求以前台形式运行。比如：</p>
+</li>
+</ul>
+<pre><code>CMD [&quot;nginx&quot;, &quot;-g&quot;, &quot;daemon off;&quot;]
+</code></pre><hr>
+<h4 id="ENTRYPOINT-入口点"><a href="#ENTRYPOINT-入口点" class="headerlink" title="ENTRYPOINT 入口点"></a>ENTRYPOINT 入口点</h4><ul>
+<li>ENTRYPOINT 的目的和 CMD 一样，都是在指定容器启动程序及参数。ENTRYPOINT 在运行时也可以替代，不过比 CMD 要略显繁琐，需要通过 docker run 的参数 –entrypoint 来指定。当指定了 ENTRYPOINT 后，CMD 的含义就发生了改变，不再是直接的运行其命令，而是将 CMD 的内容作为参数传给 ENTRYPOINT 指令，换句话说实际执行时，将变为：</li>
+</ul>
+<pre><code>&lt;ENTRYPOINT&gt; &quot;&lt;CMD&gt;&quot;
+</code></pre><h5 id="场景一：让镜像变成像命令一样使用"><a href="#场景一：让镜像变成像命令一样使用" class="headerlink" title="场景一：让镜像变成像命令一样使用"></a>场景一：让镜像变成像命令一样使用</h5><ul>
+<li>假设我们需要一个得知自己当前公网 IP 的镜像，那么可以先用 CMD 来实现：</li>
+</ul>
+<pre><code>FROM centos
+RUN yum -y update \
+    &amp;&amp; yum install -y curl \
+    &amp;&amp; yum clean all \
+    &amp;&amp; rm -rf /var/cache/yum
+CMD [ &quot;curl&quot;, &quot;-s&quot;, &quot;http://ip.cn&quot; ]
+</code></pre><ul>
+<li>假如我们使用 docker build -t myip . 来构建镜像的话，如果我们需要查询当前公网 IP，只需要执行：</li>
+</ul>
+<pre><code>docker run myip
+当前 IP：221.234.131.117 来自：湖北省武汉市 电信
+</code></pre><ul>
+<li>如果我们希望加参数呢？比如从上面的 CMD 中可以看到实质的命令是 curl，那么如果我们希望显示 HTTP 头信息，就需要加上 -i 参数。那么我们在 Dockerfile 文件中用 ENTRYPOINT 来实现这个镜像：</li>
+</ul>
+<pre><code>FROM centos
+RUN yum -y update \
+    &amp;&amp; yum install -y curl \
+    &amp;&amp; yum clean all \
+    &amp;&amp; rm -rf /var/cache/yum
+ENTRYPOINT [ &quot;curl&quot;, &quot;-s&quot;, &quot;http://ip.cn&quot; ]
+</code></pre><ul>
+<li>这次我们再来尝试直接使用 docker run myip -i：</li>
+</ul>
+<pre><code>docker run myip -i
+HTTP/1.1 200 OK
+Date: Wed, 16 May 2018 09:37:17 GMT
+Content-Type: text/html; charset=UTF-8
+Transfer-Encoding: chunked
+Connection: keep-alive
+Set-Cookie: __cfduid=d496a06be8fc34f0b942bd80c653a18081526463437; expires=Thu, 16-May-19 09:37:17 GMT; path=/; domain=.ip.cn; HttpOnly
+Server: cloudflare
+CF-RAY: 41bcdd62e5a36d6c-SJC
+
+当前 IP：221.234.131.117 来自：湖北省武汉市 电信
+</code></pre><h5 id="场景二：应用运行前的准备工作"><a href="#场景二：应用运行前的准备工作" class="headerlink" title="场景二：应用运行前的准备工作"></a>场景二：应用运行前的准备工作</h5><ul>
+<li><p>启动容器就是启动主进程，但有些时候，启动主进程前，需要一些准备工作。</p>
+</li>
+<li><p>比如 mysql 类的数据库，可能需要一些数据库配置、初始化的工作，这些工作要在最终的 mysql 服务器运行之前解决。</p>
+</li>
+<li><p>此外，可能希望避免使用 root 用户去启动服务，从而提高安全性，而在启动服务前还需要以 root 身份执行一些必要的准备工作，最后切换到服务用户身份启动服务。或者除了服务外，其它命令依旧可以使用 root 身份执行，方便调试等。</p>
+</li>
+<li><p>这些准备工作是和容器 CMD 无关的，无论 CMD 为什么，都需要事先进行一个预处理的工作。这种情况下，可以写一个脚本，然后放入 ENTRYPOINT 中去执行，而这个脚本会将接到的参数（也就是 <cmd>）作为命令，在脚本最后执行。比如官方镜像 redis 中就是这么做的：</cmd></p>
+</li>
+</ul>
+<pre><code>FROM alpine:3.4
+...
+RUN addgroup -S redis &amp;&amp; adduser -S -G redis redis
+...
+ENTRYPOINT [&quot;docker-entrypoint.sh&quot;]
+
+EXPOSE 6379
+CMD [ &quot;redis-server&quot; ]
+</code></pre><ul>
+<li>可以看到其中为了 redis 服务创建了 redis 用户，并在最后指定了 ENTRYPOINT 为 docker-entrypoint.sh 脚本。</li>
+</ul>
+<pre><code>#!/bin/sh
+...
+# allow the container to be started with `--user`
+if [ &quot;$1&quot; = &apos;redis-server&apos; -a &quot;$(id -u)&quot; = &apos;0&apos; ]; then
+    chown -R redis .
+    exec su-exec redis &quot;$0&quot; &quot;$@&quot;
+fi
+
+exec &quot;$@&quot;
+</code></pre><ul>
+<li>该脚本的内容就是根据 CMD 的内容来判断，如果是 redis-server 的话，则切换到 redis 用户身份启动服务器，否则依旧使用 root 身份执行。比如：</li>
+</ul>
+<pre><code>docker run -it redis id
+uid=0(root) gid=0(root) groups=0(root)
+</code></pre><hr>
+<h4 id="ENV-设置环境变量"><a href="#ENV-设置环境变量" class="headerlink" title="ENV 设置环境变量"></a>ENV 设置环境变量</h4><ul>
+<li>格式有两种：</li>
+</ul>
+<pre><code>ENV &lt;key&gt; &lt;value&gt;
+ENV &lt;key1&gt;=&lt;value1&gt; &lt;key2&gt;=&lt;value2&gt;...
+ENV &lt;key1&gt;=&lt;value1&gt; \
+    &lt;key2&gt;=&lt;value2&gt; \
+    ...
+</code></pre><ul>
+<li><p>这个例子中演示了如何换行，以及对含有空格的值用双引号括起来的办法，这和 Shell 下的行为是一致的。</p>
+</li>
+<li><p>定义了环境变量，那么在后续的指令中，就可以使用这个环境变量。比如在官方 node 镜像 Dockerfile 中，就有类似这样的代码：</p>
+</li>
+</ul>
+<pre><code>ENV NODE_VERSION 7.2.0
+
+RUN curl -SLO &quot;https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz&quot; \
+   &amp;&amp; curl -SLO &quot;https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.asc&quot; \
+   &amp;&amp; gpg --batch --decrypt --output SHASUMS256.txt SHASUMS256.txt.asc \
+   &amp;&amp; grep &quot; node-v$NODE_VERSION-linux-x64.tar.xz\$&quot; SHASUMS256.txt | sha256sum -c - \
+   &amp;&amp; tar -xJf &quot;node-v$NODE_VERSION-linux-x64.tar.xz&quot; -C /usr/local --strip-components=1 \
+   &amp;&amp; rm &quot;node-v$NODE_VERSION-linux-x64.tar.xz&quot; SHASUMS256.txt.asc SHASUMS256.txt \
+   &amp;&amp; ln -s /usr/local/bin/node /usr/local/bin/nodejs
+</code></pre><ul>
+<li><p>在这里先定义了环境变量 NODE_VERSION，其后的 RUN 这层里，多次使用 $NODE_VERSION 来进行操作定制。可以看到，将来升级镜像构建版本的时候，只需要更新 7.2.0 即可，Dockerfile 构建维护变得更轻松了。</p>
+</li>
+<li><p>下列指令可以支持环境变量展开： </p>
+</li>
+</ul>
+<pre><code>ADD、COPY、ENV、EXPOSE、LABEL、USER、WORKDIR、VOLUME、STOPSIGNAL、ONBUILD。
+</code></pre><blockquote>
+<p>通过环境变量，我们可以让一份 Dockerfile 制作更多的镜像，只需使用不同的环境变量即可。</p>
+</blockquote>
+<hr>
+<h4 id="ARG-构建参数"><a href="#ARG-构建参数" class="headerlink" title="ARG 构建参数"></a>ARG 构建参数</h4><ul>
+<li>格式：</li>
+</ul>
+<pre><code>ARG &lt;参数名&gt;[=&lt;默认值&gt;]
+</code></pre><ul>
+<li><p>构建参数和 ENV 的效果一样，都是设置环境变量。所不同的是，ARG 所设置的构建环境的环境变量，在将来容器运行时是不会存在这些环境变量的。但是不要因此就使用 ARG 保存密码之类的信息，因为 docker history 还是可以看到所有值的。</p>
+</li>
+<li><p>Dockerfile 中的 ARG 指令是定义参数名称，以及定义其默认值。该默认值可以在构建命令 docker build 中用 –build-arg &lt;参数名&gt;=&lt;值&gt; 来覆盖。</p>
+</li>
+<li><p>这对于使用 CI 系统，用同样的构建流程构建不同的 Dockerfile 的时候比较有帮助，避免构建命令必须根据每个 Dockerfile 的内容修改。</p>
+</li>
+</ul>
+<hr>
+<h4 id="VOLUME-定义匿名卷"><a href="#VOLUME-定义匿名卷" class="headerlink" title="VOLUME 定义匿名卷"></a>VOLUME 定义匿名卷</h4><ul>
+<li>格式为：</li>
+</ul>
+<pre><code>VOLUME [&quot;&lt;路径1&gt;&quot;, &quot;&lt;路径2&gt;&quot;...]
+VOLUME &lt;路径&gt;
+</code></pre><ul>
+<li>容器运行时应该尽量保持容器存储层不发生写操作，对于数据库类需要保存动态数据的应用，其数据库文件应该保存于卷(volume)中，为了防止运行时用户忘记将动态文件所保存目录挂载为卷，在 Dockerfile 中，我们可以事先指定某些目录挂载为匿名卷，这样在运行时如果用户不指定挂载，其应用也可以正常运行，不会向容器存储层写入大量数据。</li>
+</ul>
+<pre><code>VOLUME /data
+</code></pre><ul>
+<li>这里的 /data 目录就会在运行时自动挂载为匿名卷，任何向 /data 中写入的信息都不会记录进容器存储层，从而保证了容器存储层的无状态化。当然，运行时可以覆盖这个挂载设置。比如：</li>
+</ul>
+<pre><code>docker run -d -v mydata:/data xxxx
+</code></pre><ul>
+<li>在这行命令中，就使用了 mydata 这个命名卷挂载到了 /data 这个位置，替代了 Dockerfile 中定义的匿名卷的挂载配置。</li>
+</ul>
+<hr>
+<h4 id="EXPOSE-声明端口"><a href="#EXPOSE-声明端口" class="headerlink" title="EXPOSE 声明端口"></a>EXPOSE 声明端口</h4><ul>
+<li>格式为 :</li>
+</ul>
+<pre><code>EXPOSE &lt;端口1&gt; [&lt;端口2&gt;...]。
+</code></pre><ul>
+<li><p>EXPOSE 指令是声明运行时容器提供服务端口，这只是一个声明，在运行时并不会因为这个声明应用就会开启这个端口的服务。在 Dockerfile 中写入这样的声明有两个好处，一个是帮助镜像使用者理解这个镜像服务的守护端口，以方便配置映射；另一个用处则是在运行时使用随机端口映射时，也就是 docker run -P 时，会自动随机映射 EXPOSE 的端口。</p>
+</li>
+<li><p>此外，在早期 Docker 版本中还有一个特殊的用处。以前所有容器都运行于默认桥接网络中，因此所有容器互相之间都可以直接访问，这样存在一定的安全性问题。于是有了一个 Docker 引擎参数 –icc=false，当指定该参数后，容器间将默认无法互访，除非互相间使用了 –links 参数的容器才可以互通，并且只有镜像中 EXPOSE 所声明的端口才可以被访问。这个 –icc=false 的用法，在引入了 docker network 后已经基本不用了，通过自定义网络可以很轻松的实现容器间的互联与隔离。</p>
+</li>
+<li><p>要将 EXPOSE 和在运行时使用 -p &lt;宿主端口&gt;:&lt;容器端口&gt; 区分开来。-p，是映射宿主端口和容器端口，换句话说，就是将容器的对应端口服务公开给外界访问，而 EXPOSE 仅仅是声明容器打算使用什么端口而已，并不会自动在宿主进行端口映射。</p>
+</li>
+</ul>
+<hr>
+<h4 id="WORKDIR-指定工作目录"><a href="#WORKDIR-指定工作目录" class="headerlink" title="WORKDIR 指定工作目录"></a>WORKDIR 指定工作目录</h4><ul>
+<li><p>格式为 </p>
+<p>  WORKDIR &lt;工作目录路径&gt;。</p>
+</li>
+<li><p>使用 WORKDIR 指令可以来指定工作目录（或者称为当前目录），以后各层的当前目录就被改为指定的目录，如该目录不存在，WORKDIR 会帮你建立目录。</p>
+</li>
+<li><p>之前提到一些初学者常犯的错误是把 Dockerfile 等同于 Shell 脚本来书写，这种错误的理解还可能会导致出现下面这样的错误：</p>
+</li>
+</ul>
+<pre><code>RUN cd /app
+RUN echo &quot;hello&quot; &gt; world.txt
+</code></pre><ul>
+<li><p>如果将这个 Dockerfile 进行构建镜像运行后，会发现找不到 /app/world.txt 文件，或者其内容不是 hello。原因其实很简单，在 Shell 中，连续两行是同一个进程执行环境，因此前一个命令修改的内存状态，会直接影响后一个命令；而在 Dockerfile 中，这两行 RUN 命令的执行环境根本不同，是两个完全不同的容器。这就是对 Dockerfile 构建分层存储的概念不了解所导致的错误。</p>
+</li>
+<li><p>之前说过每一个 RUN 都是启动一个容器、执行命令、然后提交存储层文件变更。第一层 RUN cd /app 的执行仅仅是当前进程的工作目录变更，一个内存上的变化而已，其结果不会造成任何文件变更。而到第二层的时候，启动的是一个全新的容器，跟第一层的容器更完全没关系，自然不可能继承前一层构建过程中的内存变化。</p>
+</li>
+<li><p>因此如果需要改变以后各层的工作目录的位置，那么应该使用 WORKDIR 指令。</p>
+</li>
+</ul>
+<hr>
+<h4 id="USER-指定当前用户"><a href="#USER-指定当前用户" class="headerlink" title="USER 指定当前用户"></a>USER 指定当前用户</h4><ul>
+<li>格式：</li>
+</ul>
+<pre><code>USER &lt;用户名&gt;
+</code></pre><ul>
+<li><p>USER 指令和 WORKDIR 相似，都是改变环境状态并影响以后的层。WORKDIR 是改变工作目录，USER 则是改变之后层的执行 RUN, CMD 以及 ENTRYPOINT 这类命令的身份。</p>
+</li>
+<li><p>当然，和 WORKDIR 一样，USER 只是帮助你切换到指定用户而已，这个用户必须是事先建立好的，否则无法切换。</p>
+</li>
+</ul>
+<pre><code>RUN groupadd -r redis &amp;&amp; useradd -r -g redis redis
+USER redis
+RUN [ &quot;redis-server&quot; ]
+</code></pre><ul>
+<li>如果以 root 执行的脚本，在执行期间希望改变身份，比如希望以某个已经建立好的用户来运行某个服务进程，不要使用 su 或者 sudo，这些都需要比较麻烦的配置，而且在 TTY 缺失的环境下经常出错。建议使用 gosu。</li>
+</ul>
+<pre><code># 建立 redis 用户，并使用 gosu 换另一个用户执行命令
+RUN groupadd -r redis &amp;&amp; useradd -r -g redis redis
+# 下载 gosu
+RUN wget -O /usr/local/bin/gosu &quot;https://github.com/tianon/gosu/releases/download/1.7/gosu-amd64&quot; \
+    &amp;&amp; chmod +x /usr/local/bin/gosu \
+    &amp;&amp; gosu nobody true
+# 设置 CMD，并以另外的用户执行
+CMD [ &quot;exec&quot;, &quot;gosu&quot;, &quot;redis&quot;, &quot;redis-server&quot; ]
+</code></pre><hr>
+<h3 id="Nginx"><a href="#Nginx" class="headerlink" title="Nginx"></a>Nginx</h3><h4 id="创建-Dockerfile"><a href="#创建-Dockerfile" class="headerlink" title="创建 Dockerfile"></a>创建 Dockerfile</h4><hr>
+<h5 id="创建目录"><a href="#创建目录" class="headerlink" title="创建目录"></a>创建目录</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/nginx/www ~/nginx/logs ~/nginx/conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># www目录将映射为nginx容器配置的虚拟目录</span></span><br><span class="line"><span class="comment"># logs目录将映射为nginx容器的日志目录</span></span><br><span class="line"><span class="comment"># conf目录里的配置文件将映射为nginx容器的配置文件</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h5 id="创建-Dockerfile-1"><a href="#创建-Dockerfile-1" class="headerlink" title="创建 Dockerfile"></a>创建 Dockerfile</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/nginx</span><br><span class="line">cat &lt;&lt;! &gt;~/nginx/Dockerfile</span><br><span class="line">FROM centos</span><br><span class="line"></span><br><span class="line">MAINTAINER Jackie <span class="string">"www.jackieathome.net"</span></span><br><span class="line">ENV NGINX_VERSION 1.10.3</span><br><span class="line">ENV OPENSSL_VERSION 1.0.2k</span><br><span class="line">ENV PCRE_VERSION 8.40</span><br><span class="line">ENV ZLIB_VERSION 1.2.11</span><br><span class="line">ENV BUILD_ROOT /usr/<span class="built_in">local</span>/src/nginx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 为了减小最终生成的镜像占用的空间，这里没有执行yum update命令，可能不是好的实践</span></span><br><span class="line"><span class="comment"># 为了加快构建速度，这里使用了163的安装源</span></span><br><span class="line"><span class="comment">#RUN yum -y update \</span></span><br><span class="line"></span><br><span class="line">RUN yum -y install curl \</span><br><span class="line">        &amp;&amp; mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup \</span><br><span class="line">        &amp;&amp; curl http://mirrors.163.com/.<span class="built_in">help</span>/CentOS7-Base-163.repo -o /etc/yum.repos.d/CentOS7-Base-163.repo \ </span><br><span class="line">        &amp;&amp; yum clean all \</span><br><span class="line">        &amp;&amp; yum makecache \</span><br><span class="line">        &amp;&amp; yum -y install gcc gcc-c++ make perl zip unzip \</span><br><span class="line">        &amp;&amp; mkdir -p <span class="variable">$BUILD_ROOT</span> \</span><br><span class="line">        &amp;&amp; <span class="built_in">cd</span> <span class="variable">$BUILD_ROOT</span> \</span><br><span class="line">        &amp;&amp; curl https://ftp.pcre.org/pub/pcre/pcre-<span class="variable">$PCRE_VERSION</span>.zip -o <span class="variable">$BUILD_ROOT</span>/pcre-<span class="variable">$PCRE_VERSION</span>.zip \</span><br><span class="line">        &amp;&amp; curl https://www.openssl.org/<span class="built_in">source</span>/openssl-<span class="variable">$OPENSSL_VERSION</span>.tar.gz -o <span class="variable">$BUILD_ROOT</span>/openssl-<span class="variable">$OPENSSL_VERSION</span>.tar.gz \</span><br><span class="line">        &amp;&amp; curl http://www.zlib.net/zlib-<span class="variable">$ZLIB_VERSION</span>.tar.gz -o <span class="variable">$BUILD_ROOT</span>/zlib-<span class="variable">$ZLIB_VERSION</span>.tar.gz \</span><br><span class="line">        &amp;&amp; curl https://nginx.org/download/nginx-<span class="variable">$NGINX_VERSION</span>.tar.gz -o <span class="variable">$BUILD_ROOT</span>/nginx-<span class="variable">$NGINX_VERSION</span>.tar.gz \</span><br><span class="line">        &amp;&amp; tar vxzf nginx-<span class="variable">$NGINX_VERSION</span>.tar.gz \</span><br><span class="line">        &amp;&amp; unzip pcre-<span class="variable">$PCRE_VERSION</span>.zip \</span><br><span class="line">        &amp;&amp; tar vxfz zlib-<span class="variable">$ZLIB_VERSION</span>.tar.gz \</span><br><span class="line">        &amp;&amp; tar vxfz openssl-<span class="variable">$OPENSSL_VERSION</span>.tar.gz \</span><br><span class="line">        &amp;&amp; <span class="built_in">cd</span> nginx-<span class="variable">$NGINX_VERSION</span> \</span><br><span class="line">        &amp;&amp; BUILD_CONFIG=<span class="string">"\</span></span><br><span class="line"><span class="string">            --prefix=/etc/nginx \</span></span><br><span class="line"><span class="string">            --sbin-path=/usr/sbin/nginx \</span></span><br><span class="line"><span class="string">            --conf-path=/etc/nginx/nginx.conf \</span></span><br><span class="line"><span class="string">            --error-log-path=/var/log/nginx/error.log \</span></span><br><span class="line"><span class="string">            --http-log-path=/var/log/nginx/access.log \</span></span><br><span class="line"><span class="string">            --pid-path=/var/run/nginx.pid \</span></span><br><span class="line"><span class="string">            --lock-path=/var/run/nginx.lock \</span></span><br><span class="line"><span class="string">            --http-client-body-temp-path=/var/cache/nginx/client_temp \</span></span><br><span class="line"><span class="string">            --http-proxy-temp-path=/var/cache/nginx/proxy_temp \</span></span><br><span class="line"><span class="string">            --http-fastcgi-temp-path=/var/cache/nginx/fastcgi_temp \</span></span><br><span class="line"><span class="string">            --http-uwsgi-temp-path=/var/cache/nginx/uwsgi_temp \</span></span><br><span class="line"><span class="string">            --http-scgi-temp-path=/var/cache/nginx/scgi_temp \</span></span><br><span class="line"><span class="string">            --with-openssl=<span class="variable">$BUILD_ROOT</span>/openssl-<span class="variable">$OPENSSL_VERSION</span> \</span></span><br><span class="line"><span class="string">            --with-pcre=<span class="variable">$BUILD_ROOT</span>/pcre-<span class="variable">$PCRE_VERSION</span> \</span></span><br><span class="line"><span class="string">            --with-zlib=<span class="variable">$BUILD_ROOT</span>/zlib-<span class="variable">$ZLIB_VERSION</span> \</span></span><br><span class="line"><span class="string">            --with-http_ssl_module \</span></span><br><span class="line"><span class="string">            --with-http_v2_module \ </span></span><br><span class="line"><span class="string">            --with-threads \</span></span><br><span class="line"><span class="string">            "</span> \</span><br><span class="line">        &amp;&amp; mkdir -p /var/cache/nginx \</span><br><span class="line">        &amp;&amp; ./configure <span class="variable">$BUILD_CONFIG</span> \</span><br><span class="line">        &amp;&amp; make &amp;&amp; make install \</span><br><span class="line">        &amp;&amp; rm -rf <span class="variable">$BUILD_ROOT</span> \</span><br><span class="line">        &amp;&amp; yum -y remove gcc gcc-c++ make perl zip unzip \</span><br><span class="line">        &amp;&amp; yum clean all</span><br><span class="line"></span><br><span class="line">EXPOSE 80 443</span><br><span class="line"></span><br><span class="line">VOLUME [<span class="string">"/etc/nginx/nginx.conf"</span>, <span class="string">"/etc/nginx/html/"</span>]</span><br><span class="line"></span><br><span class="line">CMD [<span class="string">"nginx"</span>, <span class="string">"-g"</span>, <span class="string">"daemon off;"</span>]</span><br><span class="line">!</span><br></pre></td></tr></table></figure>
+<h5 id="创建镜像"><a href="#创建镜像" class="headerlink" title="创建镜像"></a>创建镜像</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t my-nginx .</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+    <div>
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/posts/871a.html">构建自己的 Docker镜像</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 亦 漩 的个人博客">亦 漩</a></p>
+  <p><span>发布时间:</span>2018年05月17日 - 18:05</p>
+  <p><span>最后更新:</span>2018年09月27日 - 20:09</p>
+  <p><span>原始链接:</span><a href="/posts/871a.html" title="构建自己的 Docker镜像">https://home.onlycloud.xin/posts/871a.html</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://home.onlycloud.xin/posts/871a.html"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by/4.0/" target="_blank" title="Attribution 4.0 International (CC BY 4.0)">署名4.0国际 （CC BY 4.0）</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+      $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+        });
+    });  
+</script>
+
+
+      
+    </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/docker/" rel="tag "><i class="fa fa-tag"></i> docker</a>
+          
+            <a href="/tags/build/" rel="tag "><i class="fa fa-tag"></i> build</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div id="needsharebutton-postbottom">
+            <span class="btn">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </span>
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/148d.html" rel="next" title="Docker镜像容器管理">
+                <i class="fa fa-chevron-left"></i> Docker镜像容器管理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/b6fc.html" rel="prev" title="Jenkins打包Unity项目">
+                Jenkins打包Unity项目 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="亦 漩" />
+            
+              <p class="site-author-name" itemprop="name">亦 漩</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">110</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/bookgh" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://coding.net/u/yx571304" target="_blank" title="Coding">
+                      
+                        <i class="fa fa-fw fa-git"></i>Coding</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://skyisfuck.github.io" title="Peng" target="_blank">Peng</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker-指令"><span class="nav-number">1.</span> <span class="nav-text">Docker 指令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#COPY-复制文件"><span class="nav-number">1.1.</span> <span class="nav-text">COPY 复制文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ADD-更高级的复制"><span class="nav-number">1.2.</span> <span class="nav-text">ADD 更高级的复制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CMD-容器启动命令"><span class="nav-number">1.3.</span> <span class="nav-text">CMD 容器启动命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ENTRYPOINT-入口点"><span class="nav-number">1.4.</span> <span class="nav-text">ENTRYPOINT 入口点</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#场景一：让镜像变成像命令一样使用"><span class="nav-number">1.4.1.</span> <span class="nav-text">场景一：让镜像变成像命令一样使用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#场景二：应用运行前的准备工作"><span class="nav-number">1.4.2.</span> <span class="nav-text">场景二：应用运行前的准备工作</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ENV-设置环境变量"><span class="nav-number">1.5.</span> <span class="nav-text">ENV 设置环境变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ARG-构建参数"><span class="nav-number">1.6.</span> <span class="nav-text">ARG 构建参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#VOLUME-定义匿名卷"><span class="nav-number">1.7.</span> <span class="nav-text">VOLUME 定义匿名卷</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#EXPOSE-声明端口"><span class="nav-number">1.8.</span> <span class="nav-text">EXPOSE 声明端口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#WORKDIR-指定工作目录"><span class="nav-number">1.9.</span> <span class="nav-text">WORKDIR 指定工作目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#USER-指定当前用户"><span class="nav-number">1.10.</span> <span class="nav-text">USER 指定当前用户</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Nginx"><span class="nav-number">2.</span> <span class="nav-text">Nginx</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建-Dockerfile"><span class="nav-number">2.1.</span> <span class="nav-text">创建 Dockerfile</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#创建目录"><span class="nav-number">2.1.1.</span> <span class="nav-text">创建目录</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#创建-Dockerfile-1"><span class="nav-number">2.1.2.</span> <span class="nav-text">创建 Dockerfile</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#创建镜像"><span class="nav-number">2.1.3.</span> <span class="nav-text">创建镜像</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">亦 漩</span>
+
+  
+  <br/><span><i class="fa fa-bomb"></i></span><span id="showDays"></span>
+</div>
+
+
+
+
+
+
+
+
+
+<script>
+  var seconds = 1000;
+  var minutes = seconds * 60;
+  var hours = minutes * 60;
+  var days = hours * 24;
+  var years = days * 365;
+  var birthDay = Date.UTC(2017,12,07,10,00,00); // 这里设置建站时间
+  setInterval(function() {
+    var today = new Date();
+    var todayYear = today.getFullYear();
+    var todayMonth = today.getMonth()+1;
+    var todayDate = today.getDate();
+    var todayHour = today.getHours();
+    var todayMinute = today.getMinutes();
+    var todaySecond = today.getSeconds();
+    var now = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+    var diff = now - birthDay;
+    var diffYears = Math.floor(diff/years);
+    var diffDays = Math.floor((diff/days)-diffYears*365);
+    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById('showDays').innerHTML="本站已运行 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+  }, 1000);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+      <div id="needsharebutton-float">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'DWwnpdDBrLDMI8CKf8OXopJu-gzGzoHsz',
+        appKey: '7sfOhetJ1Wftp4W7MF0xdPOw',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "default";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+      flOptions = {};
+      
+          flOptions.iconStyle = "default";
+      
+          flOptions.boxForm = "horizontal";
+      
+          flOptions.position = "middleRight";
+      
+          flOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-float', flOptions);
+    
+  </script>
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+
+</body>
+</html>

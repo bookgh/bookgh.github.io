@@ -1,0 +1,1865 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="mysql高可用,mysql-MHA," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="[TOC] MHA介绍12345678910111213141516171819202122    该软件由两部分组成：MHA Manager（管理节点）和MHA Node（数据节点）。MHA Manager可以单独部署在一台独立的机器上管理多个master-slave集群，也可以部署在一台slave节点上。MHA Node运行在每台MySQL服务器上，MHA Manager会定时探测集群中的ma">
+<meta name="keywords" content="mysql高可用,mysql-MHA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySql-MHA">
+<meta property="og:url" content="https://home.onlycloud.xin/posts/mysql-mha.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="[TOC] MHA介绍12345678910111213141516171819202122    该软件由两部分组成：MHA Manager（管理节点）和MHA Node（数据节点）。MHA Manager可以单独部署在一台独立的机器上管理多个master-slave集群，也可以部署在一台slave节点上。MHA Node运行在每台MySQL服务器上，MHA Manager会定时探测集群中的ma">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-27T12:11:47.177Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySql-MHA">
+<meta name="twitter:description" content="[TOC] MHA介绍12345678910111213141516171819202122    该软件由两部分组成：MHA Manager（管理节点）和MHA Node（数据节点）。MHA Manager可以单独部署在一台独立的机器上管理多个master-slave集群，也可以部署在一台slave节点上。MHA Node运行在每台MySQL服务器上，MHA Manager会定时探测集群中的ma">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://home.onlycloud.xin/posts/mysql-mha.html"/>
+
+
+
+
+
+  <title>MySql-MHA | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-python">
+          <a href="/python/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            python
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-logs">
+          <a href="/posts/log.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Logs
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://home.onlycloud.xin/posts/mysql-mha.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="亦 漩">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">MySql-MHA</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-24T01:34:23+08:00">
+                2018-09-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/mysql/" itemprop="url" rel="index">
+                    <span itemprop="name">mysql</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/mysql-mha.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/posts/mysql-mha.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  4,925
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  25
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>[TOC]</p>
+<h3 id="MHA介绍"><a href="#MHA介绍" class="headerlink" title="MHA介绍"></a>MHA介绍</h3><figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">    该软件由两部分组成：MHA Manager（管理节点）和MHA <span class="keyword">Node</span><span class="title">（数据节点）。MHA</span> Manager可以单独部署在一台独立的机器上管理多个<span class="literal">master</span>-<span class="literal">slave</span>集群，也可以部署</span><br><span class="line">在一台<span class="literal">slave</span>节点上。MHA <span class="keyword">Node</span><span class="title">运行在每台MySQL</span>服务器上，MHA Manager会定时探测集群中的<span class="literal">master</span>节点，当<span class="literal">master</span>出现故障时，它可以自动将最新数据的<span class="literal">slave</span>提升为新的</span><br><span class="line"><span class="literal">master</span>，然后将所有其他的<span class="literal">slave</span>重新指向新的<span class="literal">master</span>。整个故障转移过程对应用程序完全透明。</span><br><span class="line"></span><br><span class="line">    在MHA自动故障切换过程中，MHA试图从宕机的主服务器上保存二进制日志，最大程度的保证数据的不丢失，但这并不总是可行的。例如，如果主服务器硬件故障或无法通过</span><br><span class="line">ssh访问，MHA没法保存二进制日志，只进行故障转移而丢失了最新的数据。使用MySQL <span class="number">5.5</span>的半同步复制，可以大大降低数据丢失的风险。MHA可以与半同步复制结合起来。如果</span><br><span class="line">只有一个<span class="literal">slave</span>已经收到了最新的二进制日志，MHA可以将最新的二进制日志应用于其他所有的<span class="literal">slave</span>服务器上，因此可以保证所有节点的数据一致性。</span><br><span class="line"></span><br><span class="line">    目前MHA主要支持一主多从的架构，要搭建MHA,要求一个复制集群中必须最少有三台数据库服务器，一主二从，即一台充当<span class="literal">master</span>，一台充当备用<span class="literal">master</span>，另外一台充当从</span><br><span class="line">库，因为至少需要三台服务器，出于机器成本的考虑，淘宝也在该基础上进行了改造，目前淘宝TMHA已经支持一主一从。</span><br><span class="line"></span><br><span class="line">故障切换原理：</span><br><span class="line">    假如MySQL MHA架构运行正常，突然在上午<span class="number">10</span>：<span class="number">00</span>一个复制组中的A的MySQL服务 down了！</span><br><span class="line">    因为AB复制是异步复制，所以可能有一些数据尚没有被B拉到其relay_log中,即AB数据不一致，MHA是怎样解决这种情况的呢？</span><br><span class="line"></span><br><span class="line">       <span class="number">1</span>.mha_manager 使用scp命令将A当前binlog拷贝到mha_manager</span><br><span class="line"></span><br><span class="line">       <span class="number">2</span>.待新A（选举：依据谁的relay_log新）产生后，mha_manager将旧A的binlog和新的relay_log做比对，并进行差异还原以保证新A和旧A数据的一致性</span><br><span class="line"></span><br><span class="line">       <span class="number">3</span>.mha_manager将拿到的旧A的binlog去找复制组中其他B 做差异还原，保证数据的一致性</span><br><span class="line"></span><br><span class="line">  注意：mha_manager 每执行一次 failover 后，该进程自动退出。如果还想测试failover需要重新开启---开启前要将以下文件删掉：(lab03)/etc/mha/mha.failover.complete</span><br></pre></td></tr></table></figure>
+<h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><pre><code>系统：centos7_1804
+lab01: 10.0.0.11  master  mha4mysql-node
+lab02: 10.0.0.12  slave1  mha4mysql-node
+lab03: 10.0.0.13  slave2  mha4mysql-node mha4mysql-manager
+lab04: 10.0.0.14  haproxy [node2, node3] (备读)
+  VIP: 10.0.0.10  [node1, node2](主写)
+
+配置步骤：
+  1. 配置相互ssh密钥登陆
+  2. 主从复制 master:[lab01]  slave:[lab02, lab03]
+  3. 安装 mha node:[lab01, lab02, lab03]  manager:[lab03]
+  4. 测试
+</code></pre><h3 id="配置ssh密钥登陆"><a href="#配置ssh密钥登陆" class="headerlink" title="配置ssh密钥登陆"></a>配置ssh密钥登陆</h3><blockquote>
+<p>生成密钥,安装自动交互工具<code>所有节点执行</code></p>
+</blockquote>
+<pre><code>[ -f ~/.ssh/id_dsa ] || { ssh-keygen -t dsa -P &apos;&apos; -f ~/.ssh/id_dsa;}
+[ -f /usr/bin/expect ] || { yum install -y expect;}
+</code></pre><hr>
+<blockquote>
+<p>发送公钥到远程主机<code>所有节点执行</code>（实际上只需要控制节点能无需密码登陆从节点即可）</p>
+</blockquote>
+<pre><code># 远程主机root密码
+rootpass=123.com
+
+SSH_KEY(){
+/usr/bin/expect &lt;&lt;EOF
+set timeout 30
+spawn ssh-copy-id -i /root/.ssh/id_dsa.pub root@$1
+expect {
+    &quot;(yes/no)?&quot; { send &quot;yes\r&quot;; exp_continue }
+    &quot;password:&quot; { send &quot;$rootpass\r&quot; }
+}
+expect eof
+EOF
+}
+
+for ip in 10.0.0.{11..13};do
+    SSH_KEY $ip
+done
+</code></pre><hr>
+<h3 id="安装MySql"><a href="#安装MySql" class="headerlink" title="安装MySql"></a>安装MySql</h3><blockquote>
+<p>配置<a href="https://dev.mysql.com/downloads/repo/yum/" target="_blank" rel="noopener">安装源</a><code>所有节点</code></p>
+</blockquote>
+<pre><code>yum install -y https://dev.mysql.com/get/mysql80-community-release-el7-1.noarch.rpm    # 安装mysql软件安装源
+yum repolist all | grep mysql                     # 查看所有 mysql 子存储库
+yum install -y yum-utils                          # 安装 yum 配置工具管理 YUM 源
+yum-config-manager --disable mysql80-community    # 禁用 mysql80 子存储库
+yum-config-manager --enable mysql57-community     # 启用 mysql57 子存储库
+yum repolist enabled | grep mysql                 # 查看已启用的 mysql 子存储库
+</code></pre><hr>
+<blockquote>
+<p>安装 mysql-5.7 启动服务<code>所有节点</code></p>
+</blockquote>
+<pre><code>yum install -y mysql-community-server
+systemctl start mysqld
+</code></pre><hr>
+<h3 id="配置主从复制"><a href="#配置主从复制" class="headerlink" title="配置主从复制"></a>配置主从复制</h3><blockquote>
+<p>lab01 操作; 开启二进制日志,设置 server-id,启动服务,更改root密码及授权,创建同步用户及授权</p>
+</blockquote>
+<pre><code># 开启二进制日志(注意 server-id 唯一)
+cp /etc/my.cnf{,.bak}
+cat &lt;&lt;EOF  &gt;&gt;/etc/my.cnf
+
+# binlog
+server-id = 1
+log-bin = mysql-bin
+log-bin-index = master-bin.index
+EOF
+
+# 重启服务,跟随系统启动
+systemctl restart mysqld
+systemctl enable mysqld
+systemctl status mysqld
+
+# 更改root密码,开启root用户远程登陆授权(密码：Hc.1234456)
+grep &apos;temporary password&apos; /var/log/mysqld.log    # 查看初始化密码
+def_pass=$(grep &apos;temporary password&apos; /var/log/mysqld.log | awk &apos;{print $NF}&apos;)
+ChangePass=&quot;alter user &apos;root&apos;@&apos;localhost&apos; identified by &apos;Hc.123456&apos;;&quot;
+mysql -uroot -p$def_pass -e &quot;$ChangePass&quot; --connect-expired-password
+Author=&quot;grant all privileges on *.* to root@&apos;%&apos; identified by &apos;Hc.123456&apos; with grant option;&quot;
+mysql -uroot -pHc.123456 -e &quot;$Author&quot;
+
+# 创建同步账号,授权
+mysql -uroot -pHc.123456
+create user &apos;sync&apos;@&apos;10.0.0.%&apos; identified by &apos;Hc.123456&apos;;
+grant replication slave on *.* to &apos;sync&apos;@&apos;10.0.0.%&apos; identified by &apos;Hc.123456&apos;;
+flush privileges;
+show master status;
+exit
+
+# mysql&gt; show master status;  # 记录下二进制日志文件名及偏移量
++------------------+----------+--------------+------------------+-------------------+
+| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
++------------------+----------+--------------+------------------+-------------------+
+| mysql-bin.000001 |     1390 |              |                  |                   |
++------------------+----------+--------------+------------------+-------------------+
+</code></pre><hr>
+<blockquote>
+<p>lab02 操作; 开启二进制日志,设置 server-id,启动服务,更改root密码及授权,创建同步用户及授权,配置连接lab01</p>
+</blockquote>
+<pre><code># 开启二进制日志(注意 server-id 唯一)
+cp /etc/my.cnf{,.bak}
+cat &lt;&lt;EOF  &gt;&gt;/etc/my.cnf
+
+# binlog
+server-id = 2
+log-bin = mysql-bin
+log-bin-index = master-bin.index
+EOF
+
+# 重启服务,跟随系统启动
+systemctl restart mysqld
+systemctl enable mysqld
+systemctl status mysqld
+
+# 更改root密码,开启root用户远程登陆授权(密码：Hc.1234456)
+grep &apos;temporary password&apos; /var/log/mysqld.log    # 查看初始化密码
+def_pass=$(grep &apos;temporary password&apos; /var/log/mysqld.log | awk &apos;{print $NF}&apos;)
+ChangePass=&quot;alter user &apos;root&apos;@&apos;localhost&apos; identified by &apos;Hc.123456&apos;;&quot;
+mysql -uroot -p$def_pass -e &quot;$ChangePass&quot; --connect-expired-password
+Author=&quot;grant all privileges on *.* to root@&apos;%&apos; identified by &apos;Hc.123456&apos; with grant option;&quot;
+mysql -uroot -pHc.123456 -e &quot;$Author&quot;
+
+# 创建同步账号,授权,配置连接lab01
+mysql -uroot -pHc.123456
+create user &apos;sync&apos;@&apos;10.0.0.%&apos; identified by &apos;Hc.123456&apos;;
+grant replication slave on *.* to &apos;sync&apos;@&apos;10.0.0.%&apos; identified by &apos;Hc.123456&apos;;
+flush privileges;
+change master to master_host=&apos;10.0.0.11&apos;,  # lab01数据库 IP或主机名(需解析通)
+master_port=3306,                          # lab01数据库端口号
+master_user=&apos;sync&apos;,                        # 同步账号
+master_password=&apos;Hc.123456&apos;,               # 同步账号的密码
+master_log_file=&apos;mysql-bin.000001&apos;,        # lab01数据库执行 show master status; 获取的二进制日志文件名
+master_log_pos=1390;                       # lab01数据库执行 show master status; 获取的二进制日志偏移量
+start slave;                               # 启动slave
+show slave status\G;                       # 查看同步状态
+exit
+</code></pre><hr>
+<blockquote>
+<p>lab03 操作; 开启二进制日志,设置 server-id,启动服务,更改root密码及授权,创建同步用户及授权,配置连接lab01</p>
+</blockquote>
+<pre><code># 开启二进制日志(注意 server-id 唯一)
+cp /etc/my.cnf{,.bak}
+cat &lt;&lt;EOF  &gt;&gt;/etc/my.cnf
+
+# binlog
+server-id = 3
+log-bin = mysql-bin
+log-bin-index = master-bin.index
+EOF
+
+# 重启服务,跟随系统启动
+systemctl restart mysqld
+systemctl enable mysqld
+systemctl status mysqld
+
+# 更改root密码,开启root用户远程登陆授权(密码：Hc.1234456)
+grep &apos;temporary password&apos; /var/log/mysqld.log    # 查看初始化密码
+def_pass=$(grep &apos;temporary password&apos; /var/log/mysqld.log | awk &apos;{print $NF}&apos;)
+ChangePass=&quot;alter user &apos;root&apos;@&apos;localhost&apos; identified by &apos;Hc.123456&apos;;&quot;
+mysql -uroot -p$def_pass -e &quot;$ChangePass&quot; --connect-expired-password
+Author=&quot;grant all privileges on *.* to root@&apos;%&apos; identified by &apos;Hc.123456&apos; with grant option;&quot;
+mysql -uroot -pHc.123456 -e &quot;$Author&quot;
+
+# 创建同步账号,授权,配置连接lab01
+mysql -uroot -pHc.123456
+create user &apos;sync&apos;@&apos;10.0.0.%&apos; identified by &apos;Hc.123456&apos;;
+grant replication slave on *.* to &apos;sync&apos;@&apos;10.0.0.%&apos; identified by &apos;Hc.123456&apos;;
+flush privileges;
+change master to master_host=&apos;10.0.0.11&apos;,  # lab01数据库 IP或主机名(需解析通)
+master_port=3306,                          # lab01数据库端口号
+master_user=&apos;sync&apos;,                        # 同步账号
+master_password=&apos;Hc.123456&apos;,               # 同步账号的密码
+master_log_file=&apos;mysql-bin.000001&apos;,        # lab01数据库执行 show master status; 获取的二进制日志文件名
+master_log_pos=1390;                       # lab01数据库执行 show master status; 获取的二进制日志偏移量
+start slave;                               # 启动slave
+show slave status\G;                       # 查看同步状态
+exit
+</code></pre><hr>
+<h3 id="安装-MHA"><a href="#安装-MHA" class="headerlink" title="安装 MHA"></a>安装 MHA</h3><blockquote>
+<p>所有节点安装<code>mha4mysql-node</code></p>
+</blockquote>
+<pre><code># yum install -y https://github.com/yoshinorim/mha4mysql-node/releases/download/v0.58/mha4mysql-node-0.58-0.el7.centos.noarch.rpm
+curl http://117.50.70.211:88/attach_files/sql/12 -o mha4mysql-node-0.58-0.el7.centos.noarch.rpm
+yum install -y mha4mysql-node-0.58-0.el7.centos.noarch.rpm
+</code></pre><hr>
+<blockquote>
+<p>lab03安装<code>mha4mysql-manager</code></p>
+</blockquote>
+<pre><code># yum install -y https://github.com/yoshinorim/mha4mysql-manager/releases/download/v0.58/mha4mysql-manager-0.58-0.el7.centos.noarch.rpm
+curl http://117.50.70.211:88/attach_files/sql/12 -o mha4mysql-manager-0.58-0.el7.centos.noarch.rpm
+yum install -y mha4mysql-manager-0.58-0.el7.centos.noarch.rpm
+</code></pre><hr>
+<h3 id="配置-MHA-lab03"><a href="#配置-MHA-lab03" class="headerlink" title="配置 MHA(lab03)"></a>配置 MHA(lab03)</h3><blockquote>
+<p>创建配置文件</p>
+</blockquote>
+<pre><code># 创建日志路径及文件
+mkdir /etc/mha
+touch /etc/mha/manager.log
+
+# 创建配置文件
+cat &lt;&lt;EOF   &gt;/etc/mha/mha.cnf
+[server default]
+# mysql admin account and password
+user=root
+password=Hc.123456
+
+# mha workdir  and worklog
+manager_workdir=/etc/mha
+manager_log=/etc/mha/manager.log
+
+# mysql A/B account and pw
+repl_user=sync
+repl_password=Hc.123456
+
+# check_mha_node time
+ping_interval=1
+
+# ssh account
+ssh_user=root
+
+# mha change VIP
+#report_script=/etc/mha/send_report
+#master_ip_failover_script=/etc/mha/master_ip_failover
+#master_ip_online_change_script=/etc/mha/master_ip_online_change
+
+[server1]
+hostname=10.0.0.11
+ssh_port=22
+master_binlog_dir=/var/lib/mysql
+candidate_master=1
+
+[server2]
+hostname=10.0.0.12
+ssh_port=22
+master_binlog_dir=/var/lib/mysql
+candidate_master=1
+
+[server3]
+hostname=10.0.0.13
+ssh_port=22
+master_binlog_dir=/var/lib/mysql
+candidate_master=2
+EOF
+</code></pre><hr>
+<blockquote>
+<p>创建服务器启动脚本</p>
+</blockquote>
+<pre><code>cat &lt;&lt;EOF   &gt;/etc/mha/mha_start
+#!/bin/bash
+/usr/bin/nohup /usr/bin/masterha_manager --conf=/etc/mha/mha.cnf &gt;/tmp/mha_manager.log 2&gt;&amp;1 &amp;
+EOF
+chmod +x /etc/mha/mha_start
+</code></pre><hr>
+<blockquote>
+<p>检测ssh密钥登陆配置</p>
+</blockquote>
+<pre><code>masterha_check_ssh --conf=/etc/mha/mha.cnf
+</code></pre><hr>
+<blockquote>
+<p>检测数据库复制</p>
+</blockquote>
+<pre><code>masterha_check_repl --conf=/etc/mha/mha.cnf
+</code></pre><hr>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><blockquote>
+<p>测试故障恢复;</p>
+</blockquote>
+<pre><code>1. lab03 启动 masterha_manager 服务
+2. lab01 关闭 mysqld 服务
+3. lab03 上验证当前 master
+4. 恢复 lab01(slave)
+5. 设置 lab01 为 master
+6. lab03 启动 masterha_manager 服务
+</code></pre><hr>
+<blockquote>
+<p>1.<code>lab03</code>启动 <code>masterha_manager</code>服务</p>
+</blockquote>
+<pre><code>/etc/mha/mha_start              # 启动 masterha_manager 服务
+ps aux | grep masterha
+tail -f /tmp/mha_manager.log    # 查看 masterha_manager 实时日志
+</code></pre><hr>
+<blockquote>
+<p>2.<code>lab01</code>关闭<code>mysql</code>服务</p>
+</blockquote>
+<pre><code>systemctl stop mysqld
+</code></pre><hr>
+<blockquote>
+<p>3.<code>lab03</code>验证</p>
+</blockquote>
+<pre><code>mysql -uroot -pHc.123456 -e &apos;show slave status\G;&apos; | grep Master_Host
+</code></pre><hr>
+<blockquote>
+<p>4.<code>lab01</code>恢复为<code>slave</code></p>
+</blockquote>
+<pre><code>systemctl start mysqld
+ssh 10.0.0.13  &apos;grep -i change /etc/mha/manager.log&apos;    # 查看管理节点上的恢复参数
+
+mysql -uroot -pHc.123456
+CHANGE MASTER TO MASTER_HOST=&apos;10.0.0.12&apos;,
+MASTER_PORT=3306,
+MASTER_LOG_FILE=&apos;mysql-bin.000001&apos;,    # 替换此处为 manager.log 对应参数
+MASTER_LOG_POS=1390,                   # 替换此处为 manager.log 对应参数
+MASTER_USER=&apos;sync&apos;,
+MASTER_PASSWORD=&apos;Hc.123456&apos;;           # 替换此处为同步用户密码
+start slave;
+show slave status\G;
+</code></pre><hr>
+<blockquote>
+<p>5.设置 lab01 为 master</p>
+</blockquote>
+<pre><code># lab03 执行
+rm -f /etc/mha/mha.failover.complete
+/etc/mha/mha_start              # 启动 masterha_manager 服务
+ps aux | grep masterha
+tail -f /tmp/mha_manager.log    # 查看 masterha_manager 实时日志
+
+# lab02关闭mysld服务(lab02执行)
+systemctl stop mysqld
+
+# lab03 验证(lab03执行)
+mysql -uroot -pHc.123456 -e &apos;show slave status\G;&apos; | grep Master_Host
+
+# 恢复lab02(lab02执行)
+systemctl start mysqld
+ssh 10.0.0.13  &apos;grep -i change /etc/mha/manager.log&apos;    # 查看管理节点上的恢复参数
+
+mysql -uroot -pHc.123456
+CHANGE MASTER TO MASTER_HOST=&apos;10.0.0.11&apos;,
+MASTER_PORT=3306,
+MASTER_LOG_FILE=&apos;mysql-bin.000002&apos;,    # 替换此处为 manager.log 对应参数
+MASTER_LOG_POS=154,                    # 替换此处为 manager.log 对应参数
+MASTER_USER=&apos;sync&apos;,
+MASTER_PASSWORD=&apos;Hc.123456&apos;;           # 替换此处为同步用户密码
+start slave;
+show slave status\G;
+</code></pre><hr>
+<blockquote>
+<p>6.<code>lab03</code>启动<code>masterha_manager</code>服务</p>
+</blockquote>
+<pre><code>rm -f /etc/mha/mha.failover.complete
+/etc/mha/mha_start              # 启动 masterha_manager 服务
+ps aux | grep masterha
+tail -f /tmp/mha_manager.log    # 查看 masterha_manager 实时日志
+</code></pre><hr>
+<h3 id="创建VIP切换脚本"><a href="#创建VIP切换脚本" class="headerlink" title="创建VIP切换脚本"></a>创建VIP切换脚本</h3><blockquote>
+<p>lab03 当主从切换时触发脚本执行删除/添加 VIP</p>
+</blockquote>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;&lt;<span class="string">'EOF'</span>   &gt;<span class="regexp">/etc/mha</span><span class="regexp">/master_ip_failover</span></span><br><span class="line"><span class="regexp">#!/usr</span><span class="regexp">/bin/env</span> perl</span><br><span class="line"> </span><br><span class="line"><span class="keyword">use</span> strict;</span><br><span class="line"><span class="keyword">use</span> warnings <span class="string">FATAL =&gt;</span> <span class="string">'all'</span>;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">use</span> Getopt::Long;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">my</span> (</span><br><span class="line">    $command,          $ssh_user,        $orig_master_host, $orig_master_ip,</span><br><span class="line">    $orig_master_port, $new_master_host, $new_master_ip,    $new_master_port</span><br><span class="line">);</span><br><span class="line"> </span><br><span class="line"><span class="keyword">my</span> $vip = <span class="string">'10.0.0.10/24'</span>;</span><br><span class="line"><span class="keyword">my</span> $nic = <span class="string">'ens32'</span>;</span><br><span class="line"><span class="keyword">my</span> $key = <span class="string">'6'</span>;</span><br><span class="line"><span class="keyword">my</span> $ssh_start_vip = <span class="string">"/sbin/ifconfig $nic:$key $vip"</span>;</span><br><span class="line"><span class="keyword">my</span> $ssh_stop_vip = <span class="string">"/sbin/ifconfig $nic:$key down"</span>;</span><br><span class="line"> </span><br><span class="line">GetOptions(</span><br><span class="line">    <span class="string">'command=s'</span>          =&gt; \$command,</span><br><span class="line">    <span class="string">'ssh_user=s'</span>         =&gt; \$ssh_user,</span><br><span class="line">    <span class="string">'orig_master_host=s'</span> =&gt; \$orig_master_host,</span><br><span class="line">    <span class="string">'orig_master_ip=s'</span>   =&gt; \$orig_master_ip,</span><br><span class="line">    <span class="string">'orig_master_port=i'</span> =&gt; \$orig_master_port,</span><br><span class="line">    <span class="string">'new_master_host=s'</span>  =&gt; \$new_master_host,</span><br><span class="line">    <span class="string">'new_master_ip=s'</span>    =&gt; \$new_master_ip,</span><br><span class="line">    <span class="string">'new_master_port=i'</span>  =&gt; \$new_master_port,</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">exit</span> &amp;main();</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">sub</span> <span class="title">main</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">print</span> <span class="string">"\n\nIN SCRIPT TEST====$ssh_stop_vip==$ssh_start_vip===\n\n"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> ( $command eq <span class="string">"stop"</span> || $command eq <span class="string">"stopssh"</span> ) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">my</span> $exit_code = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">eval</span> &#123;</span><br><span class="line">            <span class="keyword">print</span> <span class="string">"Disabling the VIP on old master: $orig_master_host \n"</span>;</span><br><span class="line">            &amp;stop_vip();</span><br><span class="line">            $exit_code = <span class="number">0</span>;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="keyword">if</span> ($@) &#123;</span><br><span class="line">            <span class="keyword">warn</span> <span class="string">"Got Error: $@\n"</span>;</span><br><span class="line">            <span class="keyword">exit</span> $exit_code;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">exit</span> $exit_code;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">elsif</span> ( $command eq <span class="string">"start"</span> ) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">my</span> $exit_code = <span class="number">10</span>;</span><br><span class="line">        <span class="keyword">eval</span> &#123;</span><br><span class="line">            <span class="keyword">print</span> <span class="string">"Enabling the VIP - $vip on the new master - $new_master_host \n"</span>;</span><br><span class="line">            &amp;start_vip();</span><br><span class="line">            $exit_code = <span class="number">0</span>;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="keyword">if</span> ($@) &#123;</span><br><span class="line">            <span class="keyword">warn</span> $@;</span><br><span class="line">            <span class="keyword">exit</span> $exit_code;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">exit</span> $exit_code;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">elsif</span> ( $command eq <span class="string">"status"</span> ) &#123;</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"Checking the Status of the script.. OK \n"</span>;</span><br><span class="line">        <span class="keyword">exit</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        &amp;usage();</span><br><span class="line">        <span class="keyword">exit</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">sub</span> <span class="title">start_vip</span>() </span>&#123;</span><br><span class="line">    <span class="string">`ssh $ssh_user\@$new_master_host \" $ssh_start_vip \"`</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">sub</span> <span class="title">stop_vip</span>() </span>&#123;</span><br><span class="line">     <span class="keyword">return</span> <span class="number">0</span>  <span class="keyword">unless</span>  ($ssh_user);</span><br><span class="line">    <span class="string">`ssh $ssh_user\@$orig_master_host \" $ssh_stop_vip \"`</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">sub</span> <span class="title">usage</span> </span>&#123;</span><br><span class="line">    <span class="keyword">print</span></span><br><span class="line">    <span class="string">"Usage: master_ip_failover --command=start|stop|stopssh|status --orig_master_host=host --orig_master_ip=ip </span></span><br><span class="line"><span class="string">            --orig_master_port=port --new_master_host=host --new_master_ip=ip --new_master_port=port\n"</span>;</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="keyword">chmod</span> +<span class="keyword">x</span> /etc/mha/master_ip_failover</span><br></pre></td></tr></table></figure>
+<hr>
+<blockquote>
+<p>开启切换主从时触发脚本VIP</p>
+</blockquote>
+<pre><code>sed -i &apos;s/#master_ip_failover_script/master_ip_failover_script/&apos; /etc/mha/mha.cnf
+</code></pre><hr>
+<h3 id="节点快速恢复"><a href="#节点快速恢复" class="headerlink" title="节点快速恢复"></a>节点快速恢复</h3><pre><code>systemctl start mysqld
+mysql  -uroot -pHc.123456 -e &apos;stop slave;&apos;
+mysql  -uroot -pHc.123456 -e &apos;reset slave;&apos;
+echo  $(ssh 10.0.0.13  &apos;grep -i change /etc/mha/manager.log&apos; | awk -F &apos;be: &apos; &apos;{print $2}&apos; | tail -n 2) &gt;/tmp/bin.log
+sed -i &apos;s/xxx/Hc.123456/&apos; /tmp/bin.log
+sql=$(cat /tmp/bin.log)
+mysql  -uroot -pHc.123456 -e &quot;$sql&quot;
+mysql  -uroot -pHc.123456 -e &apos;start slave;&apos;
+mysql  -uroot -pHc.123456 -e &apos;show slave status\G;&apos;
+</code></pre><h3 id="slave集群"><a href="#slave集群" class="headerlink" title="slave集群"></a>slave集群</h3><blockquote>
+<p>lab04安装 haproxy ; 代理 lab02 lab03 数据库读请求</p>
+</blockquote>
+<pre><code>yum -y install haproxy
+</code></pre><hr>
+<h3 id="配置haproxy"><a href="#配置haproxy" class="headerlink" title="配置haproxy"></a>配置haproxy</h3><figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">cp /etc/haproxy/haproxy.cfg&#123;,.bak&#125;</span><br><span class="line">cat &lt;&lt;! &gt;/etc/haproxy/haproxy.cfg</span><br><span class="line">############ 全局配置 ############</span><br><span class="line">global</span><br><span class="line">log <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span> local0</span><br><span class="line">log <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span> local1 notice</span><br><span class="line">daemon</span><br><span class="line">nbproc <span class="number">1</span>       # 进程数量</span><br><span class="line">maxconn <span class="number">4096</span>   # 最大连接数</span><br><span class="line">user haproxy   # 运行用户</span><br><span class="line">group haproxy  # 运行组</span><br><span class="line">chroot /var/lib/haproxy</span><br><span class="line">pidfile /var/run/haproxy.pid</span><br><span class="line"></span><br><span class="line">############ 默认配置 ############</span><br><span class="line">defaults</span><br><span class="line">log global</span><br><span class="line">mode http            # 默认模式&#123; tcp|http|health &#125;</span><br><span class="line">option httplog       # 日志类别,采用httplog</span><br><span class="line">option dontlognull   # 不记录健康检查日志信息</span><br><span class="line">retries <span class="number">2</span>            # <span class="number">2</span>次连接失败不可用</span><br><span class="line">option forwardfor except <span class="number">127.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">8</span>    # 后端服务获得真实ip</span><br><span class="line">option httpclose     # 请求完毕后主动关闭http通道</span><br><span class="line">option abortonclose  # 服务器负载很高，自动结束比较久的链接</span><br><span class="line">option redispatch</span><br><span class="line">maxconn <span class="number">4096</span>         # 最大连接数</span><br><span class="line">timeout connect <span class="number">5</span>m   # 连接超时</span><br><span class="line">timeout client <span class="number">1</span>m    # 客户端超时</span><br><span class="line">timeout server <span class="number">31</span>m   # 服务器超时</span><br><span class="line">timeout check <span class="number">10</span>s    # 心跳检测超时</span><br><span class="line">balance roundrobin   # 负载均衡方式，轮询</span><br><span class="line"></span><br><span class="line">########## 统计页面配置 ##########</span><br><span class="line">listen stats</span><br><span class="line">  bind <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>:<span class="number">1080</span></span><br><span class="line">  mode http</span><br><span class="line">  option httplog</span><br><span class="line">  log <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span> local0 err</span><br><span class="line">  maxconn <span class="number">10</span>               # 最大连接数</span><br><span class="line">  stats refresh <span class="number">30</span>s</span><br><span class="line">  stats uri /admin         #状态页面 http<span class="comment">//ip:1080/admin 访问</span></span><br><span class="line">  stats realm Haproxy\ Statistics</span><br><span class="line">  stats auth admin:admin   # 用户和密码:admin</span><br><span class="line">  stats hide-version       # 隐藏版本信息</span><br><span class="line">  stats admin <span class="keyword">if</span> TRUE      # 设置手工启动/禁用</span><br><span class="line"></span><br><span class="line">listen MYSQL-HA</span><br><span class="line">  mode tcp</span><br><span class="line">  option  tcplog</span><br><span class="line">  bind <span class="number">10.0</span><span class="number">.0</span><span class="number">.14</span>:<span class="number">3306</span></span><br><span class="line">  balance leastconn</span><br><span class="line">  option mysql-check user root</span><br><span class="line">  server <span class="number">10.0</span><span class="number">.0</span><span class="number">.12</span> <span class="number">10.0</span><span class="number">.0</span><span class="number">.12</span>:<span class="number">3306</span> inter <span class="number">1</span>s rise <span class="number">2</span> fall <span class="number">2</span></span><br><span class="line">  server <span class="number">10.0</span><span class="number">.0</span><span class="number">.13</span> <span class="number">10.0</span><span class="number">.0</span><span class="number">.13</span>:<span class="number">3306</span> inter <span class="number">1</span>s rise <span class="number">2</span> fall <span class="number">2</span></span><br><span class="line">!</span><br></pre></td></tr></table></figure>
+<h4 id="配置日志"><a href="#配置日志" class="headerlink" title="配置日志"></a>配置日志</h4><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cat</span> &lt;&lt;'!' &gt;/etc/rsyslog.<span class="keyword">d</span>/haproxy.<span class="keyword">conf</span></span><br><span class="line"><span class="variable">$ModLoad</span> imudp</span><br><span class="line"><span class="variable">$UDPServerRun</span> 514</span><br><span class="line"><span class="variable">$template</span> Haproxy,<span class="string">"%rawmsg% \n"</span></span><br><span class="line">local0.=info -/<span class="keyword">var</span>/<span class="keyword">log</span>/haproxy.<span class="keyword">log</span>;Haproxy</span><br><span class="line">local0.notice -/<span class="keyword">var</span>/<span class="keyword">log</span>/haproxy-status.<span class="keyword">log</span>;Haproxy</span><br><span class="line">!</span><br><span class="line"></span><br><span class="line"># 重启日志服务</span><br><span class="line">systemctl restart rsyslog</span><br></pre></td></tr></table></figure>
+<h4 id="设置启动方式"><a href="#设置启动方式" class="headerlink" title="设置启动方式"></a>设置启动方式</h4><pre><code># 允许没VIP时启动(如果没有配置此项且应用会导致 haproxy 服务无法启动)
+echo &quot;net.ipv4.ip_nonlocal_bind = 1&quot; &gt;&gt;/etc/sysctl.conf
+sysctl -p
+</code></pre><hr>
+<blockquote>
+<p>服务管理</p>
+</blockquote>
+<pre><code>systemctl start haproxy     # 启动服务
+systemctl enable haproxy    # 随系统启动
+systemctl status haproxy    # 运行状态
+</code></pre><hr>
+<h3 id="配置手动切换主从"><a href="#配置手动切换主从" class="headerlink" title="配置手动切换主从"></a>配置手动切换主从</h3><blockquote>
+<p>创建 VIP 切换脚本(使用 perl 脚本 1)</p>
+</blockquote>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;&lt;<span class="string">'EOF'</span>   &gt;<span class="regexp">/etc/mha</span><span class="regexp">/master_ip_online_change</span></span><br><span class="line"><span class="regexp">#!/usr</span><span class="regexp">/bin/env</span> perl</span><br><span class="line"><span class="keyword">use</span> strict;</span><br><span class="line"><span class="keyword">use</span> warnings <span class="string">FATAL =&gt;</span><span class="string">'all'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> Getopt::Long;</span><br><span class="line"></span><br><span class="line"><span class="keyword">my</span> $vip = <span class="string">'10.0.0.10/24'</span>;  <span class="comment"># Virtual IP</span></span><br><span class="line"><span class="keyword">my</span> $nic = <span class="string">'ens32'</span>;</span><br><span class="line"><span class="keyword">my</span> $key = <span class="string">"6"</span>;</span><br><span class="line"><span class="keyword">my</span> $ssh_start_vip = <span class="string">"/sbin/ifconfig $nic:$key $vip"</span>;</span><br><span class="line"><span class="keyword">my</span> $ssh_stop_vip = <span class="string">"/sbin/ifconfig $nic:$key down"</span>;</span><br><span class="line"><span class="keyword">my</span> $exit_code = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">my</span> (</span><br><span class="line">    $command,              $orig_master_is_new_slave, $orig_master_host,</span><br><span class="line">    $orig_master_ip,       $orig_master_port,         $orig_master_user,</span><br><span class="line">    $orig_master_password, $orig_master_ssh_user,     $new_master_host,</span><br><span class="line">    $new_master_ip,        $new_master_port,          $new_master_user,</span><br><span class="line">    $new_master_password,  $new_master_ssh_user,</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">GetOptions(</span><br><span class="line">    <span class="string">'command=s'</span>                =&gt; \$command,</span><br><span class="line">    <span class="string">'orig_master_is_new_slave'</span> =&gt; \$orig_master_is_new_slave,</span><br><span class="line">    <span class="string">'orig_master_host=s'</span>       =&gt; \$orig_master_host,</span><br><span class="line">    <span class="string">'orig_master_ip=s'</span>         =&gt; \$orig_master_ip,</span><br><span class="line">    <span class="string">'orig_master_port=i'</span>       =&gt; \$orig_master_port,</span><br><span class="line">    <span class="string">'orig_master_user=s'</span>       =&gt; \$orig_master_user,</span><br><span class="line">    <span class="string">'orig_master_password=s'</span>   =&gt; \$orig_master_password,</span><br><span class="line">    <span class="string">'orig_master_ssh_user=s'</span>   =&gt; \$orig_master_ssh_user,</span><br><span class="line">    <span class="string">'new_master_host=s'</span>        =&gt; \$new_master_host,</span><br><span class="line">    <span class="string">'new_master_ip=s'</span>          =&gt; \$new_master_ip,</span><br><span class="line">    <span class="string">'new_master_port=i'</span>        =&gt; \$new_master_port,</span><br><span class="line">    <span class="string">'new_master_user=s'</span>        =&gt; \$new_master_user,</span><br><span class="line">    <span class="string">'new_master_password=s'</span>    =&gt; \$new_master_password,</span><br><span class="line">    <span class="string">'new_master_ssh_user=s'</span>    =&gt; \$new_master_ssh_user,</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">exit</span> &amp;main();</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">sub</span> <span class="title">main</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="comment">#print "\n\nIN SCRIPT TEST====$ssh_stop_vip==$ssh_start_vip===\n\n";</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> ( $command eq <span class="string">"stop"</span> || $command eq <span class="string">"stopssh"</span> ) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># $orig_master_host, $orig_master_ip, $orig_master_port are passed.</span></span><br><span class="line">        <span class="comment"># If you manage master ip address at global catalog database,</span></span><br><span class="line">        <span class="comment"># invalidate orig_master_ip here.</span></span><br><span class="line">        <span class="keyword">my</span> $exit_code = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">eval</span> &#123;</span><br><span class="line">            <span class="keyword">print</span> <span class="string">"\n\n\n***************************************************************\n"</span>;</span><br><span class="line">            <span class="keyword">print</span> <span class="string">"Disabling the VIP - $vip on old master: $orig_master_host\n"</span>;</span><br><span class="line">            <span class="keyword">print</span> <span class="string">"***************************************************************\n\n\n\n"</span>;</span><br><span class="line">            &amp;stop_vip();</span><br><span class="line">            $exit_code = <span class="number">0</span>;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="keyword">if</span> ($@) &#123;</span><br><span class="line">            <span class="keyword">warn</span> <span class="string">"Got Error: $@\n"</span>;</span><br><span class="line">            <span class="keyword">exit</span> $exit_code;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">exit</span> $exit_code;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">elsif</span> ( $command eq <span class="string">"start"</span> ) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># all arguments are passed.</span></span><br><span class="line">        <span class="comment"># If you manage master ip address at global catalog database,</span></span><br><span class="line">        <span class="comment"># activate new_master_ip here.</span></span><br><span class="line">        <span class="comment"># You can also grant write access (create user, set read_only=0, etc) here.</span></span><br><span class="line">        <span class="keyword">my</span> $exit_code = <span class="number">10</span>;</span><br><span class="line">        <span class="keyword">eval</span> &#123;</span><br><span class="line">            <span class="keyword">print</span> <span class="string">"\n\n\n***************************************************************\n"</span>;</span><br><span class="line">            <span class="keyword">print</span> <span class="string">"Enabling the VIP - $vip on new master: $new_master_host \n"</span>;</span><br><span class="line">            <span class="keyword">print</span> <span class="string">"***************************************************************\n\n\n\n"</span>;</span><br><span class="line">            &amp;start_vip();</span><br><span class="line">            $exit_code = <span class="number">0</span>;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="keyword">if</span> ($@) &#123;</span><br><span class="line">            <span class="keyword">warn</span> $@;</span><br><span class="line">            <span class="keyword">exit</span> $exit_code;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">exit</span> $exit_code;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">elsif</span> ( $command eq <span class="string">"status"</span> ) &#123;</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"Checking the Status of the script.. OK \n"</span>;</span><br><span class="line">        <span class="string">`ssh $orig_master_ssh_user\@$orig_master_host \" $ssh_start_vip \"`</span>;</span><br><span class="line">        <span class="keyword">exit</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        &amp;usage();</span><br><span class="line">        <span class="keyword">exit</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># A simple system call that enable the VIP on the new master</span></span><br><span class="line"><span class="function"><span class="keyword">sub</span> <span class="title">start_vip</span>() </span>&#123;</span><br><span class="line">    <span class="string">`ssh $new_master_ssh_user\@$new_master_host \" $ssh_start_vip \"`</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># A simple system call that disable the VIP on the old_master</span></span><br><span class="line"><span class="function"><span class="keyword">sub</span> <span class="title">stop_vip</span>() </span>&#123;</span><br><span class="line">    <span class="string">`ssh $orig_master_ssh_user\@$orig_master_host \" $ssh_stop_vip \"`</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">sub</span> <span class="title">usage</span> </span>&#123;</span><br><span class="line">    <span class="keyword">print</span></span><br><span class="line">        <span class="string">"Usage: master_ip_failover –command=start|stop|stopssh|status –orig_master_host=host –orig_master_ip=ip –orig_master_port=po</span></span><br><span class="line"><span class="string">        rt –new_master_host=host –new_master_ip=ip –new_master_port=port\n"</span>;</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加可执行权限</span></span><br><span class="line"><span class="keyword">chmod</span> +<span class="keyword">x</span> /etc/mha/master_ip_online_change</span><br></pre></td></tr></table></figure>
+<hr>
+<blockquote>
+<p>创建 VIP 切换脚本(使用 shell 脚本 2)</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;&lt;EOF   &gt;/etc/mha/master_ip_online_change.sh</span><br><span class="line"><span class="comment">#/bin/bash</span></span><br><span class="line"><span class="built_in">source</span> /root/.bash_profile</span><br><span class="line"> </span><br><span class="line">vip=<span class="string">'10.0.0.10/24'</span>  <span class="comment"># Virtual IP</span></span><br><span class="line">nic=<span class="string">'ens32'</span></span><br><span class="line">key=6</span><br><span class="line"> </span><br><span class="line"><span class="built_in">command</span>=`<span class="built_in">echo</span> <span class="string">"<span class="variable">$1</span>"</span> | awk -F = <span class="string">'&#123;print $2&#125;'</span>`</span><br><span class="line">orig_master_host=`<span class="built_in">echo</span> <span class="string">"<span class="variable">$2</span>"</span> | awk -F = <span class="string">'&#123;print $2&#125;'</span>`</span><br><span class="line">new_master_host=`<span class="built_in">echo</span> <span class="string">"<span class="variable">$7</span>"</span> | awk -F = <span class="string">'&#123;print $2&#125;'</span>`</span><br><span class="line">orig_master_ssh_user=`<span class="built_in">echo</span> <span class="string">"<span class="variable">$&#123;12&#125;</span>"</span> | awk -F = <span class="string">'&#123;print $2&#125;'</span>`</span><br><span class="line">new_master_ssh_user=`<span class="built_in">echo</span> <span class="string">"<span class="variable">$&#123;13&#125;</span>"</span> | awk -F = <span class="string">'&#123;print $2&#125;'</span>`</span><br><span class="line"> </span><br><span class="line">stop_vip=<span class="string">"ssh root@<span class="variable">$orig_master_host</span> /sbin/ifconfig  <span class="variable">$nic</span>:<span class="variable">$key</span>  down"</span></span><br><span class="line">start_vip=<span class="string">"ssh root@<span class="variable">$new_master_host</span> /sbin/ifconfig  <span class="variable">$nic</span>:<span class="variable">$key</span>  <span class="variable">$vip</span>"</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$command</span> = <span class="string">'stop'</span> ]</span><br><span class="line">   <span class="keyword">then</span></span><br><span class="line">   <span class="built_in">echo</span> -e <span class="string">"\n\n\n***************************************************************\n"</span></span><br><span class="line">   <span class="built_in">echo</span> -e <span class="string">"Disabling the VIP - <span class="variable">$vip</span> on old master: <span class="variable">$orig_master_host</span>\n"</span></span><br><span class="line">   <span class="variable">$stop_vip</span></span><br><span class="line">   <span class="keyword">if</span> [ $? -eq 0 ]</span><br><span class="line">      <span class="keyword">then</span></span><br><span class="line">      <span class="built_in">echo</span> <span class="string">"Disabled the VIP successfully"</span></span><br><span class="line">   <span class="keyword">else</span></span><br><span class="line">      <span class="built_in">echo</span> <span class="string">"Disabled the VIP failed"</span></span><br><span class="line">   <span class="keyword">fi</span></span><br><span class="line">   <span class="built_in">echo</span> -e <span class="string">"***************************************************************\n\n\n\n"</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$command</span> = <span class="string">'start'</span> -o <span class="variable">$command</span> = <span class="string">'status'</span> ]</span><br><span class="line">   <span class="keyword">then</span></span><br><span class="line">   <span class="built_in">echo</span> -e <span class="string">"\n\n\n***************************************************************\n"</span></span><br><span class="line">   <span class="built_in">echo</span> -e <span class="string">"Enabling the VIP - <span class="variable">$vip</span> on new master: <span class="variable">$new_master_host</span> \n"</span></span><br><span class="line">   <span class="variable">$start_vip</span></span><br><span class="line">   <span class="keyword">if</span> [ $? -eq 0 ]</span><br><span class="line">      <span class="keyword">then</span></span><br><span class="line">      <span class="built_in">echo</span> <span class="string">"Enabled the VIP successfully"</span></span><br><span class="line">   <span class="keyword">else</span></span><br><span class="line">      <span class="built_in">echo</span> <span class="string">"Enabled the VIP failed"</span></span><br><span class="line">   <span class="keyword">fi</span></span><br><span class="line">   <span class="built_in">echo</span> -e <span class="string">"***************************************************************\n\n\n\n"</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加可执行权限</span></span><br><span class="line">chmod +x /etc/mha/master_ip_online_change.sh</span><br></pre></td></tr></table></figure>
+<hr>
+<blockquote>
+<p>开启手动切换VIP功能 <code>shell</code>, <code>perl</code> 方式二选一(注意：手动切换时不要开启masterha_manager服务)</p>
+</blockquote>
+<pre><code># shell 方式
+shell=&apos;/etc/mha/master_ip_online_change.sh&apos;
+sed -i &apos;23d&apos; /etc/mha/mha.cnf
+sed -i &quot;22a master_ip_online_change_script=$shell&quot; /etc/mha/mha.cnf
+
+# perl 方式
+perl=&apos;/etc/mha/master_ip_online_change&apos;
+sed -i &apos;23d&apos; /etc/mha/mha.cnf
+sed -i &quot;22a master_ip_online_change_script=$perl&quot; /etc/mha/mha.cnf
+</code></pre><hr>
+<blockquote>
+<p>切换10.0.0.11为主</p>
+</blockquote>
+<pre><code>masterha_master_switch --conf=/etc/mha/mha.cnf -master_state=alive --new_master_host=10.0.0.11 --new_master_port=3306 --orig_master_is_new_slave --running_updates_limit=10000
+</code></pre><hr>
+<h3 id="触发切换时发送邮件"><a href="#触发切换时发送邮件" class="headerlink" title="触发切换时发送邮件"></a>触发切换时发送邮件</h3><blockquote>
+<p>安装<code>mailx</code></p>
+</blockquote>
+<pre><code>yum install -y mailx
+</code></pre><hr>
+<blockquote>
+<p>配置<code>mail.rc</code></p>
+</blockquote>
+<pre><code>cat &lt;&lt;EOF    &gt;/etc/mail.rc
+# mail $(date &apos;+%F %T&apos;)
+set from=gaojing_2018@163.com smtp=smtp.163.com
+set smtp-auth-user=gaojing_2018@163.com
+set smtp-auth-password=password
+set smtp-auth=login
+EOF
+
+systemctl restart postfix
+</code></pre><hr>
+<blockquote>
+<p>测试配置</p>
+</blockquote>
+<pre><code>echo &quot;服务器已恢复正常，恢复时间：$(date &apos;+%F %T&apos;)&quot;| mailx -s &quot;MHA服务监控&quot; 544025211@qq.com
+</code></pre><hr>
+<blockquote>
+<p>触发发送邮件脚本</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;&lt;<span class="string">'EOF'</span>   &gt;/etc/mha/send_report</span><br><span class="line"><span class="comment">#/bin/bash</span></span><br><span class="line"><span class="built_in">source</span> /root/.bash_profile</span><br><span class="line"></span><br><span class="line">orig_master_host=`<span class="built_in">echo</span> <span class="string">"<span class="variable">$1</span>"</span> | awk -F = <span class="string">'&#123;print $2&#125;'</span>`</span><br><span class="line">new_master_host=`<span class="built_in">echo</span> <span class="string">"<span class="variable">$2</span>"</span> | awk -F = <span class="string">'&#123;print $2&#125;'</span>`</span><br><span class="line">new_slave_hosts=`<span class="built_in">echo</span> <span class="string">"<span class="variable">$3</span>"</span> | awk -F = <span class="string">'&#123;print $2&#125;'</span>`</span><br><span class="line">subject=`<span class="built_in">echo</span> <span class="string">"<span class="variable">$4</span>"</span> | awk -F = <span class="string">'&#123;print $2&#125;'</span>`</span><br><span class="line">body=`<span class="built_in">echo</span> <span class="string">"<span class="variable">$5</span>"</span> | awk -F = <span class="string">'&#123;print $2&#125;'</span>`</span><br><span class="line"></span><br><span class="line"><span class="comment">#判断日志结尾是否有successfully，有则表示切换成功，成功与否都发邮件。</span></span><br><span class="line">tac /etc/mha/manager.log | sed -n 2p | grep <span class="string">'successfully'</span> &gt; /dev/null</span><br><span class="line"><span class="keyword">if</span> [ $? -eq 0 ]</span><br><span class="line">    <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> -e <span class="string">"MHA <span class="variable">$subject</span> 主从切换成功\n master:<span class="variable">$orig_master_host</span> --&gt; <span class="variable">$new_master_host</span> \n <span class="variable">$body</span> \n 当前从库:<span class="variable">$new_slave_hosts</span>"</span> | mailx -s <span class="string">"MySQL实例宕掉,MHA <span class="variable">$subject</span> 切换成功"</span>  544025211@qq.com</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> -e <span class="string">"MHA <span class="variable">$subject</span> 主从切换失败\n master:<span class="variable">$orig_master_host</span> --&gt; <span class="variable">$new_master_host</span> \n <span class="variable">$body</span>"</span> | mailx -s <span class="string">"MySQL实例宕掉,MHA <span class="variable">$subject</span> 切换失败"</span> 544025211@qq.com</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加可执行权限</span></span><br><span class="line">chmod +x /etc/mha/send_report</span><br></pre></td></tr></table></figure>
+<hr>
+<blockquote>
+<p>开启切换触发邮件</p>
+</blockquote>
+<pre><code>sed -i &apos;s/#report_script/report_script/&apos; /etc/mha/mha.cnf
+</code></pre><hr>
+<h3 id="测试-1"><a href="#测试-1" class="headerlink" title="测试"></a>测试</h3><blockquote>
+<p>管理节点(确认集群运行正常 主从从)</p>
+</blockquote>
+<pre><code>rm -f mha.failover.complete
+masterha_manager --conf=/etc/mha/mha.cnf &amp;
+ps aux | grep mha
+mysql  -uroot -pHc.123456 -e &apos;show slave status\G;&apos;    # 查看主节点是谁
+</code></pre><hr>
+<blockquote>
+<p>关闭主节点的mysqld服务</p>
+</blockquote>
+<pre><code>systemctl stop mysqld
+</code></pre><hr>
+<blockquote>
+<p>状态</p>
+</blockquote>
+<pre><code>此时 master 已经切换到其他节点 VIP 已经转移 指定邮箱也收到邮件包含集群信息
+</code></pre><hr>
+<h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h3><pre><code>数据库写入使用VIP
+数据库读使用 haproxy 代理的IP 或者使用VIP(haproxy可以不安装)
+</code></pre>
+      
+    </div>
+    
+    
+    
+    <div>
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/posts/mysql-mha.html">MySql-MHA</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 亦 漩 的个人博客">亦 漩</a></p>
+  <p><span>发布时间:</span>2018年09月24日 - 01:09</p>
+  <p><span>最后更新:</span>2018年09月27日 - 20:09</p>
+  <p><span>原始链接:</span><a href="/posts/mysql-mha.html" title="MySql-MHA">https://home.onlycloud.xin/posts/mysql-mha.html</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://home.onlycloud.xin/posts/mysql-mha.html"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by/4.0/" target="_blank" title="Attribution 4.0 International (CC BY 4.0)">署名4.0国际 （CC BY 4.0）</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+      $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+        });
+    });  
+</script>
+
+
+      
+    </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/mysql高可用/" rel="tag "><i class="fa fa-tag"></i> mysql高可用</a>
+          
+            <a href="/tags/mysql-MHA/" rel="tag "><i class="fa fa-tag"></i> mysql-MHA</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div id="needsharebutton-postbottom">
+            <span class="btn">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </span>
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/999a.html" rel="next" title="mysql双主配置">
+                <i class="fa fa-chevron-left"></i> mysql双主配置
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/nginx-proxy.html" rel="prev" title="Nginx负载均衡与反向代理配置">
+                Nginx负载均衡与反向代理配置 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="亦 漩" />
+            
+              <p class="site-author-name" itemprop="name">亦 漩</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">110</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/bookgh" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://coding.net/u/yx571304" target="_blank" title="Coding">
+                      
+                        <i class="fa fa-fw fa-git"></i>Coding</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://skyisfuck.github.io" title="Peng" target="_blank">Peng</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#MHA介绍"><span class="nav-number">1.</span> <span class="nav-text">MHA介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#环境准备"><span class="nav-number">2.</span> <span class="nav-text">环境准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置ssh密钥登陆"><span class="nav-number">3.</span> <span class="nav-text">配置ssh密钥登陆</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装MySql"><span class="nav-number">4.</span> <span class="nav-text">安装MySql</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置主从复制"><span class="nav-number">5.</span> <span class="nav-text">配置主从复制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-MHA"><span class="nav-number">6.</span> <span class="nav-text">安装 MHA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置-MHA-lab03"><span class="nav-number">7.</span> <span class="nav-text">配置 MHA(lab03)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试"><span class="nav-number">8.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建VIP切换脚本"><span class="nav-number">9.</span> <span class="nav-text">创建VIP切换脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#节点快速恢复"><span class="nav-number">10.</span> <span class="nav-text">节点快速恢复</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#slave集群"><span class="nav-number">11.</span> <span class="nav-text">slave集群</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置haproxy"><span class="nav-number">12.</span> <span class="nav-text">配置haproxy</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置日志"><span class="nav-number">12.1.</span> <span class="nav-text">配置日志</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置启动方式"><span class="nav-number">12.2.</span> <span class="nav-text">设置启动方式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置手动切换主从"><span class="nav-number">13.</span> <span class="nav-text">配置手动切换主从</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#触发切换时发送邮件"><span class="nav-number">14.</span> <span class="nav-text">触发切换时发送邮件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试-1"><span class="nav-number">15.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#说明"><span class="nav-number">16.</span> <span class="nav-text">说明</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">亦 漩</span>
+
+  
+  <br/><span><i class="fa fa-bomb"></i></span><span id="showDays"></span>
+</div>
+
+
+
+
+
+
+
+
+
+<script>
+  var seconds = 1000;
+  var minutes = seconds * 60;
+  var hours = minutes * 60;
+  var days = hours * 24;
+  var years = days * 365;
+  var birthDay = Date.UTC(2017,12,07,10,00,00); // 这里设置建站时间
+  setInterval(function() {
+    var today = new Date();
+    var todayYear = today.getFullYear();
+    var todayMonth = today.getMonth()+1;
+    var todayDate = today.getDate();
+    var todayHour = today.getHours();
+    var todayMinute = today.getMinutes();
+    var todaySecond = today.getSeconds();
+    var now = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+    var diff = now - birthDay;
+    var diffYears = Math.floor(diff/years);
+    var diffDays = Math.floor((diff/days)-diffYears*365);
+    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById('showDays').innerHTML="本站已运行 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+  }, 1000);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+      <div id="needsharebutton-float">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'DWwnpdDBrLDMI8CKf8OXopJu-gzGzoHsz',
+        appKey: '7sfOhetJ1Wftp4W7MF0xdPOw',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "default";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+      flOptions = {};
+      
+          flOptions.iconStyle = "default";
+      
+          flOptions.boxForm = "horizontal";
+      
+          flOptions.position = "middleRight";
+      
+          flOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-float', flOptions);
+    
+  </script>
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+
+</body>
+</html>

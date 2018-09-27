@@ -1,0 +1,2709 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="openstack,pike," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="####################################################################################################################################### #  初始化环境  # ################  # Management Netwock   10.0.0.0/24">
+<meta name="keywords" content="openstack,pike">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Install OpenStack Pike">
+<meta property="og:url" content="https://home.onlycloud.xin/posts/pike.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="####################################################################################################################################### #  初始化环境  # ################  # Management Netwock   10.0.0.0/24">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-27T12:11:38.461Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Install OpenStack Pike">
+<meta name="twitter:description" content="####################################################################################################################################### #  初始化环境  # ################  # Management Netwock   10.0.0.0/24">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://home.onlycloud.xin/posts/pike.html"/>
+
+
+
+
+
+  <title>Install OpenStack Pike | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-python">
+          <a href="/python/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            python
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-logs">
+          <a href="/posts/log.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Logs
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://home.onlycloud.xin/posts/pike.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="亦 漩">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Install OpenStack Pike</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-04T21:53:03+08:00">
+                2018-08-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/openstack/" itemprop="url" rel="index">
+                    <span itemprop="name">openstack</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/pike.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/posts/pike.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  6,519
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  35
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <pre><code>#######################################################################################################################################
+#  初始化环境  #
+################
+
+# Management Netwock   10.0.0.0/24(私有网络, 管理网络)
+# Provicer  Network   203.0.113.0/24(公有网络, 提供外部访问虚拟机)
+
+
+# controller 网络参数
+hostnamectl set-hostname controller
+NetName=ens32
+rm -f /etc/sysconfig/network-scripts/ifcfg-$NetName
+nmcli con add con-name $NetName ifname $NetName autoconnect yes type ethernet ip4 10.0.0.11/24 ipv4.dns &quot;202.103.24.68&quot; ipv4.gateway &quot;10.0.0.2&quot;
+nmcli connection reload
+
+# compute1 网络参数
+hostnamectl set-hostname compute1
+NetName=ens32
+rm -f /etc/sysconfig/network-scripts/ifcfg-$NetName
+nmcli con add con-name $NetName ifname $NetName autoconnect yes type ethernet ip4 10.0.0.31/24 ipv4.dns &quot;202.103.24.68&quot; ipv4.gateway &quot;10.0.0.2&quot;
+nmcli connection reload
+
+# block1 网络参数
+hostnamectl set-hostname block1
+NetName=ens32
+rm -f /etc/sysconfig/network-scripts/ifcfg-$NetName
+nmcli con add con-name $NetName ifname $NetName autoconnect yes type ethernet ip4 10.0.0.41/24 ipv4.dns &quot;202.103.24.68&quot; ipv4.gateway &quot;10.0.0.2&quot;
+nmcli connection reload
+
+# object1 网络参数
+hostnamectl set-hostname object1
+NetName=ens32
+rm -f /etc/sysconfig/network-scripts/ifcfg-$NetName
+nmcli con add con-name $NetName ifname $NetName autoconnect yes type ethernet ip4 10.0.0.51/24 ipv4.dns &quot;202.103.24.68&quot; ipv4.gateway &quot;10.0.0.2&quot;
+nmcli connection reload
+
+# object2 网络参数
+hostnamectl set-hostname object2
+NetName=ens32
+rm -f /etc/sysconfig/network-scripts/ifcfg-$NetName
+nmcli con add con-name $NetName ifname $NetName autoconnect yes type ethernet ip4 10.0.0.52/24 ipv4.dns &quot;202.103.24.68&quot; ipv4.gateway &quot;10.0.0.2&quot;
+nmcli connection reload
+```file
+# 配置hosts解析
+if [ -z &quot;$(grep &apos;OpenStack_0&apos; /etc/hosts)&quot; ];then
+cat &lt;&lt;EOF  &gt;&gt;/etc/hosts
+
+# OpenStack_0   $(date +&apos;%F %T&apos;)
+10.0.0.11       controller
+10.0.0.31       compute1
+10.0.0.41       block1
+10.0.0.51       object1
+10.0.0.52       object2
+EOF
+fi
+
+# ssh免秘钥
+curl http://home.onlycloud.xin/code/SSH_KEY -o ~/SSH_KEY
+. ~/SSH_KEY
+SSH_KEY controller
+SSH_KEY compute1
+SSH_KEY block1
+SSH_KEY object1
+SSH_KEY object2
+
+# 同步hosts,关闭防火墙,selinux,yum源
+for node in controller compute1 block1 object1 object2; do
+    echo &quot;--------------- $node ---------------&quot;
+    scp /etc/hosts $node:/etc/hosts
+    ssh $node &quot;
+    # 关闭, 禁用 firewalld
+    systemctl stop firewalld
+    systemctl disable firewalld
+    firewall-cmd --state
+
+    # 关闭, 禁用 selinux
+    setenforce 0
+    sed -i &apos;/^SELINUX=.*/c SELINUX=disabled&apos; /etc/selinux/config
+    grep --color=auto &apos;^SELINUX&apos; /etc/selinux/config
+
+    # 下载阿里云yum源
+    rm -f /etc/yum.repos.d/*
+    curl -so /etc/yum.repos.d/Centos-7.repo http://mirrors.aliyun.com/repo/Centos-7.repo
+    sed -i &apos;/aliyuncs.com/d&apos; /etc/yum.repos.d/Centos-7.repo
+
+    sed -i &apos;s/ONBOOT=.*/ONBOOT=yes/&apos; /etc/sysconfig/network-scripts/ifcfg-ens34
+    sed -i &apos;s/BOOTPROTO=.*/BOOTPROTO=none/&apos; /etc/sysconfig/network-scripts/ifcfg-ens34&quot;
+done
+
+# 网络测试
+for node in controller compute1 block1 object1 object2; do
+    echo &quot;--------------- $node ---------------&quot;
+    ssh $node &quot;
+    ping -c 3 openstack.org
+    ping -c 3 controller
+    ping -c 3 compute1&quot;
+done
+
+#######################################################################################################################################
+#  配置本地YUM  #
+#################
+# 挂载共享
+mkdir /mnt/yum_pike
+echo &apos;//192.168.0.50/openstack /mnt cifs username=admin,vers=2.0,rw&apos; &gt;&gt;/etc/fstab
+mount -a
+
+# 设置yum下载目录
+mkdir -p /www/share/yum
+cp /etc/yum.conf{,.bak}
+sed -i &apos;s#^keepcache=0#keepcache=1#&apos; /etc/yum.conf
+sed -i &apos;s/^cachedir/#cachedir/&apos; /etc/yum.conf
+sed -ir &apos;3 icachedir=/www/share/yum/$basearch/$releasever \n&apos; /etc/yum.conf
+head /etc/yum.conf
+
+# 移动包到新的路径
+find /www/share/yum/ -name *.rpm |sed -r &apos;s#.*#mv &amp; /mnt/tmp/\n#&apos;|bash
+yum install -y createrepo
+createrepo -pdo  /mnt/tmp/ /mnt/tmp/
+mv /mnt/tmp/* /mnt/yum_pike
+
+# 创建源文件
+cat &lt;&lt;EOF &gt;/mnt/yum/openstack-pike.repo
+[My_share]
+name=My_Souce
+baseurl=http://192.168.0.2/yum_pike/
+gpgcheck=0
+enabled=1
+cost=88
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+EOF
+
+rm -f /etc/yum.repos.d/*
+curl http://192.168.0.2/yum/openstack-pike.repo -o /etc/yum.repos.d/openstack-pike.repo
+
+#######################################################################################################################################
+#  生成 OpenStack 密码, chrony时间同步  #
+#########################################
+# 生成OpenStack所需密码 文件
+if [ ! -f /etc/PASS ];then
+list=&apos;ROOT_DBPASS ADMIN_PASS CINDER_DBPASS CINDER_PASS DASH_DBPASS DEMO_PASS GLANCE_DBPASS GLANCE_PASS KEYSTONE_DBPASS
+  METADATA_SECRET NEUTRON_DBPASS NEUTRON_PASS NOVA_DBPASS NOVA_PASS PLACEMENT_PASS RABBIT_PASS DEMO_PASS&apos;
+for user in $list; do
+    echo &quot;# $user&quot; | tee -a PASS
+    echo -e &quot;$user=$(openssl rand -hex 10)\n&quot; | tee -a ~/PASS
+done
+cp ~/PASS /etc/PASS
+cat ~/PASS
+. ~/PASS
+fi
+
+# 同步密码文件到其他节点
+scp ~/PASS compute1:~/PASS
+scp ~/PASS block1:~/PASS
+scp ~/PASS object1:~/PASS
+scp ~/PASS object2:~/PASS
+
+# 配置ntp(服务端)
+# 安装 chrony
+yum install -y chrony
+
+# chrony 服务端配置文件
+cat &lt;&lt;EOF  &gt;/etc/chrony.conf
+# net server $(date +&apos;%F %T&apos;)
+server ntp.aliyun.com iburst
+
+driftfile /var/lib/chrony/drift
+makestep 1.0 3
+rtcsync
+logdir /var/log/chrony
+
+# 允许同步的网段
+allow 10.0.0.0/24
+EOF
+
+# 跟随系统启动, 启动服务
+systemctl enable chronyd
+systemctl start chronyd
+
+# 验证
+chronyc sources
+
+# 配置ntp(客户端)
+for node in controller compute1 block1 object1 object2; do
+    echo &quot;--------------- $node ---------------&quot;
+    ssh -T $node &lt;&lt;EOF
+    # 安装 chrony
+    yum install -y chrony
+
+    echo &quot;# ntp client $(date +&apos;%F %T&apos;)&quot; &gt;/etc/chrony.conf
+    echo &apos;server controller iburst&apos; &gt;&gt;/etc/chrony.conf
+    echo &apos;driftfile /var/lib/chrony/drift&apos; &gt;&gt;/etc/chrony.conf
+    echo &apos;makestep 1.0 3&apos; &gt;&gt;/etc/chrony.conf
+    echo &apos;rtcsync&apos; &gt;&gt;/etc/chrony.conf
+    echo &apos;logdir /var/log/chrony&apos; &gt;&gt;/etc/chrony.conf
+
+    # 跟随系统启动, 启动服务
+    systemctl enable chronyd
+    systemctl restart chronyd
+
+    # 验证
+    chronyc sources
+EOF
+done
+
+# 配置OpenStack 安装源 openstack 客户端工具 selinux
+for node in compute1 block1 object1 object2; do
+    echo &quot;--------------- $node ---------------&quot;
+    ssh -T $node &lt;&lt;&apos;EOF&apos;
+    # 启用 OpenStack 存储库
+    yum install -y centos-release-openstack-pike
+
+    # 替换QEMU 安装源
+    sed -i &apos;s/$contentdir/centos/&apos; /etc/yum.repos.d/CentOS-QEMU-EV.repo
+    yum install -y https://rdoproject.org/repos/rdo-release.rpm
+
+    # 安装openstack 客户端工具 selinux
+    # yum upgrade
+    yum install -y python-openstackclient openstack-selinux
+EOF
+done
+#######################################################################################################################################
+#  安装MariaDB 数据库(控制节点)  #
+##################################
+# 安装 mariadb
+yum install -y mariadb mariadb-server python2-PyMySQL
+
+# 创建 openstack 数据库配置
+cat &lt;&lt;EOF  &gt;/etc/my.cnf.d/openstack.cnf
+[mysqld]
+bind-address = 10.0.0.11
+
+default-storage-engine = innodb
+innodb_file_per_table = on
+max_connections = 4096
+collation-server = utf8_general_ci
+character-set-server = utf8
+EOF
+
+# 修改数据库最大连接数
+cat &lt;&lt;EOF  &gt;&gt;/etc/security/limits.conf
+mysql soft nofile 65535
+mysql hard nofile 65535
+EOF
+
+mkdir /etc/systemd/system/mariadb.service.d
+cat &lt;&lt;EOF  &gt;/etc/systemd/system/mariadb.service.d/filelimit.conf
+[Service]
+LimitNOFILE=infinity
+EOF
+
+# 启动数据库服务,跟随系统启动
+systemctl enable mariadb
+systemctl start mariadb
+
+# 初始化数据库(此处密码读取的 ~/PASS)
+/usr/bin/expect &lt;&lt;EOF
+set timeout 30
+spawn mysql_secure_installation
+expect {
+    &quot;enter for none&quot; { send &quot;\r&quot;; exp_continue}
+    &quot;Y/n&quot; { send &quot;Y\r&quot; ; exp_continue}
+    &quot;password:&quot; { send &quot;$ROOT_DBPASS\r&quot;; exp_continue}
+    &quot;new password:&quot; { send &quot;$ROOT_DBPASS\r&quot;; exp_continue}
+    &quot;Y/n&quot; { send &quot;Y\r&quot; ; exp_continue}
+    eof { exit }
+}
+EOF
+
+#######################################################################################################################################
+#  安装 rabbitmq 消息队列服务, memcached, Etcd (控制节点)  #
+############################################################
+# 安装 rabbitmq
+yum install -y rabbitmq-server
+
+# 启动服务, 跟随系统启动
+systemctl enable rabbitmq-server
+systemctl start rabbitmq-server
+
+# 启动 web 插件 WebUI http://IP:15672
+rabbitmq-plugins enable rabbitmq_management
+
+# 添加 openstack用户, 授权(此处密码读取的 ~/PASS)
+rabbitmqctl add_user openstack $RABBIT_PASS
+rabbitmqctl set_permissions openstack &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;
+
+
+# 安装memcached (控制节点)
+yum install -y memcached python-memcached
+
+# 添加控制器节点的管理IP地址
+sed -i &apos;s/^OPTIONS/# OPTIONS/&apos; /etc/sysconfig/memcached
+sed -i &apos;$a OPTIONS=&quot;-l 127.0.0.1,::1,controller&quot;&apos; /etc/sysconfig/memcached
+
+# 启动服务,配置服务随系统启动
+systemctl enable memcached
+systemctl start memcached
+
+# 安装 Etcd,一种分布式可靠的键值存储(控制节点)
+yum install -y etcd
+
+# 配置
+cat &lt;&lt;EOF  &gt;/etc/etcd/etcd.conf
+#[Member]
+ETCD_NAME=&quot;controller&quot;
+ETCD_DATA_DIR=&quot;/var/lib/etcd/default.etcd&quot;
+ETCD_LISTEN_PEER_URLS=&quot;http://10.0.0.11:2380&quot;
+ETCD_LISTEN_CLIENT_URLS=&quot;http://10.0.0.11:2379&quot;
+
+#[Clustering]
+ETCD_INITIAL_ADVERTISE_PEER_URLS=&quot;http://10.0.0.11:2380&quot;
+ETCD_ADVERTISE_CLIENT_URLS=&quot;http://10.0.0.11:2379&quot;
+ETCD_INITIAL_CLUSTER=&quot;controller=http://10.0.0.11:2380&quot;
+ETCD_INITIAL_CLUSTER_TOKEN=&quot;etcd-cluster-01&quot;
+ETCD_INITIAL_CLUSTER_STATE=&quot;new&quot;
+EOF
+
+# 启动服务,配置服务随系统启动
+systemctl enable etcd
+systemctl start etcd
+
+#######################################################################################################################################
+#  安装配置 Keyston 服务, http (控制节点)  #
+############################################
+[Keystone 教程](https://docs.openstack.org/keystone/pike/install/index.html)
+
+# 创建数据库
+. ~/PASS
+mysql -u root -p$ROOT_DBPASS -te &quot;
+CREATE DATABASE keystone;
+GRANT ALL PRIVILEGES ON keystone.* TO &apos;keystone&apos;@&apos;localhost&apos; IDENTIFIED BY &apos;$KEYSTONE_DBPASS&apos;;
+GRANT ALL PRIVILEGES ON keystone.* TO &apos;keystone&apos;@&apos;%&apos; IDENTIFIED BY &apos;$KEYSTONE_DBPASS&apos;;
+select user,host from mysql.user;
+show databases;&quot;
+
+# 安装http, keystone
+yum install -y openstack-keystone httpd mod_wsgi
+
+# keystone 配置
+cp /etc/keystone/keystone.conf{,.bak}
+cat &lt;&lt;EOF  &gt;/etc/keystone/keystone.conf
+[database]
+connection = mysql+pymysql://keystone:$KEYSTONE_DBPASS@controller/keystone
+
+[token]
+provider = fernet
+EOF
+
+# 初始化 keystone 数据库
+su -s /bin/sh -c &quot;keystone-manage db_sync&quot; keystone
+
+# 初始化Fernet密钥存储库
+keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone
+keystone-manage credential_setup --keystone-user keystone --keystone-group keystone
+
+# 创建服务API
+keystone-manage bootstrap --bootstrap-password $ADMIN_PASS \
+  --bootstrap-admin-url http://controller:35357/v3/ \
+  --bootstrap-internal-url http://controller:5000/v3/ \
+  --bootstrap-public-url http://controller:5000/v3/ \
+  --bootstrap-region-id RegionOne
+
+# 配置 http
+cp /etc/httpd/conf/httpd.conf{,.bak}
+echo &apos;ServerName controller&apos; | tee -a /etc/httpd/conf/httpd.conf
+
+# 链接keytsone web配置文件
+ln -s /usr/share/keystone/wsgi-keystone.conf /etc/httpd/conf.d/
+
+# 启动服务,配置服务随系统启动
+systemctl enable httpd
+systemctl start httpd
+
+# 配置环境变量凭证
+export OS_USERNAME=admin
+export OS_PASSWORD=$ADMIN_PASS
+export OS_PROJECT_NAME=admin
+export OS_USER_DOMAIN_NAME=Default
+export OS_PROJECT_DOMAIN_NAME=Default
+export OS_AUTH_URL=http://controller:35357/v3
+export OS_IDENTITY_API_VERSION=3
+
+# 创建 service 项目
+openstack project create --domain default --description &quot;Service Project&quot; service
+
+# 创建 demo 项目和用户
+openstack project create --domain default --description &quot;Demo Project&quot; demo
+openstack user create --domain default --password=$DEMO_PASS demo
+
+# 创建 user 角色, 将 user 角色添加到dome 项目和用户
+openstack role create user
+openstack role add --project demo --user demo user
+
+# 注销变量
+unset OS_AUTH_URL OS_PASSWORD
+
+# 请求 admin 身份验证令牌
+openstack --os-auth-url http://controller:35357/v3 \
+  --os-project-domain-name Default --os-user-domain-name Default \
+  --os-project-name admin --os-username admin --os-password $ADMIN_PASS token issue
+
+# 请求 demo 身份验证令牌
+openstack --os-auth-url http://controller:5000/v3 \
+  --os-project-domain-name Default --os-user-domain-name Default \
+  --os-project-name demo --os-username demo --os-password $DEMO_PASS token issue
+
+# 创建 admin 用户环境脚本
+cat &lt;&lt;EOF  &gt;~/admin-openrc
+export OS_PROJECT_DOMAIN_NAME=Default
+export OS_USER_DOMAIN_NAME=Default
+export OS_PROJECT_NAME=admin
+export OS_USERNAME=admin
+export OS_PASSWORD=$ADMIN_PASS
+export OS_AUTH_URL=http://controller:35357/v3
+export OS_IDENTITY_API_VERSION=3
+export OS_IMAGE_API_VERSION=2
+EOF
+
+# 创建 demo 用户环境脚本
+cat &lt;&lt;EOF  &gt;~/demo-openrc
+export OS_PROJECT_DOMAIN_NAME=Default
+export OS_USER_DOMAIN_NAME=Default
+export OS_PROJECT_NAME=demo
+export OS_USERNAME=demo
+export OS_PASSWORD=$DEMO_PASS
+export OS_AUTH_URL=http://controller:5000/v3
+export OS_IDENTITY_API_VERSION=3
+export OS_IMAGE_API_VERSION=2
+EOF
+
+# 验证凭证
+. ~/admin-openrc
+openstack token issue
+
+. ~/demo-openrc
+openstack token issue
+
+#######################################################################################################################################
+#  安装配置 Glance (控制节点)  #
+################################
+[glance 官方文档](https://docs.openstack.org/glance/pike/user/index.html)
+
+# 创建 glance 用户 数据库 授权
+mysql -u root -p$ROOT_DBPASS -te &quot;
+CREATE DATABASE glance;
+GRANT ALL PRIVILEGES ON glance.* TO &apos;glance&apos;@&apos;localhost&apos; IDENTIFIED BY &apos;$GLANCE_DBPASS&apos;;
+GRANT ALL PRIVILEGES ON glance.* TO &apos;glance&apos;@&apos;%&apos; IDENTIFIED BY &apos;$GLANCE_DBPASS&apos;;
+select user,host from mysql.user;
+show databases;&quot;
+
+# 创建 glance 用户, 授权
+. ~/admin-openrc
+openstack user create --domain default --password=$GLANCE_PASS glance
+openstack role add --project service --user glance admin
+
+# 创建 glance 服务, API
+openstack service create --name glance --description &quot;OpenStack Image&quot; image
+openstack endpoint create --region RegionOne image public http://controller:9292
+openstack endpoint create --region RegionOne image internal http://controller:9292
+openstack endpoint create --region RegionOne image admin http://controller:9292
+
+# 安装 gnalce
+yum install -y openstack-glance
+
+# 配置 glance-api
+cp /etc/glance/glance-api.conf{,.bak}
+cat &lt;&lt;EOF  &gt;/etc/glance/glance-api.conf
+[database]
+connection = mysql+pymysql://glance:$GLANCE_DBPASS@controller/glance
+
+[keystone_authtoken]
+auth_uri = http://controller:5000
+auth_url = http://controller:35357
+memcached_servers = controller:11211
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+project_name = service
+username = glance
+password = $GLANCE_PASS
+
+[paste_deploy]
+flavor = keystone
+
+[glance_store]
+stores = file,http
+default_store = file
+filesystem_store_datadir = /var/lib/glance/images/
+EOF
+
+# 配置 glance-registry
+cp /etc/glance/glance-registry.conf{,.bak}
+cat &lt;&lt;EOF  &gt;/etc/glance/glance-registry.conf
+[database]
+connection = mysql+pymysql://glance:$GLANCE_DBPASS@controller/glance
+
+[keystone_authtoken]
+auth_uri = http://controller:5000
+auth_url = http://controller:35357
+memcached_servers = controller:11211
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+project_name = service
+username = glance
+password = $GLANCE_PASS
+
+[paste_deploy]
+flavor = keystone
+EOF
+
+# 初始化 glance 数据库
+su -s /bin/sh -c &quot;glance-manage db_sync&quot; glance
+
+# 启动服务, 跟随系统启动
+systemctl enable openstack-glance-api openstack-glance-registry
+systemctl start openstack-glance-api openstack-glance-registry
+
+# 验证(上传镜像)
+yum install -y wget
+. ~/admin-openrc
+wget http://download.cirros-cloud.net/0.3.5/cirros-0.3.5-x86_64-disk.img
+# wget http://192.168.0.2/img/cirros-0.3.5-x86_64-disk.img
+# wget http://192.168.0.2/img/cirros-0.4.0-x86_64-disk.img
+# wget http://192.168.0.2/img/CentOS-7-x86_64-GenericCloud-1805.qcow2c
+
+# 使用QCOW2磁盘格式，qcow2格式和公共可见性将图像上载到Image服务 ，以便所有项目都可以访问它
+openstack image create &quot;cirros-3.5&quot; --file cirros-0.3.5-x86_64-disk.img --disk-format qcow2 --container-format bare --public
+# openstack image create &quot;cirros-4.0&quot; --file cirros-0.4.0-x86_64-disk.img --disk-format qcow2 --container-format bare --public
+# openstack image create &quot;CentOS-7.5&quot; --file CentOS-7-x86_64-GenericCloud-1805.qcow2c --disk-format qcow2 --container-format bare --public
+
+#######################################################################################################################################
+#  Nova 计算服务安装配置(控制节点)  #
+#####################################
+[Nova 官方文档](https://docs.openstack.org/nova/pike/install/)
+[Nova 高级功能](https://docs.openstack.org/nova/pike/admin/index.html)
+
+# 创建 nova 数据库 用户 授权
+. ~/PASS
+mysql -u root -p$ROOT_DBPASS -te &quot;
+CREATE DATABASE nova_api;
+GRANT ALL PRIVILEGES ON nova_api.* TO &apos;nova&apos;@&apos;localhost&apos; IDENTIFIED BY &apos;$NOVA_DBPASS&apos;;
+GRANT ALL PRIVILEGES ON nova_api.* TO &apos;nova&apos;@&apos;%&apos; IDENTIFIED BY &apos;$NOVA_DBPASS&apos;;
+CREATE DATABASE nova;
+GRANT ALL PRIVILEGES ON nova.* TO &apos;nova&apos;@&apos;localhost&apos; IDENTIFIED BY &apos;$NOVA_DBPASS&apos;;
+GRANT ALL PRIVILEGES ON nova.* TO &apos;nova&apos;@&apos;%&apos; IDENTIFIED BY &apos;$NOVA_DBPASS&apos;;
+CREATE DATABASE nova_cell0;
+GRANT ALL PRIVILEGES ON nova_cell0.* TO &apos;nova&apos;@&apos;localhost&apos; IDENTIFIED BY &apos;$NOVA_DBPASS&apos;;
+GRANT ALL PRIVILEGES ON nova_cell0.* TO &apos;nova&apos;@&apos;%&apos; IDENTIFIED BY &apos;$NOVA_DBPASS&apos;;
+select user,host from mysql.user;
+show databases;&quot;
+
+# 创建 navo 用户, 授权
+. ~/admin-openrc
+openstack user create --domain default --password=$NOVA_PASS nova
+openstack role add --project service --user nova admin
+
+# 创建 glance 服务, API
+openstack service create --name nova --description &quot;OpenStack Compute&quot; compute
+openstack endpoint create --region RegionOne compute public http://controller:8774/v2.1
+openstack endpoint create --region RegionOne compute internal http://controller:8774/v2.1
+openstack endpoint create --region RegionOne compute admin http://controller:8774/v2.1
+
+# 创建 Placement 服务用户, 授权
+openstack user create --domain default --password=$PLACEMENT_PASS placement
+openstack role add --project service --user placement admin
+
+# 创建Placement API
+openstack service create --name placement --description &quot;Placement API&quot; placement
+openstack endpoint create --region RegionOne placement public http://controller:8778
+openstack endpoint create --region RegionOne placement internal http://controller:8778
+openstack endpoint create --region RegionOne placement admin http://controller:8778
+
+# 安装 nova
+yum install -y openstack-nova-api openstack-nova-conductor openstack-nova-console \
+  openstack-nova-novncproxy openstack-nova-scheduler openstack-nova-placement-api
+
+# nova 配置
+cp /etc/nova/nova.conf{,.bak}
+cat &lt;&lt;&apos;EOF&apos;  &gt;/etc/nova/nova.conf
+[DEFAULT]
+my_ip = 10.0.0.11
+use_neutron = True
+enabled_apis = osapi_compute,metadata
+firewall_driver = nova.virt.firewall.NoopFirewallDriver
+transport_url = rabbit://openstack:$RABBIT_PASS@controller:5672
+
+[api_database]
+connection = mysql+pymysql://nova:$NOVA_DBPASS@controller/nova_api
+
+[database]
+connection = mysql+pymysql://nova:$NOVA_DBPASS@controller/nova
+
+[api]
+auth_strategy = keystone
+
+[keystone_authtoken]
+auth_uri = http://controller:5000
+auth_url = http://controller:35357
+memcached_servers = controller:11211
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+project_name = service
+username = nova
+password = $NOVA_PASS
+
+[vnc]
+enabled = true
+vncserver_listen = $my_ip
+vncserver_proxyclient_address = $my_ip
+
+[glance]
+api_servers = http://controller:9292
+
+[oslo_concurrency]
+lock_path = /var/lib/nova/tmp
+
+[placement]
+os_region_name = RegionOne
+project_domain_name = Default
+project_name = service
+auth_type = password
+user_domain_name = Default
+auth_url = http://controller:35357/v3
+username = placement
+password = $PLACEMENT_PASS
+EOF
+
+sed -i &quot;s/\$RABBIT_PASS/$RABBIT_PASS/&quot; /etc/nova/nova.conf
+sed -i &quot;s/\$NOVA_DBPASS/$NOVA_DBPASS/&quot; /etc/nova/nova.conf
+sed -i &quot;s/\$NOVA_PASS/$NOVA_PASS/&quot; /etc/nova/nova.conf
+sed -i &quot;s/\$PLACEMENT_PASS/$PLACEMENT_PASS/&quot; /etc/nova/nova.conf
+
+
+
+# 配置 Placement API web服务
+cp /etc/httpd/conf.d/00-nova-placement-api.conf{,.bak}
+cat &lt;&lt;EOF  &gt;&gt;/etc/httpd/conf.d/00-nova-placement-api.conf
+
+# nova-placement-api
+&lt;Directory /usr/bin&gt;
+   &lt;IfVersion &gt;= 2.4&gt;
+      Require all granted
+   &lt;/IfVersion&gt;
+   &lt;IfVersion &lt; 2.4&gt;
+      Order allow,deny
+      Allow from all
+   &lt;/IfVersion&gt;
+&lt;/Directory&gt;
+EOF
+
+# 重启 http
+systemctl restart httpd
+
+# 初始化 nova_api, nova, nova_cell0 数据库
+su -s /bin/sh -c &quot;nova-manage api_db sync&quot; nova      # 此步骤有一个警告(官方提示 忽略弃用警告)
+su -s /bin/sh -c &quot;nova-manage cell_v2 create_cell --name=cell1 --verbose&quot; nova
+su -s /bin/sh -c &quot;nova-manage db sync&quot; nova
+
+# 验证
+nova-manage cell_v2 list_cells
+mysql -h controller -u nova -p$NOVA_DBPASS -te &quot;use nova_api;show tables;&quot;
+mysql -h controller -u nova -p$NOVA_DBPASS -te &quot;use nova;show tables;&quot;
+mysql -h controller -u nova -p$NOVA_DBPASS -te &quot;use nova_cell0;show tables;&quot;
+
+# 启动服务, 配置服务跟随系统启动
+systemctl enable openstack-nova-api openstack-nova-consoleauth openstack-nova-scheduler \
+  openstack-nova-conductor openstack-nova-novncproxy
+
+systemctl start openstack-nova-api openstack-nova-consoleauth openstack-nova-scheduler \
+  openstack-nova-conductor openstack-nova-novncproxy
+
+systemctl status openstack-nova-api openstack-nova-consoleauth openstack-nova-scheduler \
+  openstack-nova-conductor openstack-nova-novncproxy
+
+# 验证
+openstack compute service list      # 列出 nova 服务组件进程状态
+openstack compute service list --service nova-compute      # 列出计算节点
+openstack catalog list      # 列出所有注册 API
+openstack image list      # 列出服务器上的镜像
+nova-status upgrade check      # 检测 Cells v2, 及API 状态(所有状态为 Result: Success)
+openstack host list      # 列出主机及其上运行的与nova相关的服务
+openstack host show compute1      # 显示主机上运行的实例的虚拟CPU总和,磁盘大小,
+
+
+#######################################################################################################################################
+#  neutron 网络服务安装配置(控制节点)  #
+########################################
+# 以下网络配置二选一 注意修改配置后需同步数据库,重启服务
+[官方文档](https://docs.openstack.org/neutron/pike/install/overview.html)
+
+# 安装和配置控制器节点
+# 此处供应商网络(Provide 203.0.113.0)为公网 管理网络(Management 10.0.0.0)为私有网
+# 创建 neutron 用户, 数据库, 授权
+. ~/PASS
+mysql -u root -p$ROOT_DBPASS -te &quot;
+CREATE DATABASE neutron;
+GRANT ALL PRIVILEGES ON neutron.* TO &apos;neutron&apos;@&apos;localhost&apos; IDENTIFIED BY &apos;$NEUTRON_DBPASS&apos;;
+GRANT ALL PRIVILEGES ON neutron.* TO &apos;neutron&apos;@&apos;%&apos; IDENTIFIED BY &apos;$NEUTRON_DBPASS&apos;;
+select user,host from mysql.user;
+show databases;&quot;
+
+# 创建 neutron 用户, 授权
+. ~/admin-openrc
+openstack user create --domain default --password=$NEUTRON_PASS neutron
+openstack role add --project service --user neutron admin
+
+# 创建 neutron 服务, API
+openstack service create --name neutron --description &quot;OpenStack Networking&quot; network
+openstack endpoint create --region RegionOne network public http://controller:9696
+openstack endpoint create --region RegionOne network internal http://controller:9696
+openstack endpoint create --region RegionOne network admin http://controller:9696
+openstack endpoint list      # 列出所有注册 API ( -f choose from &apos;csv&apos;, &apos;json&apos;, &apos;table&apos;, &apos;value&apos;, &apos;yaml&apos;)
+openstack catalog list      # 列出所有注册 API
+
+
+############################################################
+# 1.提供商网络 (Provider networks) 网络模式(二选一)  仅二层网络
+# 安装 neutron 及网络插件
+yum install -y openstack-neutron openstack-neutron-ml2 openstack-neutron-linuxbridge ebtables
+
+# 创建 neutron.conf 配置文件
+cp /etc/neutron/neutron.conf{,.bak}
+cat &lt;&lt;EOF   &gt;/etc/neutron/neutron.conf
+[database]
+connection = mysql+pymysql://neutron:$NEUTRON_DBPASS@controller/neutron
+
+[DEFAULT]
+core_plugin = ml2
+service_plugins =
+auth_strategy = keystone
+notify_nova_on_port_data_changes = true
+notify_nova_on_port_status_changes = true
+transport_url = rabbit://openstack:$RABBIT_PASS@controller
+
+
+[keystone_authtoken]
+auth_uri = http://controller:5000
+auth_url = http://controller:35357
+memcached_servers = controller:11211
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+project_name = service
+username = neutron
+password = $NEUTRON_PASS
+
+[nova]
+auth_url = http://controller:35357
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+region_name = RegionOne
+project_name = service
+username = nova
+password = $NOVA_PASS
+
+[oslo_concurrency]
+lock_path = /var/lib/neutron/tmp
+EOF
+
+# 创建 插件ML2 配置文(二层网络 启用 flat vlan 网络, 将提供商网络配置为 provider 公网)
+cp /etc/neutron/plugins/ml2/ml2_conf.ini{,.bak}
+cat &lt;&lt;EOF   &gt;/etc/neutron/plugins/ml2/ml2_conf.ini
+[ml2]
+tenant_network_types =
+type_drivers = flat,vlan
+mechanism_drivers = linuxbridge
+extension_drivers = port_security
+
+[ml2_type_flat]
+flat_networks = provider
+
+[securitygroup]
+enable_ipset = true
+EOF
+
+# 配置Linux桥代理(此处provider 供商网络 公网地址网卡)
+cp /etc/neutron/plugins/ml2/linuxbridge_agent.ini{,.bak}
+cat &lt;&lt;EOF   &gt;/etc/neutron/plugins/ml2/linuxbridge_agent.ini
+[linux_bridge]
+physical_interface_mappings = provider:ens34
+
+[vxlan]
+enable_vxlan = false
+
+[securitygroup]
+enable_security_group = true
+firewall_driver = neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
+EOF
+
+
+
+# 配置DHCP代理
+cp /etc/neutron/dhcp_agent.ini{,.bak}
+cat &lt;&lt;EOF   &gt;/etc/neutron/dhcp_agent.ini
+[DEFAULT]
+interface_driver = linuxbridge
+enable_isolated_metadata = true
+dhcp_driver = neutron.agent.linux.dhcp.Dnsmasq
+EOF
+
+
+############################################################
+# 2.自助服务网络 (Self-service networks) 网络模式(二选一)  二层三层网络
+
+# 安装 neutron 及网络插件
+yum install -y openstack-neutron openstack-neutron-ml2 openstack-neutron-linuxbridge ebtables
+
+# 创建 neutron.conf 配置文件
+cp /etc/neutron/neutron.conf{,.bak}
+cat &lt;&lt;EOF   &gt;/etc/neutron/neutron.conf
+[database]
+connection = mysql+pymysql://neutron:$NEUTRON_DBPASS@controller/neutron
+
+[DEFAULT]
+core_plugin = ml2
+auth_strategy = keystone
+service_plugins = router
+allow_overlapping_ips = true
+notify_nova_on_port_data_changes = true
+notify_nova_on_port_status_changes = true
+transport_url = rabbit://openstack:$RABBIT_PASS@controller
+
+[keystone_authtoken]
+auth_uri = http://controller:5000
+auth_url = http://controller:35357
+memcached_servers = controller:11211
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+project_name = service
+username = neutron
+password = $NEUTRON_PASS
+
+[nova]
+auth_url = http://controller:35357
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+region_name = RegionOne
+project_name = service
+username = nova
+password = $NOVA_PASS
+
+[oslo_concurrency]
+lock_path = /var/lib/neutron/tmp
+EOF
+
+# 创建 插件ML2 配置文(二层网络 启用 flat vlan 网络, 将提供商网络配置为 provider 公网)
+cp /etc/neutron/plugins/ml2/ml2_conf.ini{,.bak}
+cat &lt;&lt;EOF   &gt;/etc/neutron/plugins/ml2/ml2_conf.ini
+[ml2]
+tenant_network_types = vxlan
+type_drivers = flat,vlan,vxlan
+extension_drivers = port_security
+mechanism_drivers = linuxbridge,l2population
+
+[ml2_type_flat]
+flat_networks = provider
+
+[ml2_type_vxlan]
+vni_ranges = 1:1000
+
+[securitygroup]
+enable_ipset = true
+EOF
+
+# 配置Linux桥代理(此处provider 供商网络 公网地址网卡 local_ip 为控制器节点的管理IP地址)
+cp /etc/neutron/plugins/ml2/linuxbridge_agent.ini{,.bak}
+cat &lt;&lt;EOF   &gt;/etc/neutron/plugins/ml2/linuxbridge_agent.ini
+[linux_bridge]
+physical_interface_mappings = provider:ens34
+
+[vxlan]
+enable_vxlan = true
+l2_population = true
+local_ip = 10.0.0.11
+
+[securitygroup]
+enable_security_group = true
+firewall_driver = neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
+EOF
+
+# 配置第3层代理
+cp /etc/neutron/l3_agent.ini{,.bak}
+cat &lt;&lt;EOF   &gt;/etc/neutron/l3_agent.ini
+[DEFAULT]
+interface_driver = linuxbridge
+EOF
+
+# 配置DHCP代理
+cp /etc/neutron/dhcp_agent.ini{,.bak}
+cat &lt;&lt;EOF   &gt;/etc/neutron/dhcp_agent.ini
+[DEFAULT]
+interface_driver = linuxbridge
+enable_isolated_metadata = true
+dhcp_driver = neutron.agent.linux.dhcp.Dnsmasq
+EOF
+
+#########
+#  END  #
+############################################################
+
+# 配置元数据代理
+cp /etc/neutron/metadata_agent.ini{,.bak}
+cat &lt;&lt;EOF   &gt;/etc/neutron/metadata_agent.ini
+[DEFAULT]
+nova_metadata_host = controller
+metadata_proxy_shared_secret = $METADATA_SECRET
+EOF
+
+# 配置Compute服务以使用Networking服务
+cat &lt;&lt;EOF   &gt;&gt;/etc/nova/nova.conf
+
+[neutron]
+url = http://controller:9696
+auth_url = http://controller:35357
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+region_name = RegionOne
+project_name = service
+username = neutron
+password = $NEUTRON_PASS
+service_metadata_proxy = true
+metadata_proxy_shared_secret = $METADATA_SECRET
+EOF
+
+# 链接配置文件
+ln -s /etc/neutron/plugins/ml2/ml2_conf.ini /etc/neutron/plugin.ini
+
+# 初始化数据库
+su -s /bin/sh -c &quot;neutron-db-manage --config-file /etc/neutron/neutron.conf \
+  --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head&quot; neutron
+
+# 重启 Compute API 服务
+systemctl restart openstack-nova-api
+
+# 启动网络服务, 配置服务跟随系统启动
+systemctl enable neutron-server neutron-linuxbridge-agent neutron-dhcp-agent neutron-metadata-agent
+systemctl start neutron-server neutron-linuxbridge-agent neutron-dhcp-agent neutron-metadata-agent
+
+# 启动三层网络服务, 跟随系统启动(仅对于配置 2.自助服务网络)
+systemctl enable neutron-l3-agent
+systemctl start neutron-l3-agent
+
+# 验证服务状态
+openstack network agent list
+openstack service list
+#+--------------------------------------+--------------------+------------+-------------------+-------+-------+---------------------------+
+#| ID                                   | Agent Type         | Host       | Availability Zone | Alive | State | Binary                    |
+#+--------------------------------------+--------------------+------------+-------------------+-------+-------+---------------------------+
+#| 0256098d-80e6-41a1-8ff8-726c715e0bc1 | Linux bridge agent | controller | None              | :-)   | UP    | neutron-linuxbridge-agent |
+#| 16a3eaee-8ba1-4b4d-8908-f61908dda6bc | DHCP agent         | controller | nova              | :-)   | UP    | neutron-dhcp-agent        |
+#| adcee175-91a1-4ca9-909d-39bda3c01152 | Metadata agent     | controller | None              | :-)   | UP    | neutron-metadata-agent    |
+#+--------------------------------------+--------------------+------------+-------------------+-------+-------+---------------------------+
+#########
+#  END  #
+#######################################################################################################################################
+
+
+#######################################################################################################################################
+#  dashboard (控制节点)  #
+##########################
+[官方安装文档](https://docs.openstack.org/horizon/pike/install/index.html)
+[自定义Horizo](https://docs.openstack.org/horizon/pike/configuration/customizing.html)
+[自定义和配置仪表板](https://docs.openstack.org/horizon/pike/admin/customize-configure.html)
+[OpenStack仪表板用户文档](https://docs.openstack.org/horizon/pike/user/index.html)
+
+# 安装 dashboard
+yum install -y openstack-dashboard
+
+# 备份默认配置文件
+cp /etc/openstack-dashboard/local_settings{,.bak}
+Setfiles=&apos;/etc/openstack-dashboard/local_settings&apos;
+
+# 配置仪表板以在 controller 节点上使用 OpenStack 服务
+sed -i &apos;s#OPENSTACK_HOST = &quot;127.0.0.1&quot;#OPENSTACK_HOST = &quot;controller&quot;#&apos; $Setfiles
+
+# 允许所有主机访问
+sed -i &quot;/ALLOWED_HOSTS/cALLOWED_HOSTS = [&apos;*&apos;, ]&quot; $Setfiles
+
+# 开启 memcahce 缓存
+sed -in &apos;158,163s/#//&apos; $Setfiles 
+sed -in &apos;165,169s/.*/#&amp;/&apos; $Setfiles
+sed -i &quot;157a SESSION_ENGINE = \&apos;django.contrib.sessions.backends.cache\&apos;&quot; $Setfiles
+sed -i &quot;s/127.0.0.1:11211/controller:11211/&quot; $Setfiles
+
+# 启用对域的支持, 配置域名(取消注释,更改值为 True)
+sed -i &apos;/ULTIDOMAIN_SUPPORT/cOPENSTACK_KEYSTONE_MULTIDOMAIN_SUPPORT = True&apos; $Setfiles
+sed -i &quot;s@^#OPENSTACK_KEYSTONE_DEFAULT@OPENSTACK_KEYSTONE_DEFAULT@&quot; $Setfiles
+
+# 配置user为您通过仪表板创建的用户的默认角色
+sed -i &apos;s#_member_#user#g&apos; $Setfiles
+
+# 配置API版本
+cat &lt;&lt;EOF   &gt;&gt;$Setfiles
+
+OPENSTACK_API_VERSIONS = {
+    &quot;identity&quot;: 3,
+    &quot;image&quot;: 2,
+    &quot;volume&quot;: 2,
+}
+EOF
+
+# 修改时区
+sed -i &apos;s#UTC#Asia/Shanghai#g&apos; $Setfiles
+
+# 如果选择网络选项1, 禁用对第3层网络服务的支持
+sed -i &quot;324,331 s/True/False/&quot; $Setfiles
+
+# 如果选择网络选项2, 启用用对第3层网络服务的支持
+sed -i &quot;324,331 s/False/True/&quot; $Setfiles
+
+# 网页无法访问 dashboard 服务器内部错误解决方法
+sed -i &apos;3a WSGIApplicationGroup %{GLOBAL}&apos; /etc/httpd/conf.d/openstack-dashboard.conf
+
+# 重启 httpd, memcached
+systemctl restart httpd memcached
+
+#######################################################################################################################################
+#  存储  #
+##########
+[manila 存储配置](https://docs.openstack.org/manila/queens/install/)
+
+
+
+
+
+#######################################################################################################################################
+#  计算节点安装配置(计算节点)【compute1 :10.0.0.31】  #
+#######################################################
+# 启用 OpenStack 存储库
+yum install -y centos-release-openstack-pike
+
+# 替换QEMU 安装源
+sed -i &apos;s/$contentdir/centos/&apos; /etc/yum.repos.d/CentOS-QEMU-EV.repo
+yum install -y https://rdoproject.org/repos/rdo-release.rpm
+
+# 安装openstack 客户端工具 selinux
+# yum upgrade
+yum install -y python-openstackclient openstack-selinux
+
+# 安装 nova-compute
+yum install -y openstack-nova-compute
+
+# 安装计算节点网络服务
+yum install -y openstack-neutron-linuxbridge ebtables ipset
+
+# 配置 nova
+. ~/PASS
+cp /etc/nova/nova.conf{,.bak}
+cat &lt;&lt;&apos;EOF&apos; &gt;/etc/nova/nova.conf
+[DEFAULT]
+my_ip = 10.0.0.31
+use_neutron = True
+enabled_apis = osapi_compute,metadata
+firewall_driver = nova.virt.firewall.NoopFirewallDriver
+transport_url = rabbit://openstack:$RABBIT_PASS@controller
+
+[api]
+auth_strategy = keystone
+
+[keystone_authtoken]
+auth_uri = http://controller:5000
+auth_url = http://controller:35357
+memcached_servers = controller:11211
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+project_name = service
+username = nova
+password = $NOVA_PASS
+
+[vnc]
+enabled = True
+vncserver_listen = 0.0.0.0
+vncserver_proxyclient_address = $my_ip
+novncproxy_base_url = http://controller:6080/vnc_auto.html
+
+[glance]
+api_servers = http://controller:9292
+
+[oslo_concurrency]
+lock_path = /var/lib/nova/tmp
+
+[placement]
+os_region_name = RegionOne
+project_domain_name = Default
+project_name = service
+auth_type = password
+user_domain_name = Default
+auth_url = http://controller:35357/v3
+username = placement
+password = $PLACEMENT_PASS
+
+# 虚拟机只能设置为 qemu 如果是物理机 则设置为 kvm
+# egrep -c &apos;(vmx|svm)&apos; /proc/cpuinfo
+[libvirt]
+virt_type = qemu
+
+[neutron]
+url = http://controller:9696
+auth_url = http://controller:35357
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+region_name = RegionOne
+project_name = service
+username = neutron
+password = $NEUTRON_PASS
+EOF
+
+. ~/PASS
+sed -i &quot;s/\$RABBIT_PASS/$RABBIT_PASS/&quot; /etc/nova/nova.conf
+sed -i &quot;s/\$NOVA_PASS/$NOVA_PASS/&quot; /etc/nova/nova.conf
+sed -i &quot;s/\$PLACEMENT_PASS/$PLACEMENT_PASS/&quot; /etc/nova/nova.conf
+sed -i &quot;s/\$NEUTRON_PASS/$NEUTRON_PASS/&quot; /etc/nova/nova.conf
+
+# 配置 neutron
+cp /etc/neutron/neutron.conf{,.bak}
+cat &lt;&lt;EOF   &gt;/etc/neutron/neutron.conf
+[DEFAULT]
+auth_strategy = keystone
+transport_url = rabbit://openstack:$RABBIT_PASS@controller
+
+[keystone_authtoken]
+auth_uri = http://controller:5000
+auth_url = http://controller:35357
+memcached_servers = controller:11211
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+project_name = service
+username = neutron
+password = $NEUTRON_PASS
+
+[oslo_concurrency]
+lock_path = /var/lib/neutron/tmp
+EOF
+
+##################################################################
+#  选择为控制器节点选择的相同网络选项，以配置特定于其的服务
+#  网络选项1：提供商网络
+
+# 配置Linux桥代理(此处provider 供商网络 公网地址网卡)
+cp /etc/neutron/plugins/ml2/linuxbridge_agent.ini{,.bak}
+cat &lt;&lt;EOF   &gt;/etc/neutron/plugins/ml2/linuxbridge_agent.ini
+[linux_bridge]
+physical_interface_mappings = provider:ens34
+
+[vxlan]
+enable_vxlan = false
+
+[securitygroup]
+enable_security_group = true
+firewall_driver = neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
+EOF
+
+##################################################################
+#  选择与控制器节点选择的相同网络选项，以配置特定于其的服务
+#  网络选项2：自助服务网络
+
+
+# 配置Linux桥代理(此处provider 供商网络 公网地址网卡 local_ip 为控制器节点的管理IP地址)
+cp /etc/neutron/plugins/ml2/linuxbridge_agent.ini{,.bak}
+cat &lt;&lt;EOF   &gt;/etc/neutron/plugins/ml2/linuxbridge_agent.ini
+[linux_bridge]
+physical_interface_mappings = provider:ens34
+
+[vxlan]
+enable_vxlan = true
+l2_population = true
+local_ip = 10.0.0.11
+
+[securitygroup]
+enable_security_group = true
+firewall_driver = neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
+EOF
+#########
+#  END  #
+##################################################################
+
+
+# 启动服务, 跟随系统启动
+systemctl enable libvirtd openstack-nova-compute neutron-linuxbridge-agent
+systemctl start libvirtd openstack-nova-compute neutron-linuxbridge-agent
+
+##################################################################
+# 发现计算节点 (在控制节点运行以下命令)
+
+# 手动发现, 注册 计算节点
+. ~/admin-openrc      # 获取 admin 凭证
+openstack compute service list --service nova-compute      # 查看列表中是否发现新的计算节点
+su -s /bin/sh -c &quot;nova-manage cell_v2 discover_hosts --verbose&quot; nova      # 注册计算节点
+
+# 自动发现, 注册 计算节点,控制节点 nova 配置文件添加以下配置
+[scheduler]
+discover_hosts_in_cells_interval = 300
+
+# 验证
+openstack compute service list      # 列出 nova 服务组件进程状态
+openstack compute service list --service nova-compute      # 列出计算节点
+openstack catalog list      # 列出所有注册 API
+openstack image list      # 列出服务器上的镜像
+nova-status upgrade check      # 检测 Cells v2, 及API 状态(所有状态为 Result: Success)
+openstack host list      # 列出主机及其上运行的与nova相关的服务
+openstack host show compute1      # 显示主机上运行的实例的虚拟CPU总和,磁盘大小,
+
+
+
+
+#######################################################################################################################################
+#  安装完成后初始化  #
+######################
+#[启动一个实例](https://docs.openstack.org/install-guide/launch-instance.html)
+
+# 创建公钥(创建虚拟机时可以选择此公钥免密码登录 公钥名称：mykey)
+ssh-keygen -t dsa -P &apos;&apos; -f ~/.ssh/id_dsa      # 生成秘钥
+nova keypair-add --pub-key ~/.ssh/id_dsa.pub mykey      # 上传本地公钥到服务器
+nova keypair-list      # 查看公钥
+
+# 创建可用区域
+nova aggregate-create NOVA-Cluster_01 NOVA-Cluster_01      # 创建 NOVA-Cluster_01 区域
+nova aggregate-add-host NOVA-Cluster_01 compute1      # 将逐渐 compute1 添加到 NOVA-Cluster_01 区域
+nova aggregate-list      # 查看创建的区域
+
+
+# 创建安全规则 [开启 icmp, ssh(ping, ssh)]
+openstack security group rule create --proto icmp default
+openstack security group rule create --proto tcp --dst-port 22 default
+
+
+# 创建实例类型
+openstack flavor create --id 0 --vcpus 1 --ram 64 --disk 1 m1.nano      # 创建实例类型 cpu:1 mem:64M disk:1G
+openstack flavor create --id 1 --vcpus 1 --ram 512 --disk 12 m2.nano      # 创建实例类型 cpu:1 mem:512M disk:12G
+openstack flavor list      # 列出所有实例
+
+#############################################################################################################################
+#  创建网络[网络选项1：提供商网络 - 连接 ]  #
+#############################################
+# 1.[提供商网络](https://docs.openstack.org/install-guide/launch-instance-networks-provider.html)
+# 2.[自助服务网络](https://docs.openstack.org/install-guide/launch-instance-networks-selfservice.html)
+# 如果不开启lan 类型网络则只能创建一个网络 [provider ：为公用网络 客户通过此网络访问虚拟机]
+# --share选项允许所有项目使用虚拟网络
+# --external选项将虚拟网络定义为外部。如果您希望创建内部网络，则可以使用--internal。默认值是internal
+# Management Netwock   10.0.0.0/24(私有网络, 管理网络)
+# Provicer  Network   203.0.113.0/24(公有网络, 提供外部访问虚拟机)
+NETWORK=&apos;203.0.113&apos;
+openstack network create --share --external --provider-physical-network provider \
+  --provider-network-type flat Provider_$NETWORK
+
+## 在网络上创建子网(在 Provider_$NETWORK 网络创建子网)
+openstack subnet create --network Provider_$NETWORK --allocation-pool start=$NETWORK.70,end=$NETWORK.100 \
+  --dns-nameserver 202.103.24.68 --gateway $NETWORK.2 --subnet-range $NETWORK.0/24 Provider_sub_$NETWORK
+
+#############################################################################################################################
+#  开启 vlan 功能  #
+####################
+#对应物理网卡连接交换机trunk，在交换机创建vlan，即可在openstack创建vlan网络)
+#控制节点 (provider对应网卡lable,在linuxbridge_agent.ini配置对应物理网卡)
+#配置 type_drivers、ml2_type_vlan (openstack-config 命令由 openstack-utils 包提供)
+openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types vlan
+openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 type_drivers flat,vlan
+openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_vlan network_vlan_ranges provider:1001:2000
+systemctl restart neutron-server
+
+# 计算节点
+systemctl restart neutron-linuxbridge-agent
+
+# 创建 vlan 网络
+openstack network create --share --provider-segment=8 --provider-network-type=vlan --provider-physical-network provider vlan_192.168.4
+
+# 创建子网
+openstack subnet create --network vlan_192.168.4 --allocation-pool start=192.168.4.100,end=192.168.4.200 --dns-nameserver 119.29.29.29 \
+  --dns-nameserver 114.114.114.114 --gateway 192.168.4.1 --subnet-range 192.168.4.0/24 net_192.168.4
+
+# 创建虚拟机示例
+nova boot --flavor m1.nano --image cirros-0.4.0 --nic net-name=vlan_192.168.4 --security-group default --key-name mykey vm01
+#########
+#  END  #
+#############################################################################################################################
+
+#########
+#  END  #
+#############################################################################################################################
+
+#############################################################################################################################
+#  创建虚拟机(下载镜像,上传镜像,创建虚拟机)  #
+##############################################
+# 下载镜像
+wget http://download.cirros-cloud.net/0.3.5/cirros-0.3.5-x86_64-disk.img
+wget http://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img
+
+# 上传镜像
+source ~/admin-openrc
+openstack image create &quot;cirros-0.3.5&quot; --file cirros-0.3.5-x86_64-disk.img \
+  --disk-format qcow2 --container-format bare --public
+
+openstack image create &quot;cirros-0.4.0&quot; --file cirros-0.4.0-x86_64-disk.img \
+  --disk-format qcow2 --container-format bare --public
+
+openstack image list
+
+# 创建虚拟机
+nova boot --flavor m1.nano --image cirros-0.3.5 --nic net-name=Provider_$NETWORK \
+  --security-group default --key-name mykey_controller1 VM01
+
+nova boot --flavor m1.nano --image cirros-0.4.0 --nic net-name=Provider_$NETWORK \
+  --security-group default --key-name mykey_controller1 VM02
+
+openstack server list
+#########
+#  END  #
+#############################################################################################################################
+
+#############################################################################################################################
+#  开启 RabbitMQ Web管理(http://IP:15672)  #
+############################################
+# 开启插件
+rabbitmq-plugins enable rabbitmq_management
+
+# 创建用户 admin, 设置密码为 admin
+rabbitmqctl add_user admin admin
+
+# 给予 admin 用户管理员权限
+rabbitmqctl set_user_tags admin administrator
+
+# Web管理(http://IP:15672)
+#########
+#  END  #
+#############################################################################################################################
+</code></pre>
+      
+    </div>
+    
+    
+    
+    <div>
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/posts/pike.html">Install OpenStack Pike</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 亦 漩 的个人博客">亦 漩</a></p>
+  <p><span>发布时间:</span>2018年08月04日 - 21:08</p>
+  <p><span>最后更新:</span>2018年09月27日 - 20:09</p>
+  <p><span>原始链接:</span><a href="/posts/pike.html" title="Install OpenStack Pike">https://home.onlycloud.xin/posts/pike.html</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://home.onlycloud.xin/posts/pike.html"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by/4.0/" target="_blank" title="Attribution 4.0 International (CC BY 4.0)">署名4.0国际 （CC BY 4.0）</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+      $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+        });
+    });  
+</script>
+
+
+      
+    </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/openstack/" rel="tag "><i class="fa fa-tag"></i> openstack</a>
+          
+            <a href="/tags/pike/" rel="tag "><i class="fa fa-tag"></i> pike</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div id="needsharebutton-postbottom">
+            <span class="btn">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </span>
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/neutron-mod.html" rel="next" title="Neutron 服务的网络模式(Pike)">
+                <i class="fa fa-chevron-left"></i> Neutron 服务的网络模式(Pike)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/note.html" rel="prev" title="Linux笔记不定期更新">
+                Linux笔记不定期更新 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="亦 漩" />
+            
+              <p class="site-author-name" itemprop="name">亦 漩</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">110</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/bookgh" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://coding.net/u/yx571304" target="_blank" title="Coding">
+                      
+                        <i class="fa fa-fw fa-git"></i>Coding</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://skyisfuck.github.io" title="Peng" target="_blank">Peng</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">亦 漩</span>
+
+  
+  <br/><span><i class="fa fa-bomb"></i></span><span id="showDays"></span>
+</div>
+
+
+
+
+
+
+
+
+
+<script>
+  var seconds = 1000;
+  var minutes = seconds * 60;
+  var hours = minutes * 60;
+  var days = hours * 24;
+  var years = days * 365;
+  var birthDay = Date.UTC(2017,12,07,10,00,00); // 这里设置建站时间
+  setInterval(function() {
+    var today = new Date();
+    var todayYear = today.getFullYear();
+    var todayMonth = today.getMonth()+1;
+    var todayDate = today.getDate();
+    var todayHour = today.getHours();
+    var todayMinute = today.getMinutes();
+    var todaySecond = today.getSeconds();
+    var now = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+    var diff = now - birthDay;
+    var diffYears = Math.floor(diff/years);
+    var diffDays = Math.floor((diff/days)-diffYears*365);
+    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById('showDays').innerHTML="本站已运行 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+  }, 1000);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+      <div id="needsharebutton-float">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'DWwnpdDBrLDMI8CKf8OXopJu-gzGzoHsz',
+        appKey: '7sfOhetJ1Wftp4W7MF0xdPOw',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "default";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+      flOptions = {};
+      
+          flOptions.iconStyle = "default";
+      
+          flOptions.boxForm = "horizontal";
+      
+          flOptions.position = "middleRight";
+      
+          flOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-float', flOptions);
+    
+  </script>
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+
+</body>
+</html>

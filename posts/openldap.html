@@ -1,0 +1,1793 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="openldap,ldap," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="[TOC] 环境准备系统：centos7 软件版本：openldap-2.4.4 配置文件: /etc/openldap/sldap.conf  说明：ldap双主配置 lab-01    ldap.test.com     IP: 10.0.0.11 lab-02    ldap2.test.com    IP: 10.0.0.12  环境初始化 配置防火墙 放行ldap, sldap 端口">
+<meta name="keywords" content="openldap,ldap">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenLdap安装配置">
+<meta property="og:url" content="https://home.onlycloud.xin/posts/openldap.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="[TOC] 环境准备系统：centos7 软件版本：openldap-2.4.4 配置文件: /etc/openldap/sldap.conf  说明：ldap双主配置 lab-01    ldap.test.com     IP: 10.0.0.11 lab-02    ldap2.test.com    IP: 10.0.0.12  环境初始化 配置防火墙 放行ldap, sldap 端口">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-27T12:11:48.999Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OpenLdap安装配置">
+<meta name="twitter:description" content="[TOC] 环境准备系统：centos7 软件版本：openldap-2.4.4 配置文件: /etc/openldap/sldap.conf  说明：ldap双主配置 lab-01    ldap.test.com     IP: 10.0.0.11 lab-02    ldap2.test.com    IP: 10.0.0.12  环境初始化 配置防火墙 放行ldap, sldap 端口">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://home.onlycloud.xin/posts/openldap.html"/>
+
+
+
+
+
+  <title>OpenLdap安装配置 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-python">
+          <a href="/python/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            python
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-logs">
+          <a href="/posts/log.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Logs
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://home.onlycloud.xin/posts/openldap.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="亦 漩">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">OpenLdap安装配置</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-25T03:25:09+08:00">
+                2018-09-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ldap/" itemprop="url" rel="index">
+                    <span itemprop="name">ldap</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/openldap.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/posts/openldap.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,642
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  15
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>[TOC]</p>
+<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><pre><code>系统：centos7
+软件版本：openldap-2.4.4
+配置文件: /etc/openldap/sldap.conf
+
+说明：ldap双主配置
+lab-01    ldap.test.com     IP: 10.0.0.11
+lab-02    ldap2.test.com    IP: 10.0.0.12
+</code></pre><hr>
+<h2 id="环境初始化"><a href="#环境初始化" class="headerlink" title="环境初始化"></a>环境初始化</h2><blockquote>
+<p>配置防火墙 放行<code>ldap, sldap</code> 端口</p>
+</blockquote>
+<pre><code>firewall-cmd --zone=public --add-port=389/tcp --permanent
+firewall-cmd --zone=public --add-port=636/tcp --permanent
+firewall-cmd --reload
+</code></pre><hr>
+<blockquote>
+<p>关闭, 禁用<code>selinux</code></p>
+</blockquote>
+<pre><code>setenforce 0
+sed -i &apos;/^SELINUX=.*/SELINUX=disabled&apos; /etc/selinux/config
+</code></pre><hr>
+<blockquote>
+<p>配置软件安装源</p>
+</blockquote>
+<pre><code>rm -f /etc/yum.repos.d/*
+curl -so /etc/yum.repos.d/Centos-7.repo http://mirrors.aliyun.com/repo/Centos-7.repo
+curl -so /etc/yum.repos.d/epel-7.repo http://mirrors.aliyun.com/repo/epel-7.repo
+sed -i &apos;/aliyuncs.com/d&apos; /etc/yum.repos.d/Centos-7.repo /etc/yum.repos.d/epel-7.repo 
+</code></pre><hr>
+<blockquote>
+<p>配置时间同步</p>
+</blockquote>
+<pre><code>yum -y install ntpdate
+/usr/sbin/ntpdate ntp6.aliyun.com ;hwclock -w
+echo -e &quot;*/3 * * * * /usr/sbin/ntpdate ntp6.aliyun.com  &gt;/dev/null 2&gt;&amp;1 &amp;&amp; /usr/sbin/hwclock -w&quot; &gt; /tmp/crontab
+crontab /tmp/crontab
+</code></pre><hr>
+<h2 id="lab-01-安装配置"><a href="#lab-01-安装配置" class="headerlink" title="lab-01 安装配置"></a>lab-01 安装配置</h2><blockquote>
+<p>hostname(若不配置主机名或者配置错误会导致后面服务无法启动)</p>
+</blockquote>
+<pre><code># lab-01
+hostnamectl set-hostname ldap.test.com
+</code></pre><hr>
+<blockquote>
+<p>配置<code>hosts</code>解析</p>
+</blockquote>
+<pre><code>cat &lt;&lt;EOF   &gt;&gt;/etc/hosts
+
+# add ldap server
+10.0.0.11    ldap.test.com
+10.0.0.12    ldap2.test.com
+EOF
+</code></pre><hr>
+<h3 id="安装OpenLdap"><a href="#安装OpenLdap" class="headerlink" title="安装OpenLdap"></a>安装<code>OpenLdap</code></h3><blockquote>
+<p>安装<code>OpenLdap</code>与相关软件包</p>
+</blockquote>
+<pre><code>yum install -y openldap openldap-devel openldap-servers openldap-clients openldap-devel compat-openldap
+</code></pre><hr>
+<h3 id="创建CA证书"><a href="#创建CA证书" class="headerlink" title="创建CA证书"></a>创建<code>CA</code>证书</h3><blockquote>
+<p><code>CA</code>中心生成自身私钥</p>
+</blockquote>
+<pre><code>cd /etc/pki/CA
+(umask 077;openssl genrsa -out private/cakey.pem 2048)
+</code></pre><hr>
+<blockquote>
+<p><code>CA</code>签发自身公钥</p>
+</blockquote>
+<pre><code>openssl req -new -x509 -key private/cakey.pem -out cacert.pem -days 3650 \
+  -subj &quot;/C=CN/ST=HuBei/L=WuHan/O=test/OU=test.com/CN=*.test.com/emailAddress=544025211@qq.com&quot;
+touch serial index.txt
+echo &quot;01&quot; &gt; serial
+</code></pre><hr>
+<blockquote>
+<p>查看生成的根证书信息</p>
+</blockquote>
+<pre><code>openssl x509 -noout -text -in /etc/pki/CA/cacert.pem
+</code></pre><hr>
+<h3 id="创建ldap证书"><a href="#创建ldap证书" class="headerlink" title="创建ldap证书"></a>创建<code>ldap</code>证书</h3><blockquote>
+<p><code>OpenLdap</code>服务端生成证书</p>
+</blockquote>
+<pre><code>mkdir /etc/openldap/ssl
+cd /etc/openldap/ssl
+(umask 077;openssl genrsa -out ldapkey.pem 1024)
+</code></pre><hr>
+<blockquote>
+<p><code>OpenLdap</code>服务端向<code>CA</code>申请证书签署请求</p>
+</blockquote>
+<pre><code>openssl req -new -key ldapkey.pem -out ldap.csr -days 3650 \
+  -subj &quot;/C=CN/ST=HuBei/L=WuHan/O=test/OU=test.com/CN=*.test.com/emailAddress=544025211@qq.com&quot;
+</code></pre><hr>
+<blockquote>
+<p><code>CA</code>核实并签发证书</p>
+</blockquote>
+<pre><code>openssl ca -in /etc/openldap/ssl/ldap.csr -out /etc/openldap/ssl/ldapcert.pem -days 3650
+</code></pre><hr>
+<blockquote>
+<p>设置证书权限</p>
+</blockquote>
+<pre><code>cp /etc/pki/CA/cacert.pem /etc/openldap/ssl/
+chown -R ldap.ldap /etc/openldap/ssl/*
+chmod -R 0400 /etc/openldap/ssl/*
+</code></pre><hr>
+<h3 id="配置OpenLdap"><a href="#配置OpenLdap" class="headerlink" title="配置OpenLdap"></a>配置<code>OpenLdap</code></h3><blockquote>
+<p>复制数据库配置文件</p>
+</blockquote>
+<pre><code>cp /usr/share/openldap-servers/DB_CONFIG.example /var/lib/ldap/DB_CONFIG
+</code></pre><hr>
+<blockquote>
+<p>设置配置文件,数据目录权限</p>
+</blockquote>
+<pre><code>chown -R ldap.ldap /etc/openldap/
+chown -R ldap.ldap /var/lib/ldap/
+</code></pre><hr>
+<blockquote>
+<p>启动服务,配置服务跟随系统启动</p>
+</blockquote>
+<pre><code>systemctl start slapd
+systemctl enable slapd
+</code></pre><hr>
+<blockquote>
+<p>生成管理员密码</p>
+</blockquote>
+<pre><code>pass=linux
+slappasswd -s $pass -n &gt; /etc/openldap/passwd
+cat /etc/openldap/passwd
+ldap_pass=&quot;$(cat /etc/openldap/passwd)&quot;
+</code></pre><hr>
+<blockquote>
+<p>创建slapd 配置文件</p>
+</blockquote>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cat</span>&lt;&lt;EOF  &gt;/etc/openldap/slapd.<span class="keyword">conf</span></span><br><span class="line"><span class="keyword">include</span>     /etc/openldap/schema/corba.schema</span><br><span class="line"><span class="keyword">include</span>     /etc/openldap/schema/core.schema</span><br><span class="line"><span class="keyword">include</span>     /etc/openldap/schema/cosine.schema</span><br><span class="line"><span class="keyword">include</span>     /etc/openldap/schema/duaconf.schema</span><br><span class="line"><span class="keyword">include</span>     /etc/openldap/schema/dyngroup.schema</span><br><span class="line"><span class="keyword">include</span>     /etc/openldap/schema/inetorgperson.schema</span><br><span class="line"><span class="keyword">include</span>     /etc/openldap/schema/java.schema</span><br><span class="line"><span class="keyword">include</span>     /etc/openldap/schema/misc.schema</span><br><span class="line"><span class="keyword">include</span>     /etc/openldap/schema/nis.schema</span><br><span class="line"><span class="keyword">include</span>     /etc/openldap/schema/openldap.schema</span><br><span class="line"><span class="keyword">include</span>     /etc/openldap/schema/ppolicy.schema</span><br><span class="line"><span class="keyword">include</span>     /etc/openldap/schema/collective.schema</span><br><span class="line"></span><br><span class="line">allow       bind_v2</span><br><span class="line">pidfile     /<span class="keyword">var</span>/<span class="keyword">run</span>/openldap/slapd.pid</span><br><span class="line">argsfile    /<span class="keyword">var</span>/<span class="keyword">run</span>/openldap/slapd.<span class="keyword">args</span></span><br><span class="line"></span><br><span class="line">modulepath  /usr/lib64/openldap</span><br><span class="line">moduleload  ppolicy.<span class="keyword">la</span></span><br><span class="line"></span><br><span class="line">TLSCACertificateFile  /etc/openldap/ssl/cacert.pem</span><br><span class="line">TLSCertificateFile  /etc/openldap/ssl/ldapcert.pem</span><br><span class="line">TLSCertificateKeyFile  /etc/openldap/ssl/ldapkey.pem</span><br><span class="line">TLSVerifyClient never</span><br><span class="line"></span><br><span class="line">access to attrs=shadowLastChange,userPassword</span><br><span class="line">      <span class="keyword">by</span> self write</span><br><span class="line">      <span class="keyword">by</span> * auth</span><br><span class="line"></span><br><span class="line">access to *</span><br><span class="line">      <span class="keyword">by</span> * <span class="keyword">read</span></span><br><span class="line"></span><br><span class="line">database config</span><br><span class="line">access to *</span><br><span class="line">    <span class="keyword">by</span> dn.exact=<span class="string">"gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth"</span> manage</span><br><span class="line">    <span class="keyword">by</span> * none</span><br><span class="line"></span><br><span class="line">database monitor</span><br><span class="line">access to *</span><br><span class="line">    <span class="keyword">by</span> dn.exact=<span class="string">"gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth"</span> <span class="keyword">read</span></span><br><span class="line">        <span class="keyword">by</span> dn.exact=<span class="string">"cn=admin,dc=test,dc=com"</span> <span class="keyword">read</span></span><br><span class="line">        <span class="keyword">by</span> * none</span><br><span class="line"></span><br><span class="line">database    hdb</span><br><span class="line">suffix      <span class="string">"dc=test,dc=com"</span></span><br><span class="line">checkpoint  1024 15</span><br><span class="line">rootdn      <span class="string">"cn=admin,dc=test,dc=com"</span></span><br><span class="line">rootpw      <span class="variable">$ldap_pass</span></span><br><span class="line">directory   /<span class="keyword">var</span>/lib/ldap</span><br><span class="line"></span><br><span class="line">index    objectClass                       <span class="keyword">eq</span>,pres</span><br><span class="line">index    <span class="keyword">ou</span>,cn,mail,surname,givenname      <span class="keyword">eq</span>,pres,sub</span><br><span class="line">index    uidNumber,gidNumber,loginShell    <span class="keyword">eq</span>,pres</span><br><span class="line">index    uid,memberUid                     <span class="keyword">eq</span>,pres,sub</span><br><span class="line">index    nisMapName,nisMapEntry            <span class="keyword">eq</span>,pres,sub</span><br><span class="line">loglevel    4095</span><br><span class="line"></span><br><span class="line"># 主同步1 (若为配置单机版本则无需以下配置)</span><br><span class="line">moduleload syncprov.<span class="keyword">la</span></span><br><span class="line">modulepath /usr/lib64/openldap</span><br><span class="line"></span><br><span class="line">index   entryCSN,entryUUID    <span class="keyword">eq</span></span><br><span class="line"></span><br><span class="line">overlay syncprov</span><br><span class="line">syncprov-checkpoint 100 10</span><br><span class="line">syncprov-sessionlog 100</span><br><span class="line"></span><br><span class="line">serverID  1  ldaps:<span class="comment">//ldap.test.com</span></span><br><span class="line">serverID  2  ldaps:<span class="comment">//ldap2.test.com</span></span><br><span class="line"></span><br><span class="line">syncrepl  rid=123</span><br><span class="line">    provider=ldaps:<span class="comment">//ldap.test.com</span></span><br><span class="line">    bindmethod=simple</span><br><span class="line">    binddn=<span class="string">"cn=admin,dc=test,dc=com"</span></span><br><span class="line">    credentials=linux</span><br><span class="line">    searchbase=<span class="string">"dc=test,dc=com"</span></span><br><span class="line">    schemachecking=<span class="keyword">on</span></span><br><span class="line">    <span class="keyword">type</span>=refreshAndPersist</span><br><span class="line">    starttls=yes</span><br><span class="line">    tls_key=<span class="string">"/etc/openldap/ssl/ldapkey.pem"</span></span><br><span class="line">    tls_cert=<span class="string">"/etc/openldap/ssl/ldapcert.pem"</span></span><br><span class="line">    tls_cacert=<span class="string">"/etc/openldap/ssl/cacert.pem"</span></span><br><span class="line">    retry=<span class="string">"5 5 300 5"</span></span><br><span class="line"></span><br><span class="line">syncrepl  rid=123</span><br><span class="line">    provider=ldaps:<span class="comment">//ldap2.test.com</span></span><br><span class="line">    bindmethod=simple</span><br><span class="line">    binddn=<span class="string">"cn=admin,dc=test,dc=com"</span></span><br><span class="line">    credentials=linux</span><br><span class="line">    searchbase=<span class="string">"dc=test,dc=com"</span></span><br><span class="line">    schemachecking=<span class="keyword">on</span></span><br><span class="line">    <span class="keyword">type</span>=refreshAndPersist</span><br><span class="line">    starttls=yes</span><br><span class="line">    tls_key=<span class="string">"/etc/openldap/ssl/ldapkey.pem"</span></span><br><span class="line">    tls_cert=<span class="string">"/etc/openldap/ssl/ldapcert.pem"</span></span><br><span class="line">    tls_cacert=<span class="string">"/etc/openldap/ssl/cacert.pem"</span></span><br><span class="line">    retry=<span class="string">"5 5 300 5"</span></span><br><span class="line"></span><br><span class="line">mirrormode TRUE</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<hr>
+<blockquote>
+<p>配置监听服务</p>
+</blockquote>
+<pre><code>sed -i &apos;s/SLAPD_URLS/#SLAPD_URLS/&apos; /etc/sysconfig/slapd
+cat &lt;&lt;EOF   &gt;&gt;/etc/sysconfig/slapd
+
+# OpenLDAP Ldaps
+SLAPD_URLS=&quot;ldapi:/// ldap:/// ldaps:///&quot;
+SLAPD_LDAP=yes
+SLAPD_LDAPI=yes
+SLAPD_LDAPS=yes
+EOF
+</code></pre><hr>
+<blockquote>
+<p>删除默认配置,生成新的配置(依据slapd.conf配置项生成新的配置)</p>
+</blockquote>
+<pre><code>rm -rf /etc/openldap/slapd.d/*
+slaptest -f /etc/openldap/slapd.conf -F /etc/openldap/slapd.d/
+</code></pre><hr>
+<blockquote>
+<p>设置目录权限, 重启服务</p>
+</blockquote>
+<pre><code>chown -R ldap.ldap /etc/openldap/slapd.d
+chown -R ldap.ldap /var/lib/ldap/
+systemctl restart slapd
+</code></pre><hr>
+<blockquote>
+<p>配置日志</p>
+</blockquote>
+<pre><code>cat &lt;&lt;EOF   &gt;&gt;/etc/rsyslog.conf
+
+# ldap log
+local4.*    /var/log/slapd/slapd.log
+EOF
+
+systemctl restart rsyslog
+</code></pre><hr>
+<h3 id="添加用户-组"><a href="#添加用户-组" class="headerlink" title="添加用户, 组"></a>添加<code>用户</code>, <code>组</code></h3><blockquote>
+<p>创建本地测试用户</p>
+</blockquote>
+<pre><code>for user in ldapuser{1..5} feng{1..5}; do
+    useradd $user
+    echo redhat | passwd --stdin $user
+done
+</code></pre><hr>
+<blockquote>
+<p>通过<code>migration</code>工具生成<code>ldif</code>文件</p>
+</blockquote>
+<pre><code># 安装工具
+yum install -y migrationtools
+
+# 替换域信息
+sed -i &quot;71,74 s/padl/test/g&quot; /usr/share/migrationtools/migrate_common.ph
+sed -i &quot;71,74 s/com/com/g&quot; /usr/share/migrationtools/migrate_common.ph
+sed -i &apos;s/EXTENDED_SCHEMA = 0/EXTENDED_SCHEMA = 1/&apos; /usr/share/migrationtools/migrate_common.ph
+
+# 生成基础架构,根据密码文件生成用户信息,根据组文件生成组信息
+/usr/share/migrationtools/migrate_base.pl &gt; ~/base.ldif
+/usr/share/migrationtools/migrate_passwd.pl  /etc/passwd &gt; ~/passwd.ldif
+/usr/share/migrationtools/migrate_group.pl  /etc/group &gt; ~/group.ldif
+</code></pre><hr>
+<blockquote>
+<p>导入数据导入至<code>OpenLdap</code>目录树</p>
+</blockquote>
+<pre><code>ldapadd -x -w $pass -D &quot;cn=admin,dc=test,dc=com&quot; -f ~/base.ldif
+ldapadd -x -w $pass -D &quot;cn=admin,dc=test,dc=com&quot; -f ~/passwd.ldif
+ldapadd -x -w $pass -D &quot;cn=admin,dc=test,dc=com&quot; -f ~/group.ldif
+</code></pre><hr>
+<h3 id="测试验证"><a href="#测试验证" class="headerlink" title="测试验证"></a>测试验证</h3><blockquote>
+<p>搜索导入的用户</p>
+</blockquote>
+<pre><code>ldapsearch -x cn=ldapuser1 -b dc=test,dc=com
+for user in ldapuser{1..5} feng{1..5}; do
+    echo &quot;---------- id $user ----------&quot;
+    ldapsearch -x cn=$user -b dc=test,dc=com
+    sleep 1
+    echo
+done
+</code></pre><hr>
+<blockquote>
+<p>验证<code>OpenLdap</code>服务端证书的合法性</p>
+</blockquote>
+<pre><code>openssl verify -CAfile /etc/openldap/ssl/cacert.pem /etc/openldap/ssl/ldapcert.pem
+</code></pre><hr>
+<blockquote>
+<p>确认当前套接字是否能通过CA的验证</p>
+</blockquote>
+<pre><code>openssl s_client -connect ldap.test.com:636 -showcerts -state -CAfile /etc/openldap/ssl/cacert.pem
+</code></pre><hr>
+<h2 id="lab-02-安装配置"><a href="#lab-02-安装配置" class="headerlink" title="lab-02 安装配置"></a>lab-02 安装配置</h2><blockquote>
+<p>hostname(若不配置主机名或者配置错误会导致后面服务无法启动)</p>
+</blockquote>
+<pre><code># lab-02
+hostnamectl set-hostname ldap2.test.com
+</code></pre><hr>
+<blockquote>
+<p>配置<code>hosts</code>解析</p>
+</blockquote>
+<pre><code>cat &lt;&lt;EOF   &gt;&gt;/etc/hosts
+
+# add ldap server
+10.0.0.11    ldap.test.com
+10.0.0.12    ldap2.test.com
+EOF
+</code></pre><hr>
+<h3 id="安装OpenLdap-1"><a href="#安装OpenLdap-1" class="headerlink" title="安装OpenLdap"></a>安装<code>OpenLdap</code></h3><blockquote>
+<p>安装<code>OpenLdap</code>与相关软件包</p>
+</blockquote>
+<pre><code>yum install -y openldap openldap-devel openldap-servers openldap-clients openldap-devel compat-openldap
+</code></pre><hr>
+<h3 id="配置OpenLdap-1"><a href="#配置OpenLdap-1" class="headerlink" title="配置OpenLdap"></a>配置<code>OpenLdap</code></h3><blockquote>
+<p>下载lab-01 证书文件</p>
+</blockquote>
+<pre><code>mkdir /etc/openldap/ssl/
+scp ldap.test.com:/etc/openldap/ssl/* /etc/openldap/ssl/
+</code></pre><hr>
+<blockquote>
+<p>设置凭证权限</p>
+</blockquote>
+<pre><code>chown -R ldap.ldap /etc/openldap/ssl/*
+chmod -R 0400 /etc/openldap/ssl/*
+</code></pre><hr>
+<blockquote>
+<p>复制数据库配置文件</p>
+</blockquote>
+<pre><code>cp /usr/share/openldap-servers/DB_CONFIG.example /var/lib/ldap/DB_CONFIG
+</code></pre><hr>
+<blockquote>
+<p>设置配置文件,数据目录权限</p>
+</blockquote>
+<pre><code>chown -R ldap.ldap /etc/openldap/
+chown -R ldap.ldap /var/lib/ldap/
+</code></pre><hr>
+<blockquote>
+<p>启动服务,跟随系统启动</p>
+</blockquote>
+<pre><code>systemctl start slapd
+systemctl enable slapd
+</code></pre><hr>
+<blockquote>
+<p>生成密码管理账号密码</p>
+</blockquote>
+<pre><code>pass=linux
+slappasswd -s $pass -n &gt; /etc/openldap/passwd
+cat /etc/openldap/passwd
+ldap_pass=&quot;$(cat /etc/openldap/passwd)&quot;
+</code></pre><hr>
+<blockquote>
+<p>创建slapd 配置文件</p>
+</blockquote>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cat</span>&lt;&lt;EOF  &gt;/etc/openldap/slapd.<span class="keyword">conf</span></span><br><span class="line"><span class="keyword">include</span>     /etc/openldap/schema/corba.schema</span><br><span class="line"><span class="keyword">include</span>     /etc/openldap/schema/core.schema</span><br><span class="line"><span class="keyword">include</span>     /etc/openldap/schema/cosine.schema</span><br><span class="line"><span class="keyword">include</span>     /etc/openldap/schema/duaconf.schema</span><br><span class="line"><span class="keyword">include</span>     /etc/openldap/schema/dyngroup.schema</span><br><span class="line"><span class="keyword">include</span>     /etc/openldap/schema/inetorgperson.schema</span><br><span class="line"><span class="keyword">include</span>     /etc/openldap/schema/java.schema</span><br><span class="line"><span class="keyword">include</span>     /etc/openldap/schema/misc.schema</span><br><span class="line"><span class="keyword">include</span>     /etc/openldap/schema/nis.schema</span><br><span class="line"><span class="keyword">include</span>     /etc/openldap/schema/openldap.schema</span><br><span class="line"><span class="keyword">include</span>     /etc/openldap/schema/ppolicy.schema</span><br><span class="line"><span class="keyword">include</span>     /etc/openldap/schema/collective.schema</span><br><span class="line"></span><br><span class="line">allow       bind_v2</span><br><span class="line">pidfile     /<span class="keyword">var</span>/<span class="keyword">run</span>/openldap/slapd.pid</span><br><span class="line">argsfile    /<span class="keyword">var</span>/<span class="keyword">run</span>/openldap/slapd.<span class="keyword">args</span></span><br><span class="line"></span><br><span class="line">modulepath  /usr/lib64/openldap</span><br><span class="line">moduleload  ppolicy.<span class="keyword">la</span></span><br><span class="line"></span><br><span class="line">TLSCACertificateFile  /etc/openldap/ssl/cacert.pem</span><br><span class="line">TLSCertificateFile  /etc/openldap/ssl/ldapcert.pem</span><br><span class="line">TLSCertificateKeyFile  /etc/openldap/ssl/ldapkey.pem</span><br><span class="line">TLSVerifyClient never</span><br><span class="line"></span><br><span class="line">access to attrs=shadowLastChange,userPassword</span><br><span class="line">      <span class="keyword">by</span> self write</span><br><span class="line">      <span class="keyword">by</span> * auth</span><br><span class="line"></span><br><span class="line">access to *</span><br><span class="line">      <span class="keyword">by</span> * <span class="keyword">read</span></span><br><span class="line"></span><br><span class="line">database config</span><br><span class="line">access to *</span><br><span class="line">    <span class="keyword">by</span> dn.exact=<span class="string">"gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth"</span> manage</span><br><span class="line">    <span class="keyword">by</span> * none</span><br><span class="line"></span><br><span class="line">database monitor</span><br><span class="line">access to *</span><br><span class="line">    <span class="keyword">by</span> dn.exact=<span class="string">"gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth"</span> <span class="keyword">read</span></span><br><span class="line">        <span class="keyword">by</span> dn.exact=<span class="string">"cn=admin,dc=test,dc=com"</span> <span class="keyword">read</span></span><br><span class="line">        <span class="keyword">by</span> * none</span><br><span class="line"></span><br><span class="line">database    hdb</span><br><span class="line">suffix      <span class="string">"dc=test,dc=com"</span></span><br><span class="line">checkpoint  1024 15</span><br><span class="line">rootdn      <span class="string">"cn=admin,dc=test,dc=com"</span></span><br><span class="line">rootpw      <span class="variable">$ldap_pass</span></span><br><span class="line">directory   /<span class="keyword">var</span>/lib/ldap</span><br><span class="line"></span><br><span class="line">index    objectClass                       <span class="keyword">eq</span>,pres</span><br><span class="line">index    <span class="keyword">ou</span>,cn,mail,surname,givenname      <span class="keyword">eq</span>,pres,sub</span><br><span class="line">index    uidNumber,gidNumber,loginShell    <span class="keyword">eq</span>,pres</span><br><span class="line">index    uid,memberUid                     <span class="keyword">eq</span>,pres,sub</span><br><span class="line">index    nisMapName,nisMapEntry            <span class="keyword">eq</span>,pres,sub</span><br><span class="line">loglevel    4095</span><br><span class="line"></span><br><span class="line"># 主同步2 (若为配置单机版本则无需以下配置)</span><br><span class="line">moduleload syncprov.<span class="keyword">la</span></span><br><span class="line">modulepath /usr/lib64/openldap</span><br><span class="line"></span><br><span class="line">index entryCSN,entryUUID                <span class="keyword">eq</span></span><br><span class="line"></span><br><span class="line">overlay syncprov</span><br><span class="line">syncprov-checkpoint 100 10</span><br><span class="line">syncprov-sessionlog 100</span><br><span class="line"></span><br><span class="line">serverID  1  ldaps:<span class="comment">//ldap.test.com</span></span><br><span class="line">serverID  2  ldaps:<span class="comment">//ldap2.test.com</span></span><br><span class="line"></span><br><span class="line">syncrepl  rid=123</span><br><span class="line">    provider=ldaps:<span class="comment">//ldap2.test.com</span></span><br><span class="line">    bindmethod=simple</span><br><span class="line">    binddn=<span class="string">"cn=admin,dc=test,dc=com"</span></span><br><span class="line">    credentials=<span class="variable">$pass</span></span><br><span class="line">    searchbase=<span class="string">"dc=test,dc=com"</span></span><br><span class="line">    schemachecking=<span class="keyword">on</span></span><br><span class="line">    <span class="keyword">type</span>=refreshAndPersist</span><br><span class="line">    starttls=yes</span><br><span class="line">    tls_key=<span class="string">"/etc/openldap/ssl/ldapkey.pem"</span></span><br><span class="line">    tls_cert=<span class="string">"/etc/openldap/ssl/ldapcert.pem"</span></span><br><span class="line">    tls_cacert=<span class="string">"/etc/openldap/ssl/cacert.pem"</span></span><br><span class="line">    retry=<span class="string">"5 5 300 5"</span></span><br><span class="line"></span><br><span class="line">syncrepl  rid=123</span><br><span class="line">    provider=ldaps:<span class="comment">//ldap.test.com</span></span><br><span class="line">    bindmethod=simple</span><br><span class="line">    binddn=<span class="string">"cn=admin,dc=test,dc=com"</span></span><br><span class="line">    credentials=<span class="variable">$pass</span></span><br><span class="line">    searchbase=<span class="string">"dc=test,dc=com"</span></span><br><span class="line">    schemachecking=<span class="keyword">on</span></span><br><span class="line">    <span class="keyword">type</span>=refreshAndPersist</span><br><span class="line">    starttls=yes</span><br><span class="line">    tls_key=<span class="string">"/etc/openldap/ssl/ldapkey.pem"</span></span><br><span class="line">    tls_cert=<span class="string">"/etc/openldap/ssl/ldapcert.pem"</span></span><br><span class="line">    tls_cacert=<span class="string">"/etc/openldap/ssl/cacert.pem"</span></span><br><span class="line">    retry=<span class="string">"5 5 300 5"</span></span><br><span class="line"></span><br><span class="line">mirrormode TRUE</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<hr>
+<blockquote>
+<p>配置监听服务</p>
+</blockquote>
+<pre><code>sed -i &apos;s/SLAPD_URLS/#SLAPD_URLS/&apos; /etc/sysconfig/slapd
+cat &lt;&lt;EOF   &gt;&gt;/etc/sysconfig/slapd
+
+# OpenLDAP Ldaps
+SLAPD_URLS=&quot;ldapi:/// ldap:/// ldaps:///&quot;
+SLAPD_LDAP=yes
+SLAPD_LDAPI=yes
+SLAPD_LDAPS=yes
+EOF
+</code></pre><hr>
+<blockquote>
+<p>删除默认配置,生成新的配置(依据slapd.conf配置项生成新的配置)</p>
+</blockquote>
+<pre><code>rm -rf /etc/openldap/slapd.d/*
+slaptest -f /etc/openldap/slapd.conf -F /etc/openldap/slapd.d/
+</code></pre><hr>
+<blockquote>
+<p>设置目录权限, 重启服务</p>
+</blockquote>
+<pre><code>chown -R ldap.ldap /etc/openldap/slapd.d
+chown -R ldap.ldap /var/lib/ldap/
+systemctl restart slapd
+</code></pre><hr>
+<blockquote>
+<p>配置日志</p>
+</blockquote>
+<pre><code>cat &lt;&lt;EOF   &gt;&gt;/etc/rsyslog.conf
+
+# ldap log
+local4.*    /var/log/slapd/slapd.log
+EOF
+
+systemctl restart rsyslog
+</code></pre><hr>
+<h3 id="测试验证-1"><a href="#测试验证-1" class="headerlink" title="测试验证"></a>测试验证</h3><blockquote>
+<p>搜索导入的用户</p>
+</blockquote>
+<pre><code>ldapsearch -x cn=ldapuser1 -b dc=test,dc=com
+for user in ldapuser{1..5} feng{1..5}; do
+    echo &quot;---------- id $user ----------&quot;
+    ldapsearch -x cn=$user -b dc=test,dc=com
+    sleep 1
+    echo
+done
+</code></pre><hr>
+<blockquote>
+<p>验证<code>OpenLdap</code>服务端证书的合法性</p>
+</blockquote>
+<pre><code>openssl verify -CAfile /etc/openldap/ssl/cacert.pem /etc/openldap/ssl/ldapcert.pem
+</code></pre><hr>
+<blockquote>
+<p>确认当前套接字是否能通过CA的验证</p>
+</blockquote>
+<pre><code>openssl s_client -connect ldap2.test.com:636 -showcerts -state -CAfile /etc/openldap/ssl/cacert.pem
+</code></pre><hr>
+<blockquote>
+<p>验证同步</p>
+</blockquote>
+<pre><code>tail -f /var/log/slapd/slapd.log
+rm -f /var/lib/ldap/*; systemctl restart slapd;sleep 2; ls /var/lib/ldap/
+</code></pre><hr>
+<h2 id="客户端配置"><a href="#客户端配置" class="headerlink" title="客户端配置"></a>客户端配置</h2><blockquote>
+<p>配置<code>hosts</code>解析</p>
+</blockquote>
+<pre><code>cat &lt;&lt;EOF   &gt;&gt;/etc/hosts
+
+# add ldap server
+10.0.0.11    ldap.test.com
+10.0.0.12    ldap2.test.com
+EOF
+</code></pre><hr>
+<blockquote>
+<p>安装验证模块</p>
+</blockquote>
+<pre><code>yum install -y sssd krb5-workstation
+</code></pre><hr>
+<blockquote>
+<p>配置单服务器验证</p>
+</blockquote>
+<pre><code>authconfig \
+  --enableldap \
+  --enableldaptls \
+  --enableldapauth \
+  --enablemkhomedir \
+  --ldapserver=&apos;ldaps://ldap.test.com&apos; \
+  --ldapbasedn=&quot;dc=test,dc=com&quot; \
+  --ldaploadcacert=http://ldap.test.com/cacert.pem \
+  --update
+</code></pre><hr>
+<blockquote>
+<p>配置双服务器验证</p>
+</blockquote>
+<pre><code>authconfig \
+  --enableldap \
+  --enableldaptls \
+  --enableldapauth \
+  --enablemkhomedir \
+  --ldapserver=&apos;ldaps://ldap.test.com,ldaps://ldap2.test.com&apos; \
+  --ldapbasedn=&quot;dc=test,dc=com&quot; \
+  --ldaploadcacert=http://ldap.test.com/cacert.pem \
+  --update
+</code></pre><hr>
+<blockquote>
+<p>验证</p>
+</blockquote>
+<pre><code>id ldapuser1
+ssh ldapuser1@127.0.0.1
+</code></pre><hr>
+
+      
+    </div>
+    
+    
+    
+    <div>
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/posts/openldap.html">OpenLdap安装配置</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 亦 漩 的个人博客">亦 漩</a></p>
+  <p><span>发布时间:</span>2018年09月25日 - 03:09</p>
+  <p><span>最后更新:</span>2018年09月27日 - 20:09</p>
+  <p><span>原始链接:</span><a href="/posts/openldap.html" title="OpenLdap安装配置">https://home.onlycloud.xin/posts/openldap.html</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://home.onlycloud.xin/posts/openldap.html"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by/4.0/" target="_blank" title="Attribution 4.0 International (CC BY 4.0)">署名4.0国际 （CC BY 4.0）</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+      $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+        });
+    });  
+</script>
+
+
+      
+    </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/openldap/" rel="tag "><i class="fa fa-tag"></i> openldap</a>
+          
+            <a href="/tags/ldap/" rel="tag "><i class="fa fa-tag"></i> ldap</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div id="needsharebutton-postbottom">
+            <span class="btn">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </span>
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/nginx-proxy.html" rel="next" title="Nginx负载均衡与反向代理配置">
+                <i class="fa fa-chevron-left"></i> Nginx负载均衡与反向代理配置
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="亦 漩" />
+            
+              <p class="site-author-name" itemprop="name">亦 漩</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">110</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/bookgh" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://coding.net/u/yx571304" target="_blank" title="Coding">
+                      
+                        <i class="fa fa-fw fa-git"></i>Coding</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://skyisfuck.github.io" title="Peng" target="_blank">Peng</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#环境准备"><span class="nav-number">1.</span> <span class="nav-text">环境准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境初始化"><span class="nav-number">2.</span> <span class="nav-text">环境初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lab-01-安装配置"><span class="nav-number">3.</span> <span class="nav-text">lab-01 安装配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装OpenLdap"><span class="nav-number">3.1.</span> <span class="nav-text">安装OpenLdap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建CA证书"><span class="nav-number">3.2.</span> <span class="nav-text">创建CA证书</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建ldap证书"><span class="nav-number">3.3.</span> <span class="nav-text">创建ldap证书</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置OpenLdap"><span class="nav-number">3.4.</span> <span class="nav-text">配置OpenLdap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加用户-组"><span class="nav-number">3.5.</span> <span class="nav-text">添加用户, 组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试验证"><span class="nav-number">3.6.</span> <span class="nav-text">测试验证</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lab-02-安装配置"><span class="nav-number">4.</span> <span class="nav-text">lab-02 安装配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装OpenLdap-1"><span class="nav-number">4.1.</span> <span class="nav-text">安装OpenLdap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置OpenLdap-1"><span class="nav-number">4.2.</span> <span class="nav-text">配置OpenLdap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试验证-1"><span class="nav-number">4.3.</span> <span class="nav-text">测试验证</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#客户端配置"><span class="nav-number">5.</span> <span class="nav-text">客户端配置</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">亦 漩</span>
+
+  
+  <br/><span><i class="fa fa-bomb"></i></span><span id="showDays"></span>
+</div>
+
+
+
+
+
+
+
+
+
+<script>
+  var seconds = 1000;
+  var minutes = seconds * 60;
+  var hours = minutes * 60;
+  var days = hours * 24;
+  var years = days * 365;
+  var birthDay = Date.UTC(2017,12,07,10,00,00); // 这里设置建站时间
+  setInterval(function() {
+    var today = new Date();
+    var todayYear = today.getFullYear();
+    var todayMonth = today.getMonth()+1;
+    var todayDate = today.getDate();
+    var todayHour = today.getHours();
+    var todayMinute = today.getMinutes();
+    var todaySecond = today.getSeconds();
+    var now = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+    var diff = now - birthDay;
+    var diffYears = Math.floor(diff/years);
+    var diffDays = Math.floor((diff/days)-diffYears*365);
+    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById('showDays').innerHTML="本站已运行 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+  }, 1000);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+      <div id="needsharebutton-float">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'DWwnpdDBrLDMI8CKf8OXopJu-gzGzoHsz',
+        appKey: '7sfOhetJ1Wftp4W7MF0xdPOw',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "default";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+      flOptions = {};
+      
+          flOptions.iconStyle = "default";
+      
+          flOptions.boxForm = "horizontal";
+      
+          flOptions.position = "middleRight";
+      
+          flOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-float', flOptions);
+    
+  </script>
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+
+</body>
+</html>
