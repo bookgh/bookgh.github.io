@@ -144,7 +144,7 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="环境准备# CentOS 7 最小化安装  # 关闭, 禁用 firewalld systemctl stop firewalld systemctl disable firewalld firewall-cmd --state  # 关闭, 禁用 selinux setenforce 0 sed -i &amp;apos;/^SELINUX=.*/c SELINUX=disabled&amp;apos; /et">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-27T12:11:52.320Z">
+<meta property="og:updated_time" content="2018-09-29T15:59:09.025Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="创建内网OpenStack源(pike版)">
 <meta name="twitter:description" content="环境准备# CentOS 7 最小化安装  # 关闭, 禁用 firewalld systemctl stop firewalld systemctl disable firewalld firewall-cmd --state  # 关闭, 禁用 selinux setenforce 0 sed -i &amp;apos;/^SELINUX=.*/c SELINUX=disabled&amp;apos; /et">
@@ -462,7 +462,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  705
+                  706
                 </span>
               
 
@@ -553,7 +553,7 @@ reboot
 <p>将 /www/share/yum/ 目录下载的包移动到 /www/share/yum</p>
 </blockquote>
 <pre><code>mkdir /www/share/yum
-find /www/share/yum/ -name *.rpm |sed -r &apos;s#.*#mv &amp; /mnt/tmp/\n#&apos;|bash
+find /www/share/tmp/ -name *.rpm |sed -r &apos;s#.*#mv &amp; /www/share/yum/\n#&apos;|bash
 </code></pre><h2 id="下载安装openstack-用到的包"><a href="#下载安装openstack-用到的包" class="headerlink" title="下载安装openstack 用到的包"></a>下载安装openstack 用到的包</h2><pre><code>List=&apos;wget vim ntpdate net-tools lrzsz lsof glances htop corosync pacemaker pcs fence-agents 
   resource-agents httpd haproxy python-openstackclient openstack-selinux openstack-utils expect 
   mariadb mariadb-server mariadb-galera-server rabbitmq-server erlang socat openstack-keystone 
@@ -623,7 +623,7 @@ createrepo --update -pdo /www/share/yum /www/share/yum
   <p><span>本文标题:</span><a href="/posts/openstack-install-13.html">创建内网OpenStack源(pike版)</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 亦 漩 的个人博客">亦 漩</a></p>
   <p><span>发布时间:</span>2018年07月31日 - 18:07</p>
-  <p><span>最后更新:</span>2018年09月27日 - 20:09</p>
+  <p><span>最后更新:</span>2018年09月29日 - 23:09</p>
   <p><span>原始链接:</span><a href="/posts/openstack-install-13.html" title="创建内网OpenStack源(pike版)">https://home.onlycloud.xin/posts/openstack-install-13.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://home.onlycloud.xin/posts/openstack-install-13.html"  aria-label="复制成功！"></i></span>
   </p>
